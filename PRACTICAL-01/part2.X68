@@ -11,6 +11,7 @@ START:                  ; first instruction of program
     MOVE.L  #%00001111, D1
     MOVE.B  D1,D2
     MOVE.B  D1,$2000
+    MOVE.B  $200,D2
     MOVE.B  $2000,$3000
     
 
@@ -19,6 +20,7 @@ START:                  ; first instruction of program
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 *~Font name~Courier New~
 *~Font size~10~
