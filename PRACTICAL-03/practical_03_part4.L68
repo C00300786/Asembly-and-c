@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 28/01/2025 10:31:00
+Created On: 28/01/2025 10:34:35
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :
@@ -13,30 +13,24 @@ Created On: 28/01/2025 10:31:00
 00001000                             9  
 00001000                            10  * Put program code here
 00001000                            11  
-00001000  227C 00001020             12      MOVEA.L #ACHIEVEMENT_POINTS, A1
-00001006  7000                      13      MOVE.L  #0, D0
-00001008                            14      
-00001008  2419                      15      MOVE.L  (A1)+, D2
-0000100A  D082                      16      ADD.L   D2, D0
-0000100C                            17      
-0000100C  2419                      18      MOVE.L  (A1)+, D2
-0000100E  D082                      19      ADD.L   D2, D0
-00001010                            20      
-00001010  2419                      21      MOVE.L  (A1)+, D2
-00001012  D082                      22      ADD.L   D2, D0
-00001014                            23      
-00001014  2419                      24      MOVE.L  (A1)+, D2
-00001016  D082                      25      ADD.L   D2, D0
-00001018                            26      
-00001018  2419                      27      MOVE.L  (A1)+, D2
-0000101A  D082                      28      ADD.L   D2, D0
-0000101C                            29      
-0000101C                            30      
-0000101C  FFFF FFFF                 31      SIMHALT             ; halt simulator
-00001020                            32  
-00001020                            33  * Put variables and constants here
-00001020= 00000005 0000000A ...     34  ACHIEVEMENT_POINTS: DC.L    5, 10, 15, 20, 30
-00001034                            35      END    START        ; last line of source
+00001000  47F9 00001024             12      LEA PHEALTH,A3
+00001006  49F9 00001028             13      LEA PPOSX,  A4
+0000100C  4BF9 0000102A             14      LEA PPOSY,  A5
+00001012  4DF9 0000102C             15      LEA PPOINT, A6
+00001018                            16      
+00001018  2213                      17      MOVE.L (A3), D1
+0000101A  1414                      18      MOVE.B (A4), D2
+0000101C  3615                      19      MOVE.W (A5), D3
+0000101E  2816                      20      MOVE.L (A6), D4
+00001020  FFFF FFFF                 21      SIMHALT             ; halt simulator
+00001024                            22  
+00001024                            23  * Put variables and constants here
+00001024= 00000064                  24  PHEALTH dc.l    $64
+00001028= 19                        25  PPOSX   dc.b    $19
+0000102A= 0017                      26  PPOSY   dc.w    $17
+0000102C= 00000012                  27  PPOINT  dc.l    $12
+00001030                            28  
+00001030                            29      END    START        ; last line of source
 
 No errors detected
 No warnings generated
@@ -45,5 +39,8 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
-ACHIEVEMENT_POINTS  1020
+PHEALTH             1024
+PPOINT              102C
+PPOSX               1028
+PPOSY               102A
 START               1000
