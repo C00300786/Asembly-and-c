@@ -1,0 +1,91 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 04/02/2025 10:45:24
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10       ; Move Health to Memory location $3000
+00001000  11FC 0064 3000            11      MOVE.B  #100, $3000
+00001006                            12      
+00001006                            13      ;move player location  x first byte y second
+00001006  143C 0012                 14      MOVE.B  #$12, D2
+0000100A                            15      
+0000100A                            16      ;move npc location x first byte y second
+0000100A  163C 0022                 17      MOVE.B  #$22, D3
+0000100E                            18      
+0000100E                            19      ;Bitwise and of d2 and d3
+0000100E                            20      ;player location stays same(d2) npc location (d3) becomes 02
+0000100E  C602                      21      AND.B D2 ,D3
+00001010                            22      
+00001010                            23      ;hit by NPC
+00001010  0411 0014                 24      SUB.B   #20, (A1)
+00001014                            25      
+00001014                            26      ;health pack found
+00001014  0611 000A                 27      ADD.B   #10, (A1)
+00001018                            28      
+00001018                            29      ;Move health to mem loc $3000
+00001018  11FC 0064 3000            30      MOVE.B #100, $3000
+0000101E                            31      
+0000101E                            32      ;load mem addr $3000 into addr reg A1
+0000101E  43F8 3000                 33      LEA     $3000, A1
+00001022                            34      
+00001022                            35      ; Branch to taking dmg
+00001022  6100 000E                 36      BSR     TAKING_DAMAGE
+00001026                            37      
+00001026                            38      ; Branch to tp
+00001026  6100 001A                 39      BSR     RND_TP
+0000102A                            40      
+0000102A                            41  BACK_IN_THE_GAME:
+0000102A                            42      ;revive
+0000102A  6100 000C                 43      BSR HEALTH_PICKUP
+0000102E  6000 000E                 44      BRA GAME_END
+00001032                            45    
+00001032                            46  TAKING_DAMAGE:
+00001032                            47      ;HIT BY NPC
+00001032  0411 000A                 48      SUB.B   #10, (A1)
+00001036  60F2                      49      BRA BACK_IN_THE_GAME
+00001038                            50      
+00001038                            51  HEALTH_PICKUP:
+00001038                            52      ;medpack used
+00001038  0611 000A                 53      ADD.B   #10, (A1)
+0000103C  4E75                      54      RTS
+0000103E                            55      
+0000103E                            56  GAME_END:
+0000103E                            57      ;game over
+0000103E  12BC 0000                 58      MOVE.B  #$00,   (A1)
+00001042                            59      
+00001042                            60  RND_TP:
+00001042                            61      ;teleports the player to a kinda random loc
+00001042  C443                      62      AND D3, D2
+00001044  4642                      63      NOT D2
+00001046  8443                      64      OR  D3, D2
+00001048  B742                      65      EOR D3,D2
+0000104A                            66  * Put program code here
+0000104A                            67  
+0000104A  FFFF FFFF                 68      SIMHALT             ; halt simulator
+0000104E                            69      
+0000104E                            70  
+0000104E                            71  * Put variables and constants here
+0000104E                            72  
+0000104E                            73      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BACK_IN_THE_GAME    102A
+GAME_END            103E
+HEALTH_PICKUP       1038
+RND_TP              1042
+START               1000
+TAKING_DAMAGE       1032

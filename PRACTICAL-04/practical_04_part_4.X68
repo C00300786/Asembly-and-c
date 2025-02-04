@@ -35,6 +35,9 @@ START:                  ; first instruction of program
     ; Branch to taking dmg
     BSR     TAKING_DAMAGE
     
+    ; Branch to tp
+    BSR     RND_TP
+    
 BACK_IN_THE_GAME:
     ;revive
     BSR HEALTH_PICKUP
@@ -54,7 +57,12 @@ GAME_END:
     ;game over
     MOVE.B  #$00,   (A1)
     
- 
+RND_TP:
+    ;teleports the player to a kinda random loc
+    AND D3, D2
+    NOT D2
+    OR  D3, D2
+    EOR D3,D2
 * Put program code here
 
     SIMHALT             ; halt simulator
@@ -63,7 +71,6 @@ GAME_END:
 * Put variables and constants here
 
     END    START        ; last line of source
-
 
 
 *~Font name~Courier New~
