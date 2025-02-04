@@ -20,6 +20,15 @@ START:                  ; first instruction of program
     ;player location stays same(d2) npc location (d3) becomes 02
     AND.B D2 ,D3
     
+    ; inverts players location/ bitwise not on d2
+    NOT.B D2
+    
+    ;bitwise or with player loc and npc loc
+    OR D2, D3
+    
+    ;bitwise eor with player loc and npc loc
+    EOR D2, D3
+    
     ;Load memory adderss into adress reg A1
     LEA    $3000, A1
     
@@ -36,6 +45,7 @@ START:                  ; first instruction of program
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 *~Font name~Courier New~
 *~Font size~10~

@@ -1,0 +1,60 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 04/02/2025 10:21:54
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10      ; Move Health to Memory location $3000
+00001000  11FC 0064 3000            11      MOVE.B  #100, $3000
+00001006                            12      
+00001006                            13      ;move player location  x first byte y second
+00001006  143C 0012                 14      MOVE.B  #$12, D2
+0000100A                            15      
+0000100A                            16      ;move npc location x first byte y second
+0000100A  163C 0022                 17      MOVE.B  #$22, D3
+0000100E                            18      
+0000100E                            19      ;Bitwise and of d2 and d3
+0000100E                            20      ;player location stays same(d2) npc location (d3) becomes 02
+0000100E  C602                      21      AND.B D2 ,D3
+00001010                            22      
+00001010                            23      ; inverts players location/ bitwise not on d2
+00001010  4602                      24      NOT.B D2
+00001012                            25      
+00001012                            26      ;bitwise or with player loc and npc loc
+00001012  8642                      27      OR D2, D3
+00001014                            28      
+00001014                            29      ;bitwise eor with player loc and npc loc
+00001014  B543                      30      EOR D2, D3
+00001016                            31      
+00001016                            32      ;Load memory adderss into adress reg A1
+00001016  43F8 3000                 33      LEA    $3000, A1
+0000101A                            34      
+0000101A                            35      ;hit by NPC
+0000101A  0411 0014                 36      SUB.B   #20, (A1)
+0000101E                            37      
+0000101E                            38      ;health pack found
+0000101E  0611 000A                 39      ADD.B   #10, (A1)
+00001022                            40  * Put program code here
+00001022                            41  
+00001022  FFFF FFFF                 42      SIMHALT             ; halt simulator
+00001026                            43      
+00001026                            44  
+00001026                            45  * Put variables and constants here
+00001026                            46  
+00001026                            47      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               1000
