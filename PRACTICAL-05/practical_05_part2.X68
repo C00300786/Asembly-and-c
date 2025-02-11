@@ -28,10 +28,11 @@ GAME_OVER:
     
     SIMHALT             ; halt simulator
 
-PLAYER_POSITION: DC.B 10, 15
+PLAYER_POSITION: DC.B 55, 55
 ENEMY_POSITION: DC.B 50, 55
 
     END    START        ; last line of source
+
 
 *~Font name~Courier New~
 *~Font size~10~
