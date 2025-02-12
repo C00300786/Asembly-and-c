@@ -1,0 +1,165 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 12/02/2025 13:54:03
+
+00000000                             1    *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000  =0000000A                  8  DAMAGE EQU 10
+00001000  =00000064                  9  HEAL EQU 100
+00001000                            10  START:
+00001000  45F9 000010EE             11      LEA PLAYER_X, A2
+00001006  47F9 0000113C             12      LEA ENEMY_POSITIONS, A3
+0000100C  49F9 0000116C             13      LEA POWER_UPS, A4
+00001012  6000 0002                 14      BRA GAME_LOOP             
+00001016                            15  GAME_LOOP:
+00001016  6100 00C4                 16      BSR COUNT_ENEMIES
+0000101A  1800                      17      MOVE.B D0, D4
+0000101C                            18      
+0000101C  43F9 000010FD             19      LEA MSG_GAMELOOP, A1
+00001022  6100 0038                 20      BSR DRAW
+00001026                            21      
+00001026  6100 0004                 22      BSR UPDATE
+0000102A  60EA                      23      BRA GAME_LOOP
+0000102C                            24  UPDATE: 
+0000102C  1239 000010F2             25      MOVE.B PLAYER_HEALTH, D1
+00001032                            26      
+00001032  43F9 000010F3             27      LEA MSG_HEALTH, A1
+00001038  6100 0022                 28      BSR DRAW
+0000103C                            29      
+0000103C                            30      
+0000103C  103C 0003                 31      MOVE.B  #3, D0
+00001040  4E4F                      32      TRAP    #15
+00001042                            33      
+00001042  43F9 00001138             34      LEA CRLF, A1
+00001048  6100 0012                 35      BSR DRAW
+0000104C                            36      
+0000104C  B27C 0000                 37      CMP #0,D1
+00001050  6F00 007E                 38      BLE GAME_OVER
+00001054  5292                      39      ADD.L   #1, (A2)
+00001056  6100 000C                 40      BSR COLLISION
+0000105A  4E75                      41      RTS
+0000105C                            42      
+0000105C                            43  DRAW:
+0000105C  103C 000D                 44      MOVE.B  #13,D0
+00001060  4E4F                      45      TRAP    #15
+00001062  4E75                      46      RTS
+00001064                            47      
+00001064                            48  COLLISION:
+00001064  1A3C 0001                 49      MOVE.B  #1,D5
+00001068  47F9 0000113C             50      LEA ENEMY_POSITIONS, A3
+0000106E  49F9 0000116C             51      LEA POWER_UPS, A4
+00001074                            52  
+00001074                            53  POWER_UP:
+00001074  47F9 00001119             54      LEA MSG_COLLOSION , A3
+0000107A  61E0                      55      BSR DRAW
+0000107C                            56      
+0000107C  0639 0064 000010F2        57      ADD.B   #HEAL,PLAYER_HEALTH
+00001084                            58      
+00001084  43F9 00001131             59      LEA MSG_POWERUP, A1
+0000108A  61D0                      60      BSR DRAW
+0000108C                            61      
+0000108C  6088                      62      BRA GAME_LOOP    
+0000108E                            63  ITERATE:
+0000108E  B845                      64      CMP D5,D4
+00001090  5205                      65      ADD.B #1,D5
+00001092  6782                      66      BEQ GAME_LOOP
+00001094  6600 0012                 67      BNE CHECK_ENEMIES
+00001098  6600 0004                 68      BNE CHECK_POWER
+0000109C  4E75                      69      RTS
+0000109E                            70      
+0000109E                            71  CHECK_POWER:
+0000109E  241C                      72      MOVE.L  (A4)+,D2
+000010A0  2612                      73      MOVE.L  (A2),D3
+000010A2  B682                      74      CMP.L   D2,D3
+000010A4  67CE                      75      BEQ POWER_UP
+000010A6  66E6                      76      BNE ITERATE
+000010A8                            77      
+000010A8                            78  CHECK_ENEMIES:
+000010A8  241B                      79      MOVE.L  (A3)+,D2
+000010AA  2612                      80      MOVE.L  (A2),D3
+000010AC                            81      
+000010AC  B682                      82      CMP.L   D2,D3
+000010AE  6700 0004                 83      BEQ REDUCE_HEALTH
+000010B2  66DA                      84      BNE ITERATE
+000010B4                            85      
+000010B4                            86  REDUCE_HEALTH:
+000010B4  43F9 00001119             87      LEA MSG_COLLOSION , A1
+000010BA  61A0                      88      BSR DRAW
+000010BC                            89      
+000010BC  0439 000A 000010F2        90      SUB.B   #DAMAGE,PLAYER_HEALTH
+000010C4                            91      
+000010C4  43F9 00001123             92      LEA MSG_DAMAGE, A1
+000010CA  6190                      93      BSR DRAW
+000010CC                            94      
+000010CC  6000 FF48                 95      BRA GAME_LOOP
+000010D0                            96  GAME_OVER:
+000010D0  43F9 0000110F             97      LEA MSG_GAMEOVER, A1
+000010D6  6184                      98      BSR DRAW
+000010D8                            99  
+000010D8  FFFF FFFF                100      SIMHALT             ; halt simulator
+000010DC                           101  COUNT_ENEMIES:
+000010DC  103C 0000                102      MOVE.B  #0,D0
+000010E0  41F9 0000113C            103      LEA ENEMY_POSITIONS, A0
+000010E6                           104      
+000010E6                           105  COUNT_ENEMIES_LOOP:
+000010E6  4A98                     106      TST.L   (A0)+
+000010E8  6700 0002                107      BEQ END_COUNTING
+000010EC                           108      
+000010EC                           109  END_COUNTING:
+000010EC  4E75                     110      RTS
+000010EE                           111      
+000010EE= 00000001                 112  PLAYER_X            DC.L  1
+000010F2= 64                       113  PLAYER_HEALTH       DC.B  100
+000010F3= 48 65 61 6C 74 68 ...    114  MSG_HEALTH          DC.B 'Health : ', 0
+000010FD= 47 61 6D 65 20 4C ...    115  MSG_GAMELOOP        DC.B 'Game Loop........' ,0
+0000110F= 47 61 6D 65 20 4F ...    116  MSG_GAMEOVER        DC.B 'Game Over', 0
+00001119= 43 6F 6C 6C 69 73 ...    117  MSG_COLLOSION       DC.B 'Collision',0
+00001123= 54 61 6B 69 6E 67 ...    118  MSG_DAMAGE          DC.B 'Taking Damage',0
+00001131= 48 65 61 6C 69 6E 67     119  MSG_POWERUP         DC.B 'Healing'
+00001138= 0D 0A 00                 120  CRLF                DC.B $0D,$0A,0
+0000113C= 00000014 0000001E ...    121  ENEMY_POSITIONS     DC.L 20,30,40,50,60,70,80,90,200,300,500,0
+0000116C= 0000000A 00000037 ...    122  POWER_UPS           DC.L 10, 55, 220, 0
+0000117C                           123  
+0000117C                           124  * Put variables and constants here
+0000117C                           125  
+0000117C                           126      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CHECK_ENEMIES       10A8
+CHECK_POWER         109E
+COLLISION           1064
+COUNT_ENEMIES       10DC
+COUNT_ENEMIES_LOOP  10E6
+CRLF                1138
+DAMAGE              A
+DRAW                105C
+END_COUNTING        10EC
+ENEMY_POSITIONS     113C
+GAME_LOOP           1016
+GAME_OVER           10D0
+HEAL                64
+ITERATE             108E
+MSG_COLLOSION       1119
+MSG_DAMAGE          1123
+MSG_GAMELOOP        10FD
+MSG_GAMEOVER        110F
+MSG_HEALTH          10F3
+MSG_POWERUP         1131
+PLAYER_HEALTH       10F2
+PLAYER_X            10EE
+POWER_UP            1074
+POWER_UPS           116C
+REDUCE_HEALTH       10B4
+START               1000
+UPDATE              102C

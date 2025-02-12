@@ -1,4 +1,4 @@
-*-----------------------------------------------------------
+  *-----------------------------------------------------------
 * Title      :
 * Written by :
 * Date       :
@@ -6,9 +6,11 @@
 *-----------------------------------------------------------
     ORG    $1000
 DAMAGE EQU 10
+HEAL EQU 100
 START:
     LEA PLAYER_X, A2
     LEA ENEMY_POSITIONS, A3
+    LEA POWER_UPS, A4
     BRA GAME_LOOP             
 GAME_LOOP:
     BSR COUNT_ENEMIES
@@ -46,14 +48,33 @@ DRAW:
 COLLISION:
     MOVE.B  #1,D5
     LEA ENEMY_POSITIONS, A3
-   
+    LEA POWER_UPS, A4
+
+POWER_UP:
+    LEA MSG_COLLOSION , A3
+    BSR DRAW
+    
+    ADD.B   #HEAL,PLAYER_HEALTH
+    
+    LEA MSG_POWERUP, A1
+    BSR DRAW
+    
+    BRA GAME_LOOP    
 ITERATE:
     CMP D5,D4
     ADD.B #1,D5
     BEQ GAME_LOOP
     BNE CHECK_ENEMIES
+    BNE CHECK_POWER
     RTS
- 
+    
+CHECK_POWER:
+    MOVE.L  (A4)+,D2
+    MOVE.L  (A2),D3
+    CMP.L   D2,D3
+    BEQ POWER_UP
+    BNE ITERATE
+    
 CHECK_ENEMIES:
     MOVE.L  (A3)+,D2
     MOVE.L  (A2),D3
@@ -91,12 +112,14 @@ END_COUNTING:
 PLAYER_X            DC.L  1
 PLAYER_HEALTH       DC.B  100
 MSG_HEALTH          DC.B 'Health : ', 0
-MSG_GAMELOOP       DC.B 'Game Loop........' ,0
-MSG_GAMEOVER       DC.B 'Game Over', 0
+MSG_GAMELOOP        DC.B 'Game Loop........' ,0
+MSG_GAMEOVER        DC.B 'Game Over', 0
 MSG_COLLOSION       DC.B 'Collision',0
 MSG_DAMAGE          DC.B 'Taking Damage',0
+MSG_POWERUP         DC.B 'Healing'
 CRLF                DC.B $0D,$0A,0
 ENEMY_POSITIONS     DC.L 20,30,40,50,60,70,80,90,200,300,500,0
+POWER_UPS           DC.L 10, 55, 220, 0
 
 * Put variables and constants here
 
@@ -105,7 +128,7 @@ ENEMY_POSITIONS     DC.L 20,30,40,50,60,70,80,90,200,300,500,0
 
 
 
-
+    
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~1~
