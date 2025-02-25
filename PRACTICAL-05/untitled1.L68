@@ -1,0 +1,44 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 12/02/2025 14:22:43
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  GAMELOOP:
+00001000  0439 0014 00001018        11      SUB.B   #20,HEALTH
+00001008  3239 00001018             12      MOVE    HEALTH, D1
+0000100E  B27C 0008                 13      CMP     #8,D1
+00001012  60EC                      14      BRA     GAMELOOP
+00001014  6100 0002                 15      BSR     GAMEOVER
+00001018                            16      
+00001018                            17  GAMEOVER:
+00001018                            18      ;GAMEOVER
+00001018                            19      
+00001018= 64                        20  HEALTH: DC.B    100
+00001019                            21  
+00001019                            22  * Put program code here
+00001019                            23  
+0000101A  FFFF FFFF                 24      SIMHALT             ; halt simulator
+0000101E                            25  
+0000101E                            26  * Put variables and constants here
+0000101E                            27  
+0000101E                            28      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+GAMELOOP            1000
+GAMEOVER            1018
+HEALTH              1018
+START               1000

@@ -1,0 +1,32 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 12/02/2025 14:31:24
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000  343C 00FF                  9      MOVE.W #%11111111 ,D2
+Line 10 ERROR: Undefined symbol
+00001004  0C78 00FF 55B8            10      CMP.W #255, D2.W
+0000100A                            11  
+0000100A                            12  * Put program code here
+0000100A                            13  
+0000100A  FFFF FFFF                 14      SIMHALT             ; halt simulator
+0000100E                            15  
+0000100E                            16  * Put variables and constants here
+0000100E                            17  
+0000100E                            18      END    START        ; last line of source
+
+1 error detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+START               1000
