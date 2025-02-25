@@ -90,6 +90,9 @@ CHOICE_VAR:   DC.B  0
 CRLF:   DC.B  $0D, $0A, 0   ; Carriage Return + Line Feed (New Line)
 
 WELCOME_MSG:  DC.B 'Welcome to the Adventures of dingle dorf!', $0D, $0A
+              DC.B 'Dingle dorf has set out on an epic adventure to fix the relic of equinox', $0D, $0A
+              DC.B 'the relic has been broken in half and the peices stolen', $0D, $0A
+              DC.B 'the e', $0D, $0A
               DC.B '1. enter the mines', $0D, $0A
               DC.B '2. go to town', $0D, $0A, 0
 
@@ -99,6 +102,7 @@ TOWN_MSG:      DC.B 'You go to town', $0D, $0A, 0
 INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
 
     END    START
+
 
 
 
