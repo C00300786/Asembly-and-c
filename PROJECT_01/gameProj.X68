@@ -3,6 +3,10 @@
 EXIT    EQU 0            ; Used to exit the program
 
 START:
+    LEA     P_HP, A2
+    MOVE.B  #3,(A2)
+    LEA     E_HP, A3
+    MOVE.B  #3, (A3)
     BSR     WELCOME          ; Branch to the WELCOME subroutine
     BSR     OPEN_SCENE           ; Branch to opening scene
     BSR     OPEN_PATH           ; Branch to the CHOICE subroutine
@@ -106,7 +110,8 @@ ENDL:
 *---------------------------------------------------------
 FIGHT:
     
-    BSR RNG
+    BSR     ENDL
+    BSR     RNG
     LEA     USER_INPUT, A1   ; Load input buffer address
     MOVE.B  #2, D0           ; Max input length (1 char + NULL)
     TRAP    #15              ; Read input (D0=2 -> Read 1 char)
@@ -116,15 +121,15 @@ FIGHT:
     CMP     D3,D2
     BEQ     DRAW
     
-    ADD.B   D3,D2
+    ADD.B   D2,D3
     
-    CMP     #3,D2
+    CMP     #3,D3
     BEQ     PAPER
     
-    CMP     #4,D2
+    CMP     #4,D3
     BEQ     ROCK
     
-    CMP     #5,D2
+    CMP     #5,D3
     BEQ     SIS
     
     MOVE.B  D2,D7
@@ -159,23 +164,48 @@ PAPER:
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     ;BSR     GAME_OVER
+    
+    CMP.B     #2,D2
+    BEQ F_WIN
+    
+    BSR F_LOSE
+
     RTS
     
 ROCK:
     LEA     P_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
-    ;BSR     GAME_OVER
+    
+    CMP.B   #1,D2
+    BEQ F_WIN
+    
+    BSR F_LOSE
+
     RTS
     
 SIS:
     LEA     S_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
+    
+    CMP.B   #3,D2
+    BEQ F_WIN
+    
+    BSR F_LOSE
     RTS
 
-
-         
+F_WIN:
+    MOVE.B  P_HP, D6
+    SUBI.B  #1,D6
+    MOVE.B  D6,(A2)
+    CLR     D6
+    
+F_LOSE:
+    MOVE.B  E_HP, D6
+    SUBI.B  #1, P_HP
+    MOVE.B  D6, (A3)
+    CLR     D6
 *---------------------------------------------------------
 *               RNG for fights
 *---------------------------------------------------------
