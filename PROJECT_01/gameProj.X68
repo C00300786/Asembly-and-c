@@ -21,7 +21,7 @@ WELCOME:
     RTS                      ; Return
 
 *-------------------------------------------------------
-*                   WELCOME SUBROUTINE
+*                   OPEN SCENE SUBROUTINE
 *-------------------------------------------------------
 OPEN_SCENE:
     BSR     ENDL             ; New line
@@ -30,8 +30,9 @@ OPEN_SCENE:
     TRAP    #15              ; Print message
     BSR     ENDL
     RTS                      ; Return
+
 *-------------------------------------------------------
-*                  location choice 1
+*                  Mines or Tower
 *-------------------------------------------------------
 OPEN_PATH:
     LEA     CHOICE_MSG, A1   ; Load choice message
@@ -45,25 +46,32 @@ OPEN_PATH:
     MOVE.B  USER_INPUT, D1   ; Load user input into D1
 
     CMP.B   #'1', D1         ; Compare input to '1'
-    BEQ     FIGHT            ; If '1', branch to FIGHT
+    BEQ     MINE            ; If '1', branch to FIGHT
 
     CMP.B   #'2', D1         ; Compare input to '2'
     BEQ     RUN_AWAY         ; If '2', branch to RUN_AWAY
 
     BSR     INVALID_CHOICE   ; If input is invalid, show error
-    BSR     CHOICE           ; Repeat input prompt
-    RTS
+    BSR     OPEN_PATH           ; Repeat input prompt
+    
 
 *-------------------------------------------------------
-*                   FIGHT SEQUENCE
+*                   MINE SEQUENCE
 *-------------------------------------------------------
-FIGHT:
+MINE:
     BSR     ENDL
     LEA     MINES_MSG, A1
     MOVE.B  #14, D0
-    TRAP    #15              ; Print fight message
-    RTS
+    TRAP    #15              ; Print MINES message
+    
+    BSR     FIGHT
+    BSR MINE_ROOM_1
+    
 
+MINE_ROOM_1:
+
+    BSR MINE
+MINE_FIGHT_1:
 *-------------------------------------------------------
 *                  RUN AWAY SEQUENCE
 *-------------------------------------------------------
@@ -92,6 +100,79 @@ ENDL:
     MOVE.B  #14, D0
     TRAP    #15         ; Print new line
     RTS                 ; Return
+    
+*---------------------------------------------------------
+*                       Fight SUB
+*---------------------------------------------------------
+FIGHT:
+    
+    BSR     RNG              ;gens random number between 1 and 3
+    
+    LEA     USER_INPUT, A1   ; Load input buffer address
+    MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+    TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+    MOVE.B  USER_INPUT, D1   ; Load user input into D1
+    MOVE.B  D1, D2
+    
+    CMP.B   D7, D1
+    BEQ     DRAW
+    
+    CMP.B   #'1', D1
+    BEQ     DMG
+    
+    CMP.B   #'2', D1
+    BEQ     DRAW
+    
+    CMP.B   #'3', D1
+    BEQ     DMG
+    BSR     ENDL
+    
+    BSR     INVALID_CHOICE   ; If input is invalid, show error
+    BSR     FIGHT
+    RTS
+    
+DMG:
+    LEA     DMG_MSG,  A1   ; loads first draw msg
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    RTS
+
+DRAW:
+    CMP.B   #'0', $600
+    BEQ     FDRAW
+    LEA     DRAW_MSG, A1
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    ADDQ.B  #1, D6         ; Adds to the draw count
+    RTS
+    
+FDRAW:
+    LEA     FDRAW_MSG,  A1   ; loads first draw msg
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    RTS
+
+
+GAME_OVER:
+       LEA     GO_MSG,  A1   ; loads first draw msg
+       MOVE.B  #14, D0
+       TRAP    #15              ; Prints message
+         
+*---------------------------------------------------------
+*               RNG for fights
+*---------------------------------------------------------
+RNG:              
+    MOVE.B #8, D0           ; Load immediate value 8 into Data Register D0 (for system call code related to random number generation)
+    TRAP #15                ; Trap to BIOS service (generating random number or handling internal system functions)
+    AND.L #$5FFFFF, D1      ; Perform a bitwise AND with D1 and the mask $5FFFFF to limit the randomness to a specific range
+    DIVU #3, D1             ; Divide unsigned value in D1 by 3, result goes into D1 (this reduces the range of the random value to 0 to 2)
+    SWAP D1
+    ADDQ.B #1, D1           ; Add 1 to the value in D1 (to adjust the final result to be between 1 and 3)
+    MOVE.B D1, D2           ; Move the value in D1 to D2 to preserve it for later use
+    CLR.L D1                ; Clear D1 register to prepare for further operations
+    MOVE.B D2, D1           ; Restore the value in D2 back into D1
+    MOVE.B D1, D7           ; Stores the value in $500 for later use
+    RTS                     ; Return from subroutine, control passes back to the calling code
 
 *-------------------------------------------------------
 *                  DATA SECTION
@@ -125,8 +206,13 @@ OPEN_MSG:
 
 CHOICE_MSG:   DC.B 'Where will you go? (1 or 2): ', 0
 MINES_MSG:    DC.B 'You enter the mines', $0D, $0A, 0
-TOWER_MSG:      DC.B 'You go to tower', $0D, $0A, 0
+TOWER_MSG:    DC.B 'You go to tower', $0D, $0A, 0
+FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering the only way out is trough you must defeat them', $0D, $0A ,0
 INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
+DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be victorious', $0D, $0A ,0
+FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
+DMG_MSG:      DC.B 'A blow has been dealt the fight draws closer to its end', $0D, $0A ,0
+GO_MSG:       DC.B 'GAME OVER', $0D, $0A ,0
 
     END    START
 
@@ -137,6 +223,10 @@ INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
 *~Font size~10~
 *~Tab type~1~
 *~Tab size~4~
+
+
+
+
 
 
 *~Font name~Courier New~
