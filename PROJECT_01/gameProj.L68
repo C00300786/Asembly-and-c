@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 26/02/2025 13:54:46
+Created On: 26/02/2025 21:49:17
 
 00000000                             1  
 00001000                             2      ORG    $1000
@@ -18,7 +18,7 @@ Created On: 26/02/2025 13:54:46
 00001010                            14  *-------------------------------------------------------
 00001010                            15  WELCOME:
 00001010  6100 009C                 16      BSR     ENDL             ; New line
-00001014  43F9 00001160             17      LEA     WELCOME_MSG, A1  ; Load welcome message
+00001014  43F9 000011CE             17      LEA     WELCOME_MSG, A1  ; Load welcome message
 0000101A  103C 000E                 18      MOVE.B  #14, D0
 0000101E  4E4F                      19      TRAP    #15              ; Print message
 00001020  6100 008C                 20      BSR     ENDL
@@ -29,7 +29,7 @@ Created On: 26/02/2025 13:54:46
 00001026                            25  *-------------------------------------------------------
 00001026                            26  OPEN_SCENE:
 00001026  6100 0086                 27      BSR     ENDL             ; New line
-0000102A  43F9 0000132E             28      LEA     OPEN_MSG, A1  ; Load welcome message
+0000102A  43F9 0000139C             28      LEA     OPEN_MSG, A1  ; Load welcome message
 00001030  103C 000E                 29      MOVE.B  #14, D0
 00001034  4E4F                      30      TRAP    #15              ; Print message
 00001036  6100 0076                 31      BSR     ENDL
@@ -39,15 +39,15 @@ Created On: 26/02/2025 13:54:46
 0000103C                            35  *                  Mines or Tower
 0000103C                            36  *-------------------------------------------------------
 0000103C                            37  OPEN_PATH:
-0000103C  43F9 00001553             38      LEA     CHOICE_MSG, A1   ; Load choice message
+0000103C  43F9 000015C1             38      LEA     CHOICE_MSG, A1   ; Load choice message
 00001042  103C 000E                 39      MOVE.B  #14, D0
 00001046  4E4F                      40      TRAP    #15              ; Print message
 00001048                            41  
-00001048  43F9 0000115A             42      LEA     USER_INPUT, A1   ; Load input buffer address
+00001048  43F9 000011C8             42      LEA     USER_INPUT, A1   ; Load input buffer address
 0000104E  103C 0002                 43      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
 00001052  4E4F                      44      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
 00001054                            45      
-00001054  1239 0000115A             46      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001054  1239 000011C8             46      MOVE.B  USER_INPUT, D1   ; Load user input into D1
 0000105A                            47  
 0000105A  B23C 0031                 48      CMP.B   #'1', D1         ; Compare input to '1'
 0000105E  6700 0010                 49      BEQ     MINE            ; If '1', branch to FIGHT
@@ -64,7 +64,7 @@ Created On: 26/02/2025 13:54:46
 00001070                            60  *-------------------------------------------------------
 00001070                            61  MINE:
 00001070  6100 003C                 62      BSR     ENDL
-00001074  43F9 00001571             63      LEA     MINES_MSG, A1
+00001074  43F9 000015DF             63      LEA     MINES_MSG, A1
 0000107A  103C 000E                 64      MOVE.B  #14, D0
 0000107E  4E4F                      65      TRAP    #15              ; Print MINES message
 00001080                            66      
@@ -81,7 +81,7 @@ Created On: 26/02/2025 13:54:46
 0000108A                            77  *-------------------------------------------------------
 0000108A                            78  RUN_AWAY:
 0000108A  6100 0022                 79      BSR     ENDL
-0000108E  43F9 00001587             80      LEA     TOWER_MSG, A1
+0000108E  43F9 000015F5             80      LEA     TOWER_MSG, A1
 00001094  103C 000E                 81      MOVE.B  #14, D0
 00001098  4E4F                      82      TRAP    #15              ; Print run message
 0000109A  4E75                      83      RTS
@@ -91,7 +91,7 @@ Created On: 26/02/2025 13:54:46
 0000109C                            87  *-------------------------------------------------------
 0000109C                            88  INVALID_CHOICE:
 0000109C  6100 0010                 89      BSR     ENDL
-000010A0  43F9 000015F6             90      LEA     INVALID_MSG, A1
+000010A0  43F9 00001664             90      LEA     INVALID_MSG, A1
 000010A6  103C 000E                 91      MOVE.B  #14, D0
 000010AA  4E4F                      92      TRAP    #15              ; Print invalid input message
 000010AC  4E75                      93      RTS
@@ -100,7 +100,7 @@ Created On: 26/02/2025 13:54:46
 000010AE                            96  *                ENDL SUBROUTINE (NEW LINE)
 000010AE                            97  *-------------------------------------------------------
 000010AE                            98  ENDL:
-000010AE  43F9 0000115D             99      LEA     CRLF, A1    ; Load newline characters
+000010AE  43F9 000011CB             99      LEA     CRLF, A1    ; Load newline characters
 000010B4  103C 000E                100      MOVE.B  #14, D0
 000010B8  4E4F                     101      TRAP    #15         ; Print new line
 000010BA  4E75                     102      RTS                 ; Return
@@ -110,115 +110,180 @@ Created On: 26/02/2025 13:54:46
 000010BC                           106  *---------------------------------------------------------
 000010BC                           107  FIGHT:
 000010BC                           108      
-000010BC  6100 007E                109      BSR     RNG              ;gens random number between 1 and 3
-000010C0                           110      
-000010C0  43F9 0000115A            111      LEA     USER_INPUT, A1   ; Load input buffer address
-000010C6  103C 0002                112      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-000010CA  4E4F                     113      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-000010CC  1239 0000115A            114      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-000010D2  1401                     115      MOVE.B  D1, D2
-000010D4                           116      
-000010D4  B207                     117      CMP.B   D7, D1
-000010D6  6700 0030                118      BEQ     DRAW
-000010DA                           119      
-000010DA  B23C 0031                120      CMP.B   #'1', D1
-000010DE  6700 001A                121      BEQ     DMG
-000010E2                           122      
-000010E2  B23C 0032                123      CMP.B   #'2', D1
-000010E6  6700 0020                124      BEQ     DRAW
-000010EA                           125      
-000010EA  B23C 0033                126      CMP.B   #'3', D1
-000010EE  6700 000A                127      BEQ     DMG
-000010F2  61BA                     128      BSR     ENDL
-000010F4                           129      
-000010F4  61A6                     130      BSR     INVALID_CHOICE   ; If input is invalid, show error
-000010F6  61C4                     131      BSR     FIGHT
-000010F8  4E75                     132      RTS
-000010FA                           133      
-000010FA                           134  DMG:
-000010FA  43F9 00001699            135      LEA     DMG_MSG,  A1   ; loads first draw msg
-00001100  103C 000E                136      MOVE.B  #14, D0
-00001104  4E4F                     137      TRAP    #15              ; Prints message
-00001106  4E75                     138      RTS
-00001108                           139  
-00001108                           140  DRAW:
-00001108  0C38 0030 0600           141      CMP.B   #'0', $600
-0000110E  6700 0012                142      BEQ     FDRAW
-00001112  43F9 00001613            143      LEA     DRAW_MSG, A1
-00001118  103C 000E                144      MOVE.B  #14, D0
-0000111C  4E4F                     145      TRAP    #15              ; Prints message
-0000111E  5206                     146      ADDQ.B  #1, D6         ; Adds to the draw count
-00001120  4E75                     147      RTS
-00001122                           148      
-00001122                           149  FDRAW:
-00001122  43F9 0000165C            150      LEA     FDRAW_MSG,  A1   ; loads first draw msg
-00001128  103C 000E                151      MOVE.B  #14, D0
-0000112C  4E4F                     152      TRAP    #15              ; Prints message
-0000112E  4E75                     153      RTS
-00001130                           154  
-00001130                           155  
-00001130                           156  GAME_OVER:
-00001130  43F9 000016D3            157         LEA     GO_MSG,  A1   ; loads first draw msg
-00001136  103C 000E                158         MOVE.B  #14, D0
-0000113A  4E4F                     159         TRAP    #15              ; Prints message
-0000113C                           160           
-0000113C                           161  *---------------------------------------------------------
-0000113C                           162  *               RNG for fights
-0000113C                           163  *---------------------------------------------------------
-0000113C                           164  RNG:              
-0000113C  103C 0008                165      MOVE.B #8, D0           ; Load immediate value 8 into Data Register D0 (for system call code related to random number generation)
-00001140  4E4F                     166      TRAP #15                ; Trap to BIOS service (generating random number or handling internal system functions)
-00001142  C2BC 005FFFFF            167      AND.L #$5FFFFF, D1      ; Perform a bitwise AND with D1 and the mask $5FFFFF to limit the randomness to a specific range
-00001148  82FC 0003                168      DIVU #3, D1             ; Divide unsigned value in D1 by 3, result goes into D1 (this reduces the range of the random value to 0 to 2)
-0000114C  4841                     169      SWAP D1
-0000114E  5201                     170      ADDQ.B #1, D1           ; Add 1 to the value in D1 (to adjust the final result to be between 1 and 3)
-00001150  1401                     171      MOVE.B D1, D2           ; Move the value in D1 to D2 to preserve it for later use
-00001152  4281                     172      CLR.L D1                ; Clear D1 register to prepare for further operations
-00001154  1202                     173      MOVE.B D2, D1           ; Restore the value in D2 back into D1
-00001156  1E01                     174      MOVE.B D1, D7           ; Stores the value in $500 for later use
-00001158  4E75                     175      RTS                     ; Return from subroutine, control passes back to the calling code
-0000115A                           176  
-0000115A                           177  *-------------------------------------------------------
-0000115A                           178  *                  DATA SECTION
-0000115A                           179  *-------------------------------------------------------
-0000115A                           180  USER_INPUT:   DS.B  2   ; Reserve 2 bytes for input (1 char + NULL)
-0000115C= 00                       181  CHOICE_VAR:   DC.B  0
-0000115D                           182  
-0000115D= 0D 0A 00                 183  CRLF:   DC.B  $0D, $0A, 0   ; Carriage Return + Line Feed (New Line)
-00001160                           184  
-00001160= 57 65 6C 63 6F 6D ...    185  WELCOME_MSG:  DC.B 'Welcome to the Adventures of dingle dorf!', $0D, $0A
-0000118B= 44 69 6E 67 6C 65 ...    186                DC.B 'Dingle dorf has set out on an epic adventure to fix the relic of equinox', $0D, $0A
-000011D5= 74 68 65 20 72 65 ...    187                DC.B 'the relic has been broken in half and the peices stolen', $0D, $0A
-0000120E= 74 68 65 20 66 69 ...    188                DC.B 'the first peice has been taken by the wizards and is held at their tower', $0D, $0A
-00001258= 74 68 65 20 73 65 ...    189                DC.B 'the second peice is being held by the cobalts at the bottom of the mine', $0D, $0A
-000012A1= 6E 6F 77 20 79 6F ...    190                DC.B 'now you must guide dingle dorf on his journy and beat monsters and mages', $0D, $0A
-000012EB= 49 4E 20 54 48 45 ...    191                DC.B 'IN THE LEGENDARY AINCHENT RIGHT OF!!', $0D, $0A
-00001311= 52 4F 43 4B 21 21 ...    192                DC.B 'ROCK!! PAPER!! SISSORS!!!!', $0D, $0A, 0
-0000132E                           193                
-0000132E                           194  OPEN_MSG:
-0000132E= 59 6F 75 20 61 77 ...    195                DC.B 'You awaken in a forrest the smell of due filling your lungs', $0D, $0A
-0000136B= 61 73 20 79 6F 75 ...    196                DC.B 'as you come to your feet you obesrver your suroundings', $0D, $0A
-000013A3= 79 6F 75 20 61 72 ...    197                DC.B 'you are at the base of the mountian containing the grear forge', $0D, $0A
-000013E3= 79 6F 75 72 20 63 ...    198                DC.B 'your camp the same as whenst you lay your head to rest', $0D, $0A
-0000141B= 61 73 20 79 6F 75 ...    199                DC.B 'as you look to the top of the mountian', $0D, $0A
-00001443= 79 6F 75 20 73 65 ...    200                DC.B 'you see a dwarf atop the mountian looking down at you' $0D, $0A
-00001478= 75 6E 61 62 6C 65 ...    201                DC.B 'unable to see his face as the sun blinds you, there is an unease wash over you as you look', $0D, $0A
-000014D4= 74 68 65 20 64 77 ...    202                DC.B 'the dwarf decend foward dissapering from your sight', $0D, $0A
-00001509= 79 6F 75 20 6D 65 ...    203                DC.B 'you meet a diverging path', $0D, $0A
-00001524= 70 61 74 68 20 31 ...    204                DC.B 'path 1. enter the mines', $0D, $0A
-0000153D= 70 61 74 68 20 32 ...    205                DC.B 'path 2. go to tower', $0D, $0A, 0
-00001553                           206  
-00001553= 57 68 65 72 65 20 ...    207  CHOICE_MSG:   DC.B 'Where will you go? (1 or 2): ', 0
-00001571= 59 6F 75 20 65 6E ...    208  MINES_MSG:    DC.B 'You enter the mines', $0D, $0A, 0
-00001587= 59 6F 75 20 67 6F ...    209  TOWER_MSG:    DC.B 'You go to tower', $0D, $0A, 0
-00001599= 59 6F 75 72 20 6F ...    210  FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering the only way out is trough you must defeat them', $0D, $0A ,0
-000015F6= 49 6E 76 61 6C 69 ...    211  INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
-00001613= 59 65 74 20 61 6E ...    212  DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be victorious', $0D, $0A ,0
-0000165C= 41 20 64 72 61 77 ...    213  FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
-00001699= 41 20 62 6C 6F 77 ...    214  DMG_MSG:      DC.B 'A blow has been dealt the fight draws closer to its end', $0D, $0A ,0
-000016D3= 47 41 4D 45 20 4F ...    215  GO_MSG:       DC.B 'GAME OVER', $0D, $0A ,0
-000016DF                           216  
-000016DF                           217      END    START
+000010BC  6100 009E                109      BSR RNG
+000010C0  43F9 000011C8            110      LEA     USER_INPUT, A1   ; Load input buffer address
+000010C6  103C 0002                111      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+000010CA  4E4F                     112      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+000010CC  1239 000011C8            113      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000010D2  6100 00CA                114      BSR CONVR
+000010D6                           115      
+000010D6  B443                     116      CMP     D3,D2
+000010D8  6700 0032                117      BEQ     DRAW
+000010DC                           118      
+000010DC  D403                     119      ADD.B   D3,D2
+000010DE                           120      
+000010DE  B47C 0003                121      CMP     #3,D2
+000010E2  6700 004E                122      BEQ     PAPER
+000010E6                           123      
+000010E6  B47C 0004                124      CMP     #4,D2
+000010EA  6700 0054                125      BEQ     ROCK
+000010EE                           126      
+000010EE  B47C 0005                127      CMP     #5,D2
+000010F2  6700 005A                128      BEQ     SIS
+000010F6                           129      
+000010F6  1E02                     130      MOVE.B  D2,D7
+000010F8  61A2                     131      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000010FA  61C0                     132      BSR     FIGHT
+000010FC  4E75                     133      RTS
+000010FE                           134      
+000010FE                           135  DMG:
+000010FE  43F9 00001707            136      LEA     DMG_MSG,  A1   ; loads first draw msg
+00001104  103C 000E                137      MOVE.B  #14, D0
+00001108  4E4F                     138      TRAP    #15              ; Prints message
+0000110A  4E75                     139      RTS
+0000110C                           140  
+0000110C                           141  DRAW:
+0000110C  BC3C 0000                142      CMP.B   #0, D6
+00001110  6700 0012                143      BEQ     FDRAW
+00001114                           144      
+00001114  43F9 00001681            145      LEA     DRAW_MSG, A1
+0000111A  103C 000E                146      MOVE.B  #14, D0
+0000111E  4E4F                     147      TRAP    #15              ; Prints message
+00001120  5206                     148      ADDQ.B  #1, D6         ; Adds to the draw count
+00001122  4E75                     149      RTS
+00001124                           150      
+00001124                           151  FDRAW:
+00001124  43F9 000016CA            152      LEA     FDRAW_MSG,  A1   ; loads first draw msg
+0000112A  103C 000E                153      MOVE.B  #14, D0
+0000112E  4E4F                     154      TRAP    #15              ; Prints message
+00001130  4E75                     155      RTS
+00001132                           156  
+00001132                           157  PAPER:
+00001132  43F9 0000174D            158      LEA     R_MSG,  A1   ; loads first draw msg
+00001138  103C 000E                159      MOVE.B  #14, D0
+0000113C  4E4F                     160      TRAP    #15              ; Prints message
+0000113E                           161      ;BSR     GAME_OVER
+0000113E  4E75                     162      RTS
+00001140                           163      
+00001140                           164  ROCK:
+00001140  43F9 00001756            165      LEA     P_MSG,  A1   ; loads first draw msg
+00001146  103C 000E                166      MOVE.B  #14, D0
+0000114A  4E4F                     167      TRAP    #15              ; Prints message
+0000114C                           168      ;BSR     GAME_OVER
+0000114C  4E75                     169      RTS
+0000114E                           170      
+0000114E                           171  SIS:
+0000114E  43F9 00001760            172      LEA     S_MSG,  A1   ; loads first draw msg
+00001154  103C 000E                173      MOVE.B  #14, D0
+00001158  4E4F                     174      TRAP    #15              ; Prints message
+0000115A  4E75                     175      RTS
+0000115C                           176  
+0000115C                           177  
+0000115C                           178           
+0000115C                           179  *---------------------------------------------------------
+0000115C                           180  *               RNG for fights
+0000115C                           181  *---------------------------------------------------------
+0000115C                           182  RNG:              
+0000115C  3A3C 0001                183      MOVE    #1, D5
+00001160  3C3C 0003                184      MOVE    #3, D6
+00001164  9C45                     185      SUB     D5,D6             ;You should give Min in D5 and Max in D6
+00001166  3E06                     186      MOVE    D6,D7
+00001168  5246                     187      ADDI    #1,D6
+0000116A  CEFC FFFF                188      MULU    #$FFFF,D7
+0000116E  43F9 0000176C            189      LEA     SEED,A1
+00001174  103C 0008                190      MOVE.B  #8,d0
+00001178  4E4F                     191      TRAP    #15
+0000117A  D251                     192      ADD     (A1),D1
+0000117C  C2FC FFFF                193      MULU    #$FFFF,D1
+00001180  0A81 F321F23A            194      EOR.L   #$F321F23A,D1
+00001186  3281                     195      MOVE    D1,(A1)
+00001188  C287                     196      AND.L   D7,D1    ;PREVENT OVERFLOW FOR (Max-Min)
+0000118A  82C6                     197      DIVU    D6,D1         ;time count / (Max-Min)
+0000118C  4841                     198      SWAP    D1              ;swap upper and lower words of D1 to put remainder in low word
+0000118E  D245                     199      ADD     D5,d1           ;D1.W contains number in the range of (Min,Max)
+00001190  4240                     200      CLR     D0
+00001192  4247                     201      CLR     D7
+00001194  4242                     202      CLR     D2
+00001196  1401                     203      MOVE.B  D1,D2
+00001198  4245                     204      CLR     D5
+0000119A  4246                     205      CLR     D6
+0000119C                           206      
+0000119C  4E75                     207      RTS                    ; Return from subroutine, control passes back to the calling code
+0000119E                           208  
+0000119E                           209  
+0000119E                           210  CONVR:
+0000119E  B27C 0031                211      CMP #'1', D1
+000011A2  6700 0012                212      BEQ ONE
+000011A6                           213      
+000011A6  B27C 0032                214      CMP #'2', D1
+000011AA  6700 0010                215      BEQ TWO
+000011AE                           216      
+000011AE  B27C 0033                217      CMP #'3', D1
+000011B2  6700 000E                218      BEQ THREE
+000011B6                           219  
+000011B6                           220  ONE:
+000011B6  363C 0001                221      MOVE.W #1, D3
+000011BA  4E75                     222      RTS
+000011BC                           223      
+000011BC                           224  TWO:
+000011BC  363C 0002                225      MOVE.W #2, D3
+000011C0  4E75                     226      RTS
+000011C2                           227      
+000011C2                           228  THREE:
+000011C2  363C 0003                229      MOVE.W #3, D3
+000011C6  4E75                     230      RTS
+000011C8                           231    
+000011C8                           232  *-------------------------------------------------------
+000011C8                           233  *                  DATA SECTION
+000011C8                           234  *-------------------------------------------------------
+000011C8                           235  USER_INPUT:   DS.B  2   ; Reserve 2 bytes for input (1 char + NULL)
+000011CA= 00                       236  CHOICE_VAR:   DC.B  0
+000011CB                           237  
+000011CB= 0D 0A 00                 238  CRLF:   DC.B  $0D, $0A, 0   ; Carriage Return + Line Feed (New Line)
+000011CE                           239  
+000011CE= 57 65 6C 63 6F 6D ...    240  WELCOME_MSG:  DC.B 'Welcome to the Adventures of dingle dorf!', $0D, $0A
+000011F9= 44 69 6E 67 6C 65 ...    241                DC.B 'Dingle dorf has set out on an epic adventure to fix the relic of equinox', $0D, $0A
+00001243= 74 68 65 20 72 65 ...    242                DC.B 'the relic has been broken in half and the peices stolen', $0D, $0A
+0000127C= 74 68 65 20 66 69 ...    243                DC.B 'the first peice has been taken by the wizards and is held at their tower', $0D, $0A
+000012C6= 74 68 65 20 73 65 ...    244                DC.B 'the second peice is being held by the cobalts at the bottom of the mine', $0D, $0A
+0000130F= 6E 6F 77 20 79 6F ...    245                DC.B 'now you must guide dingle dorf on his journy and beat monsters and mages', $0D, $0A
+00001359= 49 4E 20 54 48 45 ...    246                DC.B 'IN THE LEGENDARY AINCHENT RIGHT OF!!', $0D, $0A
+0000137F= 52 4F 43 4B 21 21 ...    247                DC.B 'ROCK!! PAPER!! SISSORS!!!!', $0D, $0A, 0
+0000139C                           248                
+0000139C                           249  OPEN_MSG:
+0000139C= 59 6F 75 20 61 77 ...    250                DC.B 'You awaken in a forrest the smell of due filling your lungs', $0D, $0A
+000013D9= 61 73 20 79 6F 75 ...    251                DC.B 'as you come to your feet you obesrver your suroundings', $0D, $0A
+00001411= 79 6F 75 20 61 72 ...    252                DC.B 'you are at the base of the mountian containing the grear forge', $0D, $0A
+00001451= 79 6F 75 72 20 63 ...    253                DC.B 'your camp the same as whenst you lay your head to rest', $0D, $0A
+00001489= 61 73 20 79 6F 75 ...    254                DC.B 'as you look to the top of the mountian', $0D, $0A
+000014B1= 79 6F 75 20 73 65 ...    255                DC.B 'you see a dwarf atop the mountian looking down at you' $0D, $0A
+000014E6= 75 6E 61 62 6C 65 ...    256                DC.B 'unable to see his face as the sun blinds you, there is an unease wash over you as you look', $0D, $0A
+00001542= 74 68 65 20 64 77 ...    257                DC.B 'the dwarf decend foward dissapering from your sight', $0D, $0A
+00001577= 79 6F 75 20 6D 65 ...    258                DC.B 'you meet a diverging path', $0D, $0A
+00001592= 70 61 74 68 20 31 ...    259                DC.B 'path 1. enter the mines', $0D, $0A
+000015AB= 70 61 74 68 20 32 ...    260                DC.B 'path 2. go to tower', $0D, $0A, 0
+000015C1                           261  
+000015C1= 57 68 65 72 65 20 ...    262  CHOICE_MSG:   DC.B 'Where will you go? (1 or 2): ', 0
+000015DF= 59 6F 75 20 65 6E ...    263  MINES_MSG:    DC.B 'You enter the mines', $0D, $0A, 0
+000015F5= 59 6F 75 20 67 6F ...    264  TOWER_MSG:    DC.B 'You go to tower', $0D, $0A, 0
+00001607= 59 6F 75 72 20 6F ...    265  FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering the only way out is trough you must defeat them', $0D, $0A ,0
+00001664= 49 6E 76 61 6C 69 ...    266  INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
+00001681= 59 65 74 20 61 6E ...    267  DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be victorious', $0D, $0A ,0
+000016CA= 41 20 64 72 61 77 ...    268  FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
+00001707= 41 20 62 6C 6F 77 ...    269  DMG_MSG:      DC.B 'A blow has been dealt the fight draws closer to its end', $0D, $0A ,0
+00001741= 47 41 4D 45 20 4F ...    270  GO_MSG:       DC.B 'GAME OVER', $0D, $0A ,0
+0000174D= 52 4F 43 4B 20 57 ...    271  R_MSG:        DC.B 'ROCK WIN', 0
+00001756= 50 41 50 45 52 20 ...    272  P_MSG:        DC.B 'PAPER WIN', 0
+00001760= 53 49 53 53 4F 52 ...    273  S_MSG:        DC.B 'SISSORS WIN', 0
+0000176C= 0001                     274  SEED          DC.W    1
+0000176E                           275  P_HP          DS.B    2
+00001770                           276  E_HP          DS.B    2
+00001772                           277  
+00001772                           278  GAME_OVER:
+00001772  43F8 1741                279         LEA     GO_MSG,  A1   ; loads first draw msg
+00001776  103C 000E                280         MOVE.B  #14, D0
+0000177A  4E4F                     281         TRAP    #15              ; Prints messag
+0000177C                           282      END    START
 
 No errors detected
 No warnings generated
@@ -227,34 +292,47 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
-CHOICE_MSG          1553
-CHOICE_VAR          115C
-CRLF                115D
-DMG                 10FA
-DMG_MSG             1699
-DRAW                1108
-DRAW_MSG            1613
+CHOICE_MSG          15C1
+CHOICE_VAR          11CA
+CONVR               119E
+CRLF                11CB
+DMG                 10FE
+DMG_MSG             1707
+DRAW                110C
+DRAW_MSG            1681
 ENDL                10AE
 EXIT                0
-FDRAW               1122
-FDRAW_MSG           165C
+E_HP                1770
+FDRAW               1124
+FDRAW_MSG           16CA
 FIGHT               10BC
-FIGHT_MSG           1599
-GAME_OVER           1130
-GO_MSG              16D3
+FIGHT_MSG           1607
+GAME_OVER           1772
+GO_MSG              1741
 INVALID_CHOICE      109C
-INVALID_MSG         15F6
+INVALID_MSG         1664
 MINE                1070
-MINES_MSG           1571
+MINES_MSG           15DF
 MINE_FIGHT_1        108A
 MINE_ROOM_1         1088
-OPEN_MSG            132E
+ONE                 11B6
+OPEN_MSG            139C
 OPEN_PATH           103C
 OPEN_SCENE          1026
-RNG                 113C
+PAPER               1132
+P_HP                176E
+P_MSG               1756
+RNG                 115C
+ROCK                1140
 RUN_AWAY            108A
+R_MSG               174D
+SEED                176C
+SIS                 114E
 START               1000
-TOWER_MSG           1587
-USER_INPUT          115A
+S_MSG               1760
+THREE               11C2
+TOWER_MSG           15F5
+TWO                 11BC
+USER_INPUT          11C8
 WELCOME             1010
-WELCOME_MSG         1160
+WELCOME_MSG         11CE

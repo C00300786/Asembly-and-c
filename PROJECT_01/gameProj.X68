@@ -106,27 +106,28 @@ ENDL:
 *---------------------------------------------------------
 FIGHT:
     
-    BSR     RNG              ;gens random number between 1 and 3
-    
+    BSR RNG
     LEA     USER_INPUT, A1   ; Load input buffer address
     MOVE.B  #2, D0           ; Max input length (1 char + NULL)
     TRAP    #15              ; Read input (D0=2 -> Read 1 char)
     MOVE.B  USER_INPUT, D1   ; Load user input into D1
-    MOVE.B  D1, D2
+    BSR CONVR
     
-    CMP.B   D7, D1
+    CMP     D3,D2
     BEQ     DRAW
     
-    CMP.B   #'1', D1
-    BEQ     DMG
+    ADD.B   D3,D2
     
-    CMP.B   #'2', D1
-    BEQ     DRAW
+    CMP     #3,D2
+    BEQ     PAPER
     
-    CMP.B   #'3', D1
-    BEQ     DMG
-    BSR     ENDL
+    CMP     #4,D2
+    BEQ     ROCK
     
+    CMP     #5,D2
+    BEQ     SIS
+    
+    MOVE.B  D2,D7
     BSR     INVALID_CHOICE   ; If input is invalid, show error
     BSR     FIGHT
     RTS
@@ -138,8 +139,9 @@ DMG:
     RTS
 
 DRAW:
-    CMP.B   #'0', $600
+    CMP.B   #0, D6
     BEQ     FDRAW
+    
     LEA     DRAW_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
@@ -152,28 +154,81 @@ FDRAW:
     TRAP    #15              ; Prints message
     RTS
 
+PAPER:
+    LEA     R_MSG,  A1   ; loads first draw msg
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    ;BSR     GAME_OVER
+    RTS
+    
+ROCK:
+    LEA     P_MSG,  A1   ; loads first draw msg
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    ;BSR     GAME_OVER
+    RTS
+    
+SIS:
+    LEA     S_MSG,  A1   ; loads first draw msg
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    RTS
 
-GAME_OVER:
-       LEA     GO_MSG,  A1   ; loads first draw msg
-       MOVE.B  #14, D0
-       TRAP    #15              ; Prints message
+
          
 *---------------------------------------------------------
 *               RNG for fights
 *---------------------------------------------------------
 RNG:              
-    MOVE.B #8, D0           ; Load immediate value 8 into Data Register D0 (for system call code related to random number generation)
-    TRAP #15                ; Trap to BIOS service (generating random number or handling internal system functions)
-    AND.L #$5FFFFF, D1      ; Perform a bitwise AND with D1 and the mask $5FFFFF to limit the randomness to a specific range
-    DIVU #3, D1             ; Divide unsigned value in D1 by 3, result goes into D1 (this reduces the range of the random value to 0 to 2)
-    SWAP D1
-    ADDQ.B #1, D1           ; Add 1 to the value in D1 (to adjust the final result to be between 1 and 3)
-    MOVE.B D1, D2           ; Move the value in D1 to D2 to preserve it for later use
-    CLR.L D1                ; Clear D1 register to prepare for further operations
-    MOVE.B D2, D1           ; Restore the value in D2 back into D1
-    MOVE.B D1, D7           ; Stores the value in $500 for later use
-    RTS                     ; Return from subroutine, control passes back to the calling code
+    MOVE    #1, D5
+    MOVE    #3, D6
+    SUB     D5,D6             ;You should give Min in D5 and Max in D6
+    MOVE    D6,D7
+    ADDI    #1,D6
+    MULU    #$FFFF,D7
+    LEA     SEED,A1
+    MOVE.B  #8,d0
+    TRAP    #15
+    ADD     (A1),D1
+    MULU    #$FFFF,D1
+    EOR.L   #$F321F23A,D1
+    MOVE    D1,(A1)
+    AND.L   D7,D1    ;PREVENT OVERFLOW FOR (Max-Min)
+    DIVU    D6,D1         ;time count / (Max-Min)
+    SWAP    D1              ;swap upper and lower words of D1 to put remainder in low word
+    ADD     D5,d1           ;D1.W contains number in the range of (Min,Max)
+    CLR     D0
+    CLR     D7
+    CLR     D2
+    MOVE.B  D1,D2
+    CLR     D5
+    CLR     D6
+    
+    RTS                    ; Return from subroutine, control passes back to the calling code
 
+
+CONVR:
+    CMP #'1', D1
+    BEQ ONE
+    
+    CMP #'2', D1
+    BEQ TWO
+    
+    CMP #'3', D1
+    BEQ THREE
+
+ONE:
+    MOVE.W #1, D3
+    RTS
+    
+TWO:
+    MOVE.W #2, D3
+    RTS
+    
+THREE:
+    MOVE.W #3, D3
+    RTS
+  
 *-------------------------------------------------------
 *                  DATA SECTION
 *-------------------------------------------------------
@@ -213,7 +268,17 @@ DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be 
 FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
 DMG_MSG:      DC.B 'A blow has been dealt the fight draws closer to its end', $0D, $0A ,0
 GO_MSG:       DC.B 'GAME OVER', $0D, $0A ,0
+R_MSG:        DC.B 'ROCK WIN', 0
+P_MSG:        DC.B 'PAPER WIN', 0
+S_MSG:        DC.B 'SISSORS WIN', 0
+SEED          DC.W    1
+P_HP          DS.B    2
+E_HP          DS.B    2
 
+GAME_OVER:
+       LEA     GO_MSG,  A1   ; loads first draw msg
+       MOVE.B  #14, D0
+       TRAP    #15              ; Prints messag
     END    START
 
 
@@ -223,6 +288,7 @@ GO_MSG:       DC.B 'GAME OVER', $0D, $0A ,0
 *~Font size~10~
 *~Tab type~1~
 *~Tab size~4~
+
 
 
 
