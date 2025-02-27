@@ -1,0 +1,137 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 26/02/2025 21:28:20
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000  6100 0032                 11      BSR RAND_GEN
+00001004  43F9 000010F9             12      LEA     USER_INPUT, A1   ; Load input buffer address
+0000100A  103C 0002                 13      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+0000100E  4E4F                      14      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+00001010  1239 000010F9             15      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001016  6100 0092                 16      BSR CONVR
+0000101A                            17      
+0000101A                            18      
+0000101A  D403                      19      ADD.B   D3,D2
+0000101C                            20      
+0000101C  B47C 0003                 21      CMP     #3,D2
+00001020  6700 0058                 22      BEQ     PAPER
+00001024                            23      
+00001024  B47C 0004                 24      CMP     #4,D2
+00001028  6700 0060                 25      BEQ     ROCK
+0000102C                            26      
+0000102C  B47C 0005                 27      CMP     #5,D2
+00001030  6700 0068                 28      BEQ     SIS
+00001034                            29      
+00001034                            30  RAND_GEN
+00001034  3A3C 0001                 31      MOVE    #1, D5
+00001038  3C3C 0003                 32      MOVE    #3, D6
+0000103C  9C45                      33      SUB     D5,D6             ;You should give Min in D5 and Max in D6
+0000103E  3E06                      34      MOVE    D6,D7
+00001040  5246                      35      ADDI     #1,D6
+00001042  CEFC FFFF                 36      MULU    #$FFFF,D7
+00001046  43F9 000010D8             37      LEA     SEED,A1
+0000104C  103C 0008                 38      MOVE.B  #8,d0
+00001050  4E4F                      39      TRAP    #15
+00001052  D251                      40      ADD     (A1),D1
+00001054  C2FC FFFF                 41      MULU    #$FFFF,D1
+00001058  0A81 F321F23A             42      EOR.L   #$F321F23A,D1
+0000105E  3281                      43      MOVE    D1,(A1)
+00001060  C287                      44      AND.L   D7,D1    ;PREVENT OVERFLOW FOR (Max-Min)
+00001062  82C6                      45      DIVU    D6,D1         ;time count / (Max-Min)
+00001064  4841                      46      SWAP    D1              ;swap upper and lower words of D1 to put remainder in low word
+00001066  D245                      47      ADD     D5,d1           ;D1.W contains number in the range of (Min,Max)
+00001068  4240                      48      CLR     D0
+0000106A  4247                      49      CLR     D7
+0000106C  4242                      50      CLR     D2
+0000106E  4246                      51      CLR     D6
+00001070  4245                      52      CLR     D5
+00001072  3601                      53      MOVE.W  D1,D3
+00001074  3C01                      54      MOVE.W  D1,D6
+00001076  4241                      55      CLR     D1
+00001078  4E75                      56      RTS                    ; Return from subroutine, control passes back to
+0000107A                            57      
+0000107A                            58  PAPER:
+0000107A  43F9 000010DA             59      LEA     R_MSG,  A1   ; loads first draw msg
+00001080  103C 000E                 60      MOVE.B  #14, D0
+00001084  4E4F                      61      TRAP    #15              ; Prints message
+00001086  6100 0074                 62      BSR     GAME_OVER
+0000108A                            63      
+0000108A                            64  ROCK:
+0000108A  43F9 000010E3             65      LEA     P_MSG,  A1   ; loads first draw msg
+00001090  103C 000E                 66      MOVE.B  #14, D0
+00001094  4E4F                      67      TRAP    #15              ; Prints message
+00001096  6100 0064                 68      BSR     GAME_OVER
+0000109A                            69       
+0000109A                            70  SIS:
+0000109A  43F9 000010ED             71      LEA     S_MSG,  A1   ; loads first draw msg
+000010A0  103C 000E                 72      MOVE.B  #14, D0
+000010A4  4E4F                      73      TRAP    #15              ; Prints message
+000010A6  6100 0054                 74      BSR     GAME_OVER
+000010AA                            75      
+000010AA                            76  CONVR:
+000010AA  B27C 0031                 77      CMP #'1', D1
+000010AE  6700 0012                 78      BEQ ONE
+000010B2                            79      
+000010B2  B27C 0032                 80      CMP #'2', D1
+000010B6  6700 0010                 81      BEQ TWO
+000010BA                            82      
+000010BA  B27C 0033                 83      CMP #'3', D1
+000010BE  6700 000E                 84      BEQ THREE
+000010C2                            85  
+000010C2                            86  ONE:
+000010C2  343C 0001                 87      MOVE.W #1, D2
+000010C6  4E75                      88      RTS
+000010C8                            89      
+000010C8                            90  TWO:
+000010C8  343C 0002                 91      MOVE.W #2, D2
+000010CC  4E75                      92      RTS
+000010CE                            93      
+000010CE                            94  THREE:
+000010CE  343C 0003                 95      MOVE.W #3, D2
+000010D2  4E75                      96      RTS
+000010D4  FFFF FFFF                 97      SIMHALT             ; halt simulator
+000010D8                            98  
+000010D8                            99  * Put variables and constants here
+000010D8= 0001                     100  SEED DC.W    1
+000010DA= 52 4F 43 4B 20 57 ...    101  R_MSG:   DC.B 'ROCK WIN', 0
+000010E3= 50 41 50 45 52 20 ...    102  P_MSG:   DC.B 'PAPER WIN', 0
+000010ED= 53 49 53 53 4F 52 ...    103  S_MSG:   DC.B 'SISSORS WIN', 0
+000010F9                           104  USER_INPUT:   DS.B  2   ; Reserve 2 bytes for input (1 char + NULL)
+000010FB= 00                       105  CHOICE_VAR:   DC.B  0
+000010FC                           106  
+000010FC                           107  GAME_OVER:
+000010FC                           108  
+000010FC                           109      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CHOICE_VAR          10FB
+CONVR               10AA
+GAME_OVER           10FC
+ONE                 10C2
+PAPER               107A
+P_MSG               10E3
+RAND_GEN            1034
+ROCK                108A
+R_MSG               10DA
+SEED                10D8
+SIS                 109A
+START               1000
+S_MSG               10ED
+THREE               10CE
+TWO                 10C8
+USER_INPUT          10F9

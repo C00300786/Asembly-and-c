@@ -1,0 +1,399 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 27/02/2025 11:13:19
+
+00000000                             1  
+00001000                             2      ORG    $1000              
+00001000  =00000000                  3  EXIT    EQU 0            ; Exit code for program termination
+00001000                             4  
+00001000                             5  START:
+00001000  6100 000E                  6      BSR     WELCOME             ; Call WELCOME subroutine (displays welcome message)
+00001004  6100 0020                  7      BSR     OPEN_SCENE          ; Call OPEN_SCENE subroutine (describes the opening scene)
+00001008  6100 0032                  8      BSR     OPEN_PATH           ; Call OPEN_PATH subroutine (prompts for user choice)
+0000100C                             9  
+0000100C  FFFF FFFF                 10      SIMHALT                  ; Halt the simulator
+00001010                            11  
+00001010                            12  *-------------------------------------------------------
+00001010                            13  *                   WELCOME SUBROUTINE
+00001010                            14  *-------------------------------------------------------
+00001010                            15  WELCOME:
+00001010  6100 00F2                 16      BSR     ENDL             ; Print a new line
+00001014  43F9 000012B2             17      LEA     WELCOME_MSG, A1  ; Load the address of the welcome message
+0000101A  103C 000E                 18      MOVE.B  #14, D0         ; Load the length of the message into D0 (14 bytes)
+0000101E  4E4F                      19      TRAP    #15             ; Print the welcome message (uses TRAP #15 for output)
+00001020  6100 00E2                 20      BSR     ENDL             ; Print another new line
+00001024  4E75                      21      RTS                      ; Return from subroutine (back to START)
+00001026                            22  
+00001026                            23  *-------------------------------------------------------
+00001026                            24  *                   OPEN SCENE SUBROUTINE
+00001026                            25  *-------------------------------------------------------
+00001026                            26  OPEN_SCENE:
+00001026  6100 00DC                 27      BSR     ENDL             ; Print a new line
+0000102A  43F9 00001480             28      LEA     OPEN_MSG, A1     ; Load the address of the opening message
+00001030  103C 000E                 29      MOVE.B  #14, D0         ; Set message length to 14 bytes
+00001034  4E4F                      30      TRAP    #15             ; Print the opening scene message
+00001036  6100 00CC                 31      BSR     ENDL             ; Print another new line
+0000103A  4E75                      32      RTS                      ; Return from subroutine
+0000103C                            33  
+0000103C                            34  *-------------------------------------------------------
+0000103C                            35  *                  Mines or Tower
+0000103C                            36  *-------------------------------------------------------
+0000103C                            37  OPEN_PATH:
+0000103C  43F9 000016A5             38      LEA     CHOICE_MSG, A1   ; Load the message prompting the user for input
+00001042  103C 000E                 39      MOVE.B  #14, D0         ; Set the message length (14 bytes)
+00001046  4E4F                      40      TRAP    #15             ; Print the choice message
+00001048                            41  
+00001048  43F9 000012AC             42      LEA     USER_INPUT, A1   ; Load the address for user input buffer
+0000104E  103C 0002                 43      MOVE.B  #2, D0          ; Maximum input length (1 character + NULL byte)
+00001052  4E4F                      44      TRAP    #15             ; Read user input (max length of 2 bytes)
+00001054                            45  
+00001054  1239 000012AC             46      MOVE.B  USER_INPUT, D1   ; Move user input into D1
+0000105A                            47  
+0000105A  B23C 0031                 48      CMP.B   #'1', D1         ; Compare input with '1'
+0000105E  6700 0010                 49      BEQ     MINE             ; If input is '1', jump to MINE (choose mine path)
+00001062                            50  
+00001062  B23C 0032                 51      CMP.B   #'2', D1         ; Compare input with '2'
+00001066  6700 0078                 52      BEQ     RUN_AWAY         ; If input is '2', jump to RUN_AWAY (choose tower path)
+0000106A                            53  
+0000106A  6100 0086                 54      BSR     INVALID_CHOICE   ; Invalid input, show error message
+0000106E  61CC                      55      BSR     OPEN_PATH        ; Repeat the input prompt
+00001070                            56  
+00001070                            57  *-------------------------------------------------------
+00001070                            58  *                   MINE SEQUENCE
+00001070                            59  *-------------------------------------------------------
+00001070                            60  MINE:
+00001070  43F9 000016C3             61      LEA     MINES_MSG, A1    ; Load the message for entering the mines
+00001076  103C 000E                 62      MOVE.B  #14, D0         ; Set the message length to 14 bytes
+0000107A  4E4F                      63      TRAP    #15             ; Print mines message
+0000107C                            64  
+0000107C  43F9 000012AC             65      LEA     USER_INPUT, A1   ; Load address of user input buffer
+00001082  103C 0002                 66      MOVE.B  #2, D0          ; Maximum input length (1 byte + NULL byte)
+00001086  4E4F                      67      TRAP    #15             ; Read user input (1 character)
+00001088                            68  
+00001088  1239 000012AC             69      MOVE.B  USER_INPUT, D1   ; Move user input into D1
+0000108E                            70  
+0000108E  B23C 0031                 71      CMP.B   #'1', D1         ; Compare input with '1' (to go deeper into the mine)
+00001092  6700 0024                 72      BEQ     MINE_ROOM_1      ; If input is '1', jump to mine room 1
+00001096                            73  
+Line 74 ERROR: Undefined symbol
+00001096  13FC 0003 005455CC        74      MOVE.B  #3, P_HP         ;Set player health to 3
+Line 75 ERROR: Undefined symbol
+0000109E  13FC 0003 005455D0        75      MOVE.B  #3, E_HP         ; Set enemy health to 3
+000010A6  B23C 0032                 76      CMP.B   #'2', D1         ; Compare input with '2' (to run away)
+000010AA  6700 001E                 77      BEQ     MINE_FIGHT_1     ; If input is '2', jump to fight sequence
+000010AE                            78  
+000010AE  6100 0054                 79      BSR     ENDL             ; Print a new line
+000010B2  6100 003E                 80      BSR     INVALID_CHOICE   ; Show invalid input message
+000010B6  61B8                      81      BSR     MINE             ; Repeat input prompt
+000010B8                            82  
+000010B8                            83  MINE_ROOM_1:
+Line 84 ERROR: Undefined symbol
+000010B8  13FC 0003 005455C8        84      MOVE.B  #3, P_HP         ; Reset player health
+Line 85 ERROR: Undefined symbol
+000010C0  13FC 0003 005455C8        85      MOVE.B  #3, E_HP         ; Reset enemy health
+000010C8  61A6                      86      BSR     MINE             ; Repeat mine sequence
+000010CA                            87  
+000010CA                            88  MINE_FIGHT_1:
+Line 89 ERROR: Undefined symbol
+000010CA  13FC 0003 005455C8        89      MOVE.B  #3, P_HP         ; Reset player health
+Line 90 ERROR: Undefined symbol
+000010D2  13FC 0003 005455C8        90      MOVE.B  #3, E_HP         ; Reset enemy health
+000010DA  6100 0036                 91      BSR     FIGHT            ; Call fight sequence
+000010DE  6190                      92      BSR     MINE             ; Return to the mine sequence
+000010E0                            93  
+000010E0                            94  *-------------------------------------------------------
+000010E0                            95  *                  RUN AWAY SEQUENCE
+000010E0                            96  *-------------------------------------------------------
+000010E0                            97  RUN_AWAY:
+000010E0  6100 0022                 98      BSR     ENDL             ; Print a new line
+Line 99 ERROR: Undefined symbol
+000010E4  43F9 004DBD16             99      LEA     TOWER_MSG, A1    ; Load message for running away to the tower
+000010EA  103C 000E                100      MOVE.B  #14, D0         ; Set message length to 14 bytes
+000010EE  4E4F                     101      TRAP    #15             ; Print the message
+000010F0  4E75                     102      RTS                      ; Return to previous subroutine
+000010F2                           103  
+000010F2                           104  *-------------------------------------------------------
+000010F2                           105  *                INVALID INPUT HANDLING
+000010F2                           106  *-------------------------------------------------------
+000010F2                           107  INVALID_CHOICE:
+000010F2  6100 0010                108      BSR     ENDL             ; Print a new line
+Line 109 ERROR: Undefined symbol
+000010F6  43F9 004DBD16            109      LEA     INVALID_MSG, A1  ; Load message for invalid input
+000010FC  103C 000E                110      MOVE.B  #14, D0         ; Set message length
+00001100  4E4F                     111      TRAP    #15             ; Print invalid input message
+00001102  4E75                     112      RTS                      ; Return from invalid choice handler
+00001104                           113  
+00001104                           114  *-------------------------------------------------------
+00001104                           115  *                ENDL SUBROUTINE (NEW LINE)
+00001104                           116  *-------------------------------------------------------
+00001104                           117  ENDL:
+00001104  43F9 000012AF            118      LEA     CRLF, A1         ; Load carriage return and line feed (new line)
+0000110A  103C 000E                119      MOVE.B  #14, D0         ; Set message length
+0000110E  4E4F                     120      TRAP    #15             ; Print new line
+00001110  4E75                     121      RTS                      ; Return from subroutine
+00001112                           122  
+00001112                           123  *---------------------------------------------------------
+00001112                           124  *                       Fight Sequence
+00001112                           125  *---------------------------------------------------------
+00001112                           126  FIGHT:
+00001112  61F0                     127      BSR     ENDL             ; Print a new line
+00001114  6100 012A                128      BSR     RNG              ; Call RNG to generate a random number
+00001118  43F9 000012AC            129      LEA     USER_INPUT, A1   ; Load input buffer address
+0000111E  103C 0002                130      MOVE.B  #2, D0          ; Set maximum input length (1 char + NULL)
+00001122  4E4F                     131      TRAP    #15             ; Read user input (1 character)
+00001124  1239 000012AC            132      MOVE.B  USER_INPUT, D1   ; Move user input to D1
+0000112A  6100 0156                133      BSR     CONVR            ; Convert input (1=rock, 2=paper, 3=scissors)
+0000112E                           134  
+0000112E  B443                     135      CMP     D3, D2           ; Compare player and enemy choices
+00001130  6700 0058                136      BEQ     DRAW             ; If equal, jump to DRAW
+00001134                           137  
+00001134  D602                     138      ADD.B   D2, D3           ; Add player input to enemy input
+00001136                           139  
+00001136  B67C 0003                140      CMP     #3, D3           ; Compare result to 3 (paper)
+0000113A  6700 008E                141      BEQ     PAPER            ; If 3, it's paper
+0000113E                           142  
+0000113E  B67C 0004                143      CMP     #4, D3           ; Compare result to 4 (rock)
+00001142  6700 00A0                144      BEQ     ROCK             ; If 4, it's rock
+00001146                           145  
+00001146  B67C 0005                146      CMP     #5, D3           ; Compare result to 5 (scissors)
+0000114A  6700 00B2                147      BEQ     SIS              ; If 5, it's scissors
+0000114E                           148  
+0000114E  1E02                     149      MOVE.B  D2, D7           ; Move enemy input to D7 for comparison
+00001150                           150  
+Line 151 ERROR: Undefined symbol
+00001150  0C39 0000 005455D8       151      CMP.B   #0, P_HP         ; Check if player health is 0 (game over)
+Line 152 ERROR: Undefined symbol
+00001158  6700 ABBC                152      BEQ     GAME_OVER        ; If player is dead, jump to game over
+0000115C                           153  
+Line 154 ERROR: Undefined symbol
+0000115C  0C39 0001 005455D4       154      CMP.B   #1, E_HP         ; Check if enemy health is 1
+00001164  67AC                     155      BEQ     FIGHT            ; Repeat fight sequence if enemy is still alive
+00001166                           156  
+Line 157 ERROR: Undefined symbol
+00001166  0C39 0002 005455D4       157      CMP.B   #2, E_HP         ; Check if enemy health is 2
+0000116E  67A2                     158      BEQ     FIGHT            ; Repeat fight sequence if enemy is still alive
+00001170                           159  
+Line 160 ERROR: Undefined symbol
+00001170  0C39 0003 005455D4       160      CMP.B   #3, E_HP         ; Check if enemy health is 3
+00001178  6798                     161      BEQ     FIGHT            ; Repeat fight sequence if enemy is still alive
+0000117A                           162  
+0000117A  4E75                     163      RTS                      ; Return to previous subroutine
+0000117C                           164  
+0000117C                           165  *---------------------------------------------------------
+0000117C                           166  *                       Damage
+0000117C                           167  *---------------------------------------------------------
+0000117C                           168  DMG:
+Line 169 ERROR: Undefined symbol
+0000117C  43F9 004DBD16            169      LEA     DMG_MSG, A1      ; Load message for damage dealt
+00001182  103C 000E                170      MOVE.B  #14, D0         ; Set message length
+00001186  4E4F                     171      TRAP    #15             ; Print damage message
+00001188  4E75                     172      RTS                      ; Return from subroutine
+0000118A                           173  
+0000118A                           174  DRAW:
+0000118A  BC3C 0000                175      CMP.B   #0, D6           ; Check if the draw counter is 0
+0000118E  6700 0012                176      BEQ     FDRAW            ; If 0, jump to FDRAW (first draw)
+00001192                           177  
+Line 178 ERROR: Undefined symbol
+00001192  43F9 004DBD16            178      LEA     DRAW_MSG, A1     ; Load message for a draw
+00001198  103C 000E                179      MOVE.B  #14, D0         ; Set message length
+0000119C  4E4F                     180      TRAP    #15             ; Print draw message
+0000119E  5206                     181      ADD.B   #1, D6           ; Increment draw count
+000011A0  4E75                     182      RTS                      ; Return from subroutine
+000011A2                           183  
+000011A2                           184  FDRAW:
+Line 185 ERROR: Undefined symbol
+000011A2  43F9 004DBD16            185      LEA     FDRAW_MSG, A1    ; Load message for first draw
+000011A8  103C 000E                186      MOVE.B  #14, D0         ; Set message length
+000011AC  4E4F                     187      TRAP    #15             ; Print first draw message
+000011AE  5206                     188      ADD.B   #1, D6           ; Increment draw count
+000011B0  4E75                     189      RTS                      ; Return from subroutine
+000011B2                           190  
+000011B2                           191  FOVER:
+Line 192 ERROR: Undefined symbol
+000011B2  13FC 0003 005455C8       192      MOVE.B  #3, E_HP         ; Reset enemy health
+Line 193 ERROR: Undefined symbol
+000011BA  43F9 004DBD16            193      LEA     FOVER_MSG, A1    ; Load message for fight over
+000011C0  103C 000E                194      MOVE.B  #14, D0         ; Set message length
+000011C4  4E4F                     195      TRAP    #15             ; Print fight over message
+000011C6  5200                     196      ADD.B   #1, D0           ; Increment player score
+000011C8  4E75                     197      RTS                      ; Return from subroutine
+000011CA                           198  
+000011CA                           199  PAPER:
+Line 200 ERROR: Undefined symbol
+000011CA  43F9 004DBD16            200      LEA     R_MSG, A1        ; Load message for paper win
+000011D0  103C 000E                201      MOVE.B  #14, D0         ; Set message length
+000011D4  4E4F                     202      TRAP    #15             ; Print paper win message
+000011D6  B43C 0002                203      CMP.B     #2, D2         ; Compare enemy choice with paper
+000011DA  6700 003C                204      BEQ     F_WIN            ; If match, jump to F_WIN (player wins)
+000011DE                           205  
+000011DE  6100 004A                206      BSR     F_LOSE           ; If mismatch, jump to F_LOSE (player loses)
+000011E2  4E75                     207      RTS                      ; Return from subroutine
+000011E4                           208  
+000011E4                           209  ROCK:
+Line 210 ERROR: Undefined symbol
+000011E4  43F9 004DBD16            210      LEA     P_MSG, A1        ; Load message for rock win
+000011EA  103C 000E                211      MOVE.B  #14, D0         ; Set message length
+000011EE  4E4F                     212      TRAP    #15             ; Print rock win message
+000011F0  B43C 0001                213      CMP.B   #1, D2           ; Compare enemy choice with rock
+000011F4  6700 0022                214      BEQ     F_WIN            ; If match, jump to F_WIN (player wins)
+000011F8                           215  
+000011F8  6100 0030                216      BSR     F_LOSE           ; If mismatch, jump to F_LOSE (player loses)
+000011FC  4E75                     217      RTS                      ; Return from subroutine
+000011FE                           218  
+000011FE                           219  SIS:
+Line 220 ERROR: Undefined symbol
+000011FE  43F9 004DBD16            220      LEA     S_MSG, A1        ; Load message for scissors win
+00001204  103C 000E                221      MOVE.B  #14, D0         ; Set message length
+00001208  4E4F                     222      TRAP    #15             ; Print scissors win message
+0000120A  B43C 0003                223      CMP.B   #3, D2           ; Compare enemy choice with scissors
+0000120E  6700 0008                224      BEQ     F_WIN            ; If match, jump to F_WIN (player wins)
+00001212                           225  
+00001212  6100 0016                226      BSR     F_LOSE           ; If mismatch, jump to F_LOSE (player loses)
+00001216  4E75                     227      RTS                      ; Return from subroutine
+00001218                           228  
+00001218                           229  F_WIN:
+00001218  6100 FF62                230      BSR     DMG              ; Print damage message
+Line 231 ERROR: Undefined symbol
+0000121C  1C39 004DBD16            231      MOVE.B  P_HP, D6         ; Copy player health into D6
+00001222  5306                     232      SUBI.B  #1, D6           ; Decrease player health
+00001224  1486                     233      MOVE.B  D6, (A2)         ; Store updated player health
+00001226  4246                     234      CLR     D6               ; Clear D6 for next use
+00001228  4E75                     235      RTS                      ; Return from subroutine
+0000122A                           236  
+0000122A                           237  F_LOSE:
+0000122A  6100 FF50                238      BSR     DMG              ; Print damage message
+Line 239 ERROR: Undefined symbol
+0000122E  1C39 004DBD16            239      MOVE.B  E_HP, D6         ; Copy enemy health into D6
+Line 240 ERROR: Undefined symbol
+00001234  5339 005455C8            240      SUBI.B  #1, P_HP         ; Decrease player health
+0000123A  1686                     241      MOVE.B  D6, (A3)         ; Store updated enemy health
+0000123C  4246                     242      CLR     D6               ; Clear D6 for next use
+0000123E  4E75                     243      RTS                      ; Return from subroutine
+00001240                           244  
+00001240                           245  *---------------------------------------------------------
+00001240                           246  *               RNG for fights
+00001240                           247  *---------------------------------------------------------
+00001240                           248  RNG:              
+00001240  3A3C 0001                249      MOVE    #1, D5           ; Set min value for RNG
+00001244  3C3C 0003                250      MOVE    #3, D6           ; Set max value for RNG
+00001248  9C45                     251      SUB     D5, D6           ; Calculate range (max - min)
+0000124A  3E06                     252      MOVE    D6, D7           ; Store range in D7
+0000124C  5246                     253      ADDI    #1, D6           ; Add 1 to max range
+0000124E  CEFC FFFF                254      MULU    #$FFFF, D7       ; Multiply by a large constant to generate randomness
+Line 255 ERROR: Undefined symbol
+00001252  43F9 004DBD16            255      LEA     SEED, A1         ; Load the seed address for RNG
+00001258  103C 0008                256      MOVE.B  #8, D0           ; Load 8 into D0 for TRAP call
+0000125C  4E4F                     257      TRAP    #15              ; Call the system for randomness
+0000125E  D251                     258      ADD     (A1), D1         ; Add the seed to D1
+00001260  C2FC FFFF                259      MULU    #$FFFF, D1       ; Multiply by another constant for better randomization
+00001264  0A81 F321F23A            260      EOR.L   #$F321F23A, D1   ; XOR for more randomness
+0000126A  3281                     261      MOVE    D1, (A1)         ; Store the new seed
+0000126C  C287                     262      AND.L   D7, D1           ; Prevent overflow for (max - min)
+0000126E  82C6                     263      DIVU    D6, D1           ; Divide the random value by range
+00001270  4841                     264      SWAP    D1               ; Swap the words in D1 to get the remainder in the low word
+00001272  D245                     265      ADD     D5, D1           ; Add the minimum value to get the final number
+00001274  4240                     266      CLR     D0               ; Clear the lower byte of D0
+00001276  4247                     267      CLR     D7               ; Clear D7 for next use
+00001278  4242                     268      CLR     D2               ; Clear D2 for next use
+0000127A  1401                     269      MOVE.B  D1, D2           ; Store the result in D2
+0000127C  4245                     270      CLR     D5               ; Clear D5 for next use
+0000127E  4246                     271      CLR     D6               ; Clear D6 for next use
+00001280                           272  
+00001280  4E75                     273      RTS                      ; Return from subroutine
+00001282                           274  
+00001282                           275  *-------------------------------------------------------
+00001282                           276  * Conversion routine for user input
+00001282                           277  *-------------------------------------------------------
+00001282                           278  CONVR:
+00001282  B27C 0031                279      CMP #'1', D1
+00001286  6700 0012                280      BEQ ONE                   ; If user inputs '1', jump to ONE
+0000128A  B27C 0032                281      CMP #'2', D1
+0000128E  6700 0010                282      BEQ TWO                   ; If user inputs '2', jump to TWO
+00001292  B27C 0033                283      CMP #'3', D1
+00001296  6700 000E                284      BEQ THREE                 ; If user inputs '3', jump to THREE
+0000129A                           285  
+0000129A                           286  ONE:
+0000129A  363C 0001                287      MOVE.W #1, D3            ; Set D3 to 1 (Rock)
+0000129E  4E75                     288      RTS                      ; Return
+000012A0                           289  
+000012A0                           290  TWO:
+000012A0  363C 0002                291      MOVE.W #2, D3            ; Set D3 to 2 (Paper)
+000012A4  4E75                     292      RTS                      ; Return
+000012A6                           293  
+000012A6                           294  THREE:
+000012A6  363C 0003                295      MOVE.W #3, D3            ; Set D3 to 3 (Scissors)
+000012AA  4E75                     296      RTS                      ; Return
+000012AC                           297  
+000012AC                           298  *-------------------------------------------------------
+000012AC                           299  *                  DATA SECTION
+000012AC                           300  *-------------------------------------------------------
+000012AC                           301  USER_INPUT:   DS.B  2           ; Reserve 2 bytes for user input (1 byte + NULL byte)
+000012AE= 00                       302  CHOICE_VAR:   DC.B  0           ; Reserve 1 byte for choice variable
+000012AF                           303  
+000012AF= 0D 0A 00                 304  CRLF:         DC.B $0D, $0A, 0  ; Carriage Return + Line Feed (new line characters)
+000012B2                           305  
+000012B2= 57 65 6C 63 6F 6D ...    306  WELCOME_MSG:  DC.B 'Welcome to the Adventures of dingle dorf!', $0D, $0A
+000012DD= 44 69 6E 67 6C 65 ...    307                DC.B 'Dingle dorf has set out on an epic adventure to fix the relic of equinox', $0D, $0A
+00001327= 74 68 65 20 72 65 ...    308                DC.B 'the relic has been broken in half and the peices stolen', $0D, $0A
+00001360= 74 68 65 20 66 69 ...    309                DC.B 'the first peice has been taken by the wizards and is held at their tower', $0D, $0A
+000013AA= 74 68 65 20 73 65 ...    310                DC.B 'the second peice is being held by the cobalts at the bottom of the mine', $0D, $0A
+000013F3= 6E 6F 77 20 79 6F ...    311                DC.B 'now you must guide dingle dorf on his journy and beat monsters and mages', $0D, $0A
+0000143D= 49 4E 20 54 48 45 ...    312                DC.B 'IN THE LEGENDARY AINCHENT RIGHT OF!!', $0D, $0A
+00001463= 52 4F 43 4B 21 21 ...    313                DC.B 'ROCK!! PAPER!! SISSORS!!!!', $0D, $0A, 0
+00001480                           314  
+00001480= 59 6F 75 20 61 77 ...    315  OPEN_MSG:    DC.B 'You awaken in a forrest the smell of due filling your lungs', $0D, $0A
+000014BD= 61 73 20 79 6F 75 ...    316                DC.B 'as you come to your feet you obesrver your suroundings', $0D, $0A
+000014F5= 79 6F 75 20 61 72 ...    317                DC.B 'you are at the base of the mountian containing the grear forge', $0D, $0A
+00001535= 79 6F 75 72 20 63 ...    318                DC.B 'your camp the same as whenst you lay your head to rest', $0D, $0A
+0000156D= 61 73 20 79 6F 75 ...    319                DC.B 'as you look to the top of the mountian', $0D, $0A
+00001595= 79 6F 75 20 73 65 ...    320                DC.B 'you see a dwarf atop the mountian looking down at you' $0D, $0A
+000015CA= 75 6E 61 62 6C 65 ...    321                DC.B 'unable to see his face as the sun blinds you, there is an unease wash over you as you look', $0D, $0A
+00001626= 74 68 65 20 64 77 ...    322                DC.B 'the dwarf decend foward dissapering from your sight', $0D, $0A
+0000165B= 79 6F 75 20 6D 65 ...    323                DC.B 'you meet a diverging path', $0D, $0A
+00001676= 70 61 74 68 20 31 ...    324                DC.B 'path 1. enter the mines', $0D, $0A
+0000168F= 70 61 74 68 20 32 ...    325                DC.B 'path 2. go to tower', $0D, $0A, 0
+000016A5                           326  
+000016A5= 57 68 65 72 65 20 ...    327  CHOICE_MSG:   DC.B 'Where will you go? (1 or 2): ', 0
+000016C3                           328  MINES_MSG:
+Line 329 WARNING: END directive missing, starting address not set
+
+25 errors detected
+1 warning generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CHOICE_MSG          16A5
+CHOICE_VAR          12AE
+CONVR               1282
+CRLF                12AF
+DMG                 117C
+DRAW                118A
+ENDL                1104
+EXIT                0
+FDRAW               11A2
+FIGHT               1112
+FOVER               11B2
+F_LOSE              122A
+F_WIN               1218
+INVALID_CHOICE      10F2
+MINE                1070
+MINES_MSG           16C3
+MINE_FIGHT_1        10CA
+MINE_ROOM_1         10B8
+ONE                 129A
+OPEN_MSG            1480
+OPEN_PATH           103C
+OPEN_SCENE          1026
+PAPER               11CA
+RNG                 1240
+ROCK                11E4
+RUN_AWAY            10E0
+SIS                 11FE
+START               1000
+THREE               12A6
+TWO                 12A0
+USER_INPUT          12AC
+WELCOME             1010
+WELCOME_MSG         12B2
