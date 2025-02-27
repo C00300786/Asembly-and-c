@@ -1,4 +1,6 @@
 
+
+
     ORG    $1000
 EXIT    EQU 0            ; Used to exit the program
 
@@ -422,9 +424,9 @@ MINE_ROOM_10:
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     BSR     ENDL
-    ADD.B   #1,RELIC
+    ADD.B   #1,D4
     
-    CMP     #2,RELIC
+    CMP.B   #2,D4
     BEQ     MOUNT
     
     BSR     TOWER
@@ -786,9 +788,9 @@ TOWER_ROOM_10:
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     BSR     ENDL
-    ADD.B   #1,RELIC
+    ADD.B   #1,D4
     
-    CMP     #2,RELIC
+    CMP.B   #2,D4
     BEQ     MOUNT
     
     BSR     MINE
@@ -798,9 +800,10 @@ TOWER_ROOM_10:
 *-------------------------------------------------------
 MOUNT:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FINAL_CUT , A1
     MOVE.B  #14, D0
     TRAP    #15  ; Print MINES message
+    BSR     GAME_OVER
 *-------------------------------------------------------
 *                INVALID INPUT HANDLING
 *-------------------------------------------------------
@@ -1034,14 +1037,33 @@ MINES_MSG1:    DC.B 'As you enter the next cavity in the mines you see two dirve
               DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
               DC.B 'Which will you enter', $0D, $0A, 0
               
-MINES_MSG2:   DC.B 'As you enter the bextcavity in the mines you see two dirverging paths', $0D, $0A
+MINES_MSG2:   DC.B 'As you enter the n00ext cavity in the mines you see two dirverging paths', $0D, $0A
               DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
               DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
               DC.B 'Which will you enter', $0D, $0A, 0
-FIGHT_T_MSG:  DC.B 'A fight will be here', $0D, $0A, 0
-CUT_MINE:     DC.B 'A fight will be here AND OTHER STUFF', $0D, $0A, 0
-CUT_TOWER:    DC.B 'A fight will be here AND OTHER STUFF', $0D, $0A, 0
-FINAL_CUT     DC.B 'A fight will be here AND OTHER STUFF', $0D, $0A, 0 
+FIGHT_T_MSG:  DC.B 'A fight will be here you take 1 dammage it is healed in next room', $0D, $0A, 0
+CUT_MINE:     DC.B 'As you aproch the botom of the mine you see before you', $0D, $0A
+              DC.B 'The cobalt king sitting upon his throne made of crude iron', $0D, $0A
+              DC.B 'As you inch closer you begin to knowtace the blade in his back', $0D, $0A
+              DC.B 'the kobalt king is dead as you look around the room you see', $0D, $0A
+              DC.B 'In a pile of iron ore a glint you rumage through to find half the relic', $0D, $0A
+              DC.B 'Now you must continue your journy .', $0D, $0A, 0
+CUT_TOWER:    DC.B 'As you reach the top of the tower having gone through many battles to get here', $0D, $0A
+              DC.B 'before you lies an empty room of the archmage filled with pods full of liques ', $0D, $0A
+              DC.B 'Within the liquid there is small childern eah labled  attempt along with a number', $0D, $0A
+              DC.B 'As you walk past this you see on a pedistal a half of the relic', $0D, $0A
+              DC.B 'You take it and contine on your journy', $0D, $0A, 0 
+
+FINAL_CUT     DC.B 'You have reached the top of the mountian both parts of the relic in hand', $0D, $0A
+              DC.B 'You stop for a moment looking down to see how far you have come', $0D, $0A
+              DC.B 'As you look down you spot someone standing up', $0D, $0A
+              DC.B 'You realise that they are in the same place you started your journy', $0D, $0A
+              DC.B 'You take a step closer to have a coser look at their face', $0D, $0A
+              DC.B 'You see you and you recall the figure on top of the mountian you saw', $0D, $0A
+              DC.B 'Then you feel a percing pain from behind you turn to see yourself', $0D, $0A
+              DC.B 'It is you wearing the robes of a wizzard he mutters a few words to you', $0D, $0A
+              DC.B 'I am sorry clone but their can only be one of me', $0D, $0A
+              DC.B 'You fall forwards and everything fades to black', $0D, $0A
 TOWER_MSG:    DC.B 'You go to tower', $0D, $0A, 0
 FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering the only way out is trough you must defeat them', $0D, $0A ,0
 INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
@@ -1049,14 +1071,13 @@ DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be 
 FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
 FOVER_MSG:    DC.B 'The fight comes to its end you have survived yet again but can you keep this up' $0D, $0A ,0
 DMG_MSG:      DC.B 'A blow has been dealt the fight draws closer to its end', $0D, $0A ,0
-GO_MSG:       DC.B 'GAME OVER', $0D, $0A ,0
+GO_MSG:       DC.B 'GAME OVER YOU ARE DEAD', $0D, $0A ,0
 R_MSG:        DC.B 'ROCK WIN', 0
 P_MSG:        DC.B 'PAPER WIN', 0
 S_MSG:        DC.B 'SISSORS WIN', 0
 SEED          DC.W    1
 P_HP          DS.B    1
 E_HP          DS.B    1
-RELIC         DS.B    1
 
 GAME_OVER:
        LEA     GO_MSG,  A1   ; loads first draw msg
@@ -1071,6 +1092,7 @@ GAME_OVER:
 *~Font size~10~
 *~Tab type~1~
 *~Tab size~4~
+
 
 
 
