@@ -75,7 +75,7 @@ MINE:
     CMP.B   #'1', D1         ; Compare input to '1'
     BEQ     MINE_ROOM_1            ; If '1', branch to FIGHT
     
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     CMP.B   #'2', D1         ; Compare input to '2'
     BEQ     MINE_FIGHT_1     ; If '2', branch to 
@@ -87,7 +87,7 @@ MINE:
 
 MINE_ROOM_1:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
     LEA     MINES_MSG1, A1
@@ -117,14 +117,15 @@ MINE_FIGHT_1:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_3
     
 MINE_ROOM_2:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
     LEA     MINES_MSG1, A1
@@ -154,14 +155,15 @@ MINE_FIGHT_2:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_4
 
 MINE_ROOM_3:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
     LEA     MINES_MSG2, A1
@@ -191,19 +193,24 @@ MINE_FIGHT_3:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_5
 
 MINE_ROOM_4:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     MINES_MSG2, A1
+    LEA     MINES_MSG3, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
+
+    BSR     RNG
+    CMP     #1,D2
+    BEQ     HEAL_M
     
     LEA     USER_INPUT, A1   ; Load input buffer address
     MOVE.B  #2, D0           ; Max input length (1 char + NULL)
@@ -228,14 +235,15 @@ MINE_FIGHT_4:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_6
 
 MINE_ROOM_5:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
     LEA     MINES_MSG1, A1
@@ -265,19 +273,24 @@ MINE_FIGHT_5:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_7
 
 MINE_ROOM_6:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     MINES_MSG2, A1
+    LEA     MINES_MSG3, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
+
+    BSR     RNG
+    CMP     #1,D2
+    BEQ     HEAL_M
     
     LEA     USER_INPUT, A1   ; Load input buffer address
     MOVE.B  #2, D0           ; Max input length (1 char + NULL)
@@ -302,14 +315,15 @@ MINE_FIGHT_6:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_8
     
 MINE_ROOM_7:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
     LEA     MINES_MSG2, A1
@@ -339,19 +353,24 @@ MINE_FIGHT_7:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_9
 
 MINE_ROOM_8:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     MINES_MSG1, A1
+    LEA     MINES_MSG3, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
+
+    BSR     RNG
+    CMP     #1,D2
+    BEQ     HEAL_M
     
     LEA     USER_INPUT, A1   ; Load input buffer address
     MOVE.B  #2, D0           ; Max input length (1 char + NULL)
@@ -376,14 +395,15 @@ MINE_FIGHT_8:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_10
     
 MINE_ROOM_9:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
     LEA     MINES_MSG1, A1
@@ -413,13 +433,14 @@ MINE_FIGHT_9:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR MINE_ROOM_10
 
 MINE_ROOM_10:
-    
+    BSR     ENDL
     LEA     CUT_MINE, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
@@ -447,10 +468,10 @@ TOWER:
 
 TOWER_ROOM_1:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG1, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
@@ -477,17 +498,19 @@ TOWER_FIGHT_1:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
+    SUB.B   #1,P_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_3
 
 TOWER_ROOM_2:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG2, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
@@ -514,19 +537,24 @@ TOWER_FIGHT_2:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_4
 
 TOWER_ROOM_3:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG3, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
+
+    BSR     RNG
+    CMP     #1,D2
+    BEQ     HEAL_T
     
     LEA     USER_INPUT, A1   ; Load input buffer address
     MOVE.B  #2, D0           ; Max input length (1 char + NULL)
@@ -551,18 +579,19 @@ TOWER_FIGHT_3:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_5
     
 
 TOWER_ROOM_4:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG1, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
@@ -589,16 +618,17 @@ TOWER_FIGHT_4:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_6
 TOWER_ROOM_5:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG2, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
@@ -625,20 +655,25 @@ TOWER_FIGHT_5:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_7
 
     
 TOWER_ROOM_6:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG3, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
+
+    BSR     RNG
+    CMP     #1,D2
+    BEQ     HEAL_T
     
     LEA     USER_INPUT, A1   ; Load input buffer address
     MOVE.B  #2, D0           ; Max input length (1 char + NULL)
@@ -663,17 +698,17 @@ TOWER_FIGHT_6:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_8
 
 TOWER_ROOM_7:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG1, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
@@ -700,18 +735,17 @@ TOWER_FIGHT_7:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_9
 
 
 TOWER_ROOM_8:
     BSR     ENDL
-    MOVE.B  #3,P_HP
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG2, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
@@ -739,20 +773,22 @@ TOWER_FIGHT_8:
     MOVE.B  #14, D0
     TRAP    #15  ; Print MINES message
     
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_10
 
     
 TOWER_ROOM_9:
     BSR     ENDL
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG, A1
+    LEA     TOWER_MSG1, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
+
     
     LEA     USER_INPUT, A1   ; Load input buffer address
     MOVE.B  #2, D0           ; Max input length (1 char + NULL)
@@ -777,13 +813,14 @@ TOWER_FIGHT_9:
     LEA     FIGHT_T_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
-    MOVE.B  #3,P_HP
+    
     MOVE.B  #3,E_HP
 *    BSR FIGHT
+    BSR HP_CHECK
     BSR TOWER_ROOM_10
 
 TOWER_ROOM_10:
-    
+    BSR     ENDL
     LEA     CUT_TOWER, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
@@ -862,7 +899,12 @@ ENDL:
 *        JSR FIGHT
 *    ENDI
 *    RTS
-*    
+* 
+HP_CHECK:
+    CMP.B #0,P_HP
+    BEQ GAME_OVER
+
+    RTS   
 DMG:
     LEA     DMG_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
@@ -942,6 +984,21 @@ F_LOSE:
     SUBI.B  #1, P_HP
     MOVE.B  D6, (A3)
     CLR     D6
+
+HEAL_T:
+    BSR ENDL 
+    LEA     HEAL_MSG,  A1   ; loads first draw msg
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    MOVE.B #1,P_HP
+    BSR TOWER_ROOM_9
+HEAL_M:
+    BSR ENDL 
+    LEA     HEAL_MSG,  A1   ; loads first draw msg
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    MOVE.B #1,P_HP
+    BSR MINE_ROOM_9
 *---------------------------------------------------------
 *               RNG for fights
 *---------------------------------------------------------
@@ -1032,16 +1089,28 @@ MINES_MSG:    DC.B 'You enter the mines', $0D, $0A
               DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
               DC.B 'Which will you enter', $0D, $0A, 0
              
-MINES_MSG1:    DC.B 'As you enter the next cavity in the mines you see two dirverging paths', $0D, $0A
+MINES_MSG1:   DC.B 'As you enter the next cavity in the mines you see two dirverging paths', $0D, $0A
               DC.B 'The first a gradual slope down with mushrooms lining the floor', $0D, $0A
               DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
               DC.B 'Which will you enter', $0D, $0A, 0
               
-MINES_MSG2:   DC.B 'As you enter the n00ext cavity in the mines you see two dirverging paths', $0D, $0A
+MINES_MSG2:   DC.B 'You enter the next room it again has only two paths', $0D, $0A
+              DC.B 'the mine all blending together only being seperated', $0D, $0A
+              DC.B 'by the occaisonal campfire or fight', $0D, $0A
               DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
               DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
               DC.B 'Which will you enter', $0D, $0A, 0
-FIGHT_T_MSG:  DC.B 'A fight will be here you take 1 dammage it is healed in next room', $0D, $0A, 0
+         
+MINES_MSG3:   DC.B '', $0D, $0A
+              DC.B 'As you move twords the next cavity you see a faint glow', $0D, $0A
+              DC.B 'There is a campfire unattended in the room (33% chance to heal)', $0D, $0A
+              DC.B 'There are also two paths ahead' $0D, $0A
+              DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
+              DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
+              DC.B 'Which will you enter', $0D, $0A, 0
+
+FIGHT_T_MSG:  DC.B 'A fight will be here you take 1 dammage', $0D, $0A, 0
+
 CUT_MINE:     DC.B 'As you aproch the botom of the mine you see before you', $0D, $0A
               DC.B 'The cobalt king sitting upon his throne made of crude iron', $0D, $0A
               DC.B 'As you inch closer you begin to knowtace the blade in his back', $0D, $0A
@@ -1050,7 +1119,7 @@ CUT_MINE:     DC.B 'As you aproch the botom of the mine you see before you', $0D
               DC.B 'Now you must continue your journy .', $0D, $0A, 0
 CUT_TOWER:    DC.B 'As you reach the top of the tower having gone through many battles to get here', $0D, $0A
               DC.B 'before you lies an empty room of the archmage filled with pods full of liques ', $0D, $0A
-              DC.B 'Within the liquid there is small childern eah labled  attempt along with a number', $0D, $0A
+              DC.B 'Within the liquid there is small childern each labled  attempt along with a number', $0D, $0A
               DC.B 'As you walk past this you see on a pedistal a half of the relic', $0D, $0A
               DC.B 'You take it and contine on your journy', $0D, $0A, 0 
 
@@ -1064,8 +1133,40 @@ FINAL_CUT     DC.B 'You have reached the top of the mountian both parts of the r
               DC.B 'It is you wearing the robes of a wizzard he mutters a few words to you', $0D, $0A
               DC.B 'I am sorry clone but their can only be one of me', $0D, $0A
               DC.B 'You fall forwards and everything fades to black', $0D, $0A
-TOWER_MSG:    DC.B 'You go to tower', $0D, $0A, 0
-FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering the only way out is trough you must defeat them', $0D, $0A ,0
+              
+TOWER_MSG:    DC.B 'You go to tower', $0D, $0A
+              DC.B 'as you enter the first room of the tower you see two stair cases', $0D, $0A
+              DC.B 'the first a stairs lined with blue crysrals', $0D, $0A
+              DC.B 'the second a stairs lined with red crystals', $0D, $0A
+              DC.B 'Which will you enter', $0D, $0A, 0
+              
+TOWER_MSG1:   DC.B 'as you enter the next room of the tower you see two stair cases', $0D, $0A
+              DC.B 'the first a stairs lined with blue crysrals', $0D, $0A
+              DC.B 'the second a stairs lined with red crystals', $0D, $0A
+              DC.B 'Which will you enter', $0D, $0A, 0
+
+TOWER_MSG2:   DC.B 'as you enter the next room of the tower you see two stair cases', $0D, $0A
+              DC.B 'The buliding like a maze designed to confuse and blend together', $0D, $0A
+              DC.B 'the first a stairs lined with red crysrals', $0D, $0A
+              DC.B 'the second a stairs lined with blue crystals', $0D, $0A
+              DC.B 'how many more rooms could there be you wonder as you procede', $0D, $0A
+              DC.B 'Which will you enter', $0D, $0A, 0
+   
+TOWER_MSG3:   DC.B 'as you enter the room see a faint red glow', $0D, $0A
+              DC.B 'infront of you lays a stand of potions each with a diffrent ', $0D, $0A
+              DC.B 'label it says formula number but the numbers are gone(33% heal', $0D, $0A
+              DC.B 'and two stair cases as always are behind the stand', $0D, $0A
+              DC.B 'chance )the first a stairs lined with red crysrals', $0D, $0A
+              DC.B 'the second a stairs lined with blue crystals', $0D, $0A
+              DC.B 'Which will you enter', $0D, $0A, 0
+
+HEAL_MSG:     DC.B 'As you rest alowing your body to heal you knowtace something', $0D, $0A
+              DC.B 'A button in the wall you press it an a passage opens', $0D, $0A
+              DC.B 'As you follow it you realies it takes you before the final room', $0D, $0A
+              DC.B 'You heal 1 hp', $0D, $0A,0
+
+FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering', $0D, $0A
+              DC.B 'the only way out is trough you must defeat them', $0D, $0A ,0
 INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
 DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be victorious', $0D, $0A ,0
 FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
@@ -1092,6 +1193,8 @@ GAME_OVER:
 *~Font size~10~
 *~Tab type~1~
 *~Tab size~4~
+
+
 
 
 
