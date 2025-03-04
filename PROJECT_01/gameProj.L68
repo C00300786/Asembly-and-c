@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 28/02/2025 12:52:35
+Created On: 04/03/2025 10:37:25
 
 00000000                             1  
 00000000                             2  
@@ -19,45 +19,45 @@ Created On: 28/02/2025 12:52:35
 00001010                            15  *                   WELCOME SUBROUTINE
 00001010                            16  *-------------------------------------------------------
 00001010                            17  WELCOME:
-00001010  6100 0874                 18      BSR     ENDL             ; New line
-00001014  43F9 00001A0A             19      LEA     WELCOME_MSG, A1  ; Load welcome message
+00001010  6100 0884                 18      BSR     ENDL             ; New line
+00001014  43F9 00001A8E             19      LEA     WELCOME_MSG, A1  ; Load welcome message
 0000101A  103C 000E                 20      MOVE.B  #14, D0
 0000101E  4E4F                      21      TRAP    #15              ; Print message
-00001020  6100 0864                 22      BSR     ENDL
+00001020  6100 0874                 22      BSR     ENDL
 00001024  4E75                      23      RTS                      ; Return
 00001026                            24  
 00001026                            25  *-------------------------------------------------------
 00001026                            26  *                   OPEN SCENE SUBROUTINE
 00001026                            27  *-------------------------------------------------------
 00001026                            28  OPEN_SCENE:
-00001026  6100 085E                 29      BSR     ENDL             ; New line
-0000102A  43F9 00001BD8             30      LEA     OPEN_MSG, A1  ; Load welcome message
+00001026  6100 086E                 29      BSR     ENDL             ; New line
+0000102A  43F9 00001C5C             30      LEA     OPEN_MSG, A1  ; Load welcome message
 00001030  103C 000E                 31      MOVE.B  #14, D0
 00001034  4E4F                      32      TRAP    #15              ; Print message
-00001036  6100 084E                 33      BSR     ENDL
+00001036  6100 085E                 33      BSR     ENDL
 0000103A  4E75                      34      RTS                      ; Return
 0000103C                            35  
 0000103C                            36  *-------------------------------------------------------
 0000103C                            37  *                  Mines or Tower
 0000103C                            38  *-------------------------------------------------------
 0000103C                            39  OPEN_PATH:
-0000103C  43F9 00001DFD             40      LEA     CHOICE_MSG, A1   ; Load choice message
+0000103C  43F9 00001E81             40      LEA     CHOICE_MSG, A1   ; Load choice message
 00001042  103C 000E                 41      MOVE.B  #14, D0
 00001046  4E4F                      42      TRAP    #15              ; Print message
 00001048                            43  
-00001048  43F9 00001A04             44      LEA     USER_INPUT, A1   ; Load input buffer address
+00001048  43F9 00001A88             44      LEA     USER_INPUT, A1   ; Load input buffer address
 0000104E  103C 0002                 45      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
 00001052  4E4F                      46      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
 00001054                            47      
-00001054  1239 00001A04             48      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001054  1239 00001A88             48      MOVE.B  USER_INPUT, D1   ; Load user input into D1
 0000105A                            49  
 0000105A  B23C 0031                 50      CMP.B   #'1', D1         ; Compare input to '1'
 0000105E  6700 0010                 51      BEQ     MINE            ; If '1', branch to FIGHT
 00001062                            52  
 00001062  B23C 0032                 53      CMP.B   #'2', D1         ; Compare input to '2'
-00001066  6700 041C                 54      BEQ     TOWER        ; If '2', branch to RUN_AWAY
+00001066  6700 0420                 54      BEQ     TOWER        ; If '2', branch to RUN_AWAY
 0000106A                            55  
-0000106A  6100 0808                 56      BSR     INVALID_CHOICE   ; If input is invalid, show error
+0000106A  6100 0818                 56      BSR     INVALID_CHOICE   ; If input is invalid, show error
 0000106E  61CC                      57      BSR     OPEN_PATH           ; Repeat input prompt
 00001070                            58      
 00001070                            59  
@@ -65,1130 +65,1152 @@ Created On: 28/02/2025 12:52:35
 00001070                            61  *                   MINE SEQUENCE
 00001070                            62  *-------------------------------------------------------
 00001070                            63  MINE:
-00001070  6100 0814                 64      BSR     ENDL
-00001074  43F9 00001E1B             65      LEA     MINES_MSG, A1
+00001070  6100 0824                 64      BSR     ENDL
+00001074  43F9 00001E9F             65      LEA     MINES_MSG, A1
 0000107A  103C 000E                 66      MOVE.B  #14, D0
 0000107E  4E4F                      67      TRAP    #15              ; Print MINES message
 00001080                            68  
-00001080  43F9 00001A04             69      LEA     USER_INPUT, A1   ; Load input buffer address
+00001080  43F9 00001A88             69      LEA     USER_INPUT, A1   ; Load input buffer address
 00001086  103C 0002                 70      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
 0000108A  4E4F                      71      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
 0000108C                            72      
-0000108C  1239 00001A04             73      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+0000108C  1239 00001A88             73      MOVE.B  USER_INPUT, D1   ; Load user input into D1
 00001092                            74  
 00001092  B23C 0031                 75      CMP.B   #'1', D1         ; Compare input to '1'
 00001096  6700 001C                 76      BEQ     MINE_ROOM_1            ; If '1', branch to FIGHT
 0000109A                            77      
 0000109A                            78      
-0000109A  13FC 0003 00002E1D        79      MOVE.B  #3,E_HP
+0000109A  13FC 0003 00002EC1        79      MOVE.B  #3,E_HP
 000010A2  B23C 0032                 80      CMP.B   #'2', D1         ; Compare input to '2'
 000010A6  6700 0050                 81      BEQ     MINE_FIGHT_1     ; If '2', branch to 
 000010AA                            82      
 000010AA                            83      
-000010AA  6100 07DA                 84      BSR     ENDL
-000010AE  6100 07C4                 85      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000010AA  6100 07EA                 84      BSR     ENDL
+000010AE  6100 07D4                 85      BSR     INVALID_CHOICE   ; If input is invalid, show error
 000010B2  61BC                      86      BSR     MINE           ; Repeat input prompt
 000010B4                            87  
 000010B4                            88  MINE_ROOM_1:
-000010B4  6100 07D0                 89      BSR     ENDL
+000010B4  6100 07E0                 89      BSR     ENDL
 000010B8                            90      
-000010B8  13FC 0003 00002E1D        91      MOVE.B  #3,E_HP
+000010B8  13FC 0003 00002EC1        91      MOVE.B  #3,E_HP
 000010C0                            92      
-000010C0  43F9 00001F08             93      LEA     MINES_MSG1, A1
+000010C0  43F9 00001F8C             93      LEA     MINES_MSG1, A1
 000010C6  103C 000E                 94      MOVE.B  #14, D0
 000010CA  4E4F                      95      TRAP    #15              ; Print MINES message
 000010CC                            96      
-000010CC  43F9 00001A04             97      LEA     USER_INPUT, A1   ; Load input buffer address
+000010CC  43F9 00001A88             97      LEA     USER_INPUT, A1   ; Load input buffer address
 000010D2  103C 0002                 98      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
 000010D6  4E4F                      99      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
 000010D8                           100      
-000010D8  1239 00001A04            101      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000010D8  1239 00001A88            101      MOVE.B  USER_INPUT, D1   ; Load user input into D1
 000010DE                           102  
 000010DE  B23C 0031                103      CMP.B   #'1', D1         ; Compare input to '1'
-000010E2  6700 0034                104      BEQ     MINE_ROOM_2      ; If '1', branch to FIGHT
+000010E2  6700 0038                104      BEQ     MINE_ROOM_2      ; If '1', branch to FIGHT
 000010E6                           105      
 000010E6  B23C 0032                106      CMP.B   #'2', D1         ; Compare input to '2'
-000010EA  6700 0070                107      BEQ     MINE_FIGHT_2     ; If '2', branch to
+000010EA  6700 0074                107      BEQ     MINE_FIGHT_2     ; If '2', branch to
 000010EE                           108      
 000010EE                           109      
-000010EE  6100 0796                110      BSR     ENDL
-000010F2  6100 0780                111      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000010EE  6100 07A6                110      BSR     ENDL
+000010F2  6100 0790                111      BSR     INVALID_CHOICE   ; If input is invalid, show error
 000010F6  61BC                     112      BSR     MINE_ROOM_1           ; Repeat input prompt
 000010F8                           113      
 000010F8                           114      
 000010F8                           115  MINE_FIGHT_1:
-000010F8  6100 078C                116      BSR     ENDL
-000010FC  43F9 0000223E            117      LEA     FIGHT_T_MSG, A1
+000010F8  6100 079C                116      BSR     ENDL
+000010FC  43F9 000022C2            117      LEA     FIGHT_T_MSG, A1
 00001102  103C 000E                118      MOVE.B  #14, D0
 00001106  4E4F                     119      TRAP    #15              ; Print MINES message
 00001108                           120      
-00001108  13FC 0003 00002E1D       121      MOVE.B  #3,E_HP
-00001110                           122  *    BSR FIGHT
-00001110  6100 0782                123      BSR HP_CHECK
-00001114  6100 0066                124      BSR MINE_ROOM_3
-00001118                           125      
-00001118                           126  MINE_ROOM_2:
-00001118  6100 076C                127      BSR     ENDL
-0000111C                           128      
-0000111C  13FC 0003 00002E1D       129      MOVE.B  #3,E_HP
-00001124                           130      
-00001124  43F9 00001F08            131      LEA     MINES_MSG1, A1
-0000112A  103C 000E                132      MOVE.B  #14, D0
-0000112E  4E4F                     133      TRAP    #15              ; Print MINES message
-00001130                           134      
-00001130  43F9 00001A04            135      LEA     USER_INPUT, A1   ; Load input buffer address
-00001136  103C 0002                136      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-0000113A  4E4F                     137      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-0000113C                           138      
-0000113C  1239 00001A04            139      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-00001142                           140  
-00001142  B23C 0031                141      CMP.B   #'1', D1         ; Compare input to '1'
-00001146  6700 0034                142      BEQ     MINE_ROOM_3      ; If '1', branch to FIGHT
-0000114A                           143      
-0000114A  B23C 0032                144      CMP.B   #'2', D1         ; Compare input to '2'
-0000114E  6700 0072                145      BEQ     MINE_FIGHT_3     ; If '2', branch to
-00001152                           146      
-00001152                           147      
-00001152  6100 0732                148      BSR     ENDL
-00001156  6100 071C                149      BSR     INVALID_CHOICE   ; If input is invalid, show error
-0000115A  61BC                     150      BSR     MINE_ROOM_2           ; Repeat input prompt
-0000115C                           151      
-0000115C                           152      
-0000115C                           153  MINE_FIGHT_2:
-0000115C  6100 0728                154      BSR     ENDL
-00001160  43F9 0000223E            155      LEA     FIGHT_T_MSG, A1
-00001166  103C 000E                156      MOVE.B  #14, D0
-0000116A  4E4F                     157      TRAP    #15              ; Print MINES message
-0000116C                           158      
-0000116C  13FC 0003 00002E1D       159      MOVE.B  #3,E_HP
-00001174                           160  *    BSR FIGHT
-00001174  6100 071E                161      BSR HP_CHECK
-00001178  6100 0068                162      BSR MINE_ROOM_4
-0000117C                           163  
-0000117C                           164  MINE_ROOM_3:
-0000117C  6100 0708                165      BSR     ENDL
-00001180                           166      
-00001180  13FC 0003 00002E1D       167      MOVE.B  #3,E_HP
-00001188                           168      
-00001188  43F9 00001FE7            169      LEA     MINES_MSG2, A1
-0000118E  103C 000E                170      MOVE.B  #14, D0
-00001192  4E4F                     171      TRAP    #15              ; Print MINES message
-00001194                           172      
-00001194  43F9 00001A04            173      LEA     USER_INPUT, A1   ; Load input buffer address
-0000119A  103C 0002                174      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-0000119E  4E4F                     175      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-000011A0                           176      
-000011A0  1239 00001A04            177      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-000011A6                           178  
-000011A6  B23C 0031                179      CMP.B   #'1', D1         ; Compare input to '1'
-000011AA  6700 0036                180      BEQ     MINE_ROOM_4      ; If '1', branch to FIGHT
-000011AE                           181      
-000011AE  B23C 0032                182      CMP.B   #'2', D1         ; Compare input to '2'
-000011B2  6700 0080                183      BEQ     MINE_FIGHT_4     ; If '2', branch to
-000011B6                           184      
-000011B6                           185      
-000011B6  6100 06CE                186      BSR     ENDL
-000011BA  6100 06B8                187      BSR     INVALID_CHOICE   ; If input is invalid, show error
-000011BE  6100 FF58                188      BSR     MINE_ROOM_2           ; Repeat input prompt
-000011C2                           189      
-000011C2                           190      
-000011C2                           191  MINE_FIGHT_3:
-000011C2  6100 06C2                192      BSR     ENDL
-000011C6  43F9 0000223E            193      LEA     FIGHT_T_MSG, A1
-000011CC  103C 000E                194      MOVE.B  #14, D0
-000011D0  4E4F                     195      TRAP    #15              ; Print MINES message
-000011D2                           196      
-000011D2  13FC 0003 00002E1D       197      MOVE.B  #3,E_HP
-000011DA                           198  *    BSR FIGHT
-000011DA  6100 06B8                199      BSR HP_CHECK
-000011DE  6100 0074                200      BSR MINE_ROOM_5
-000011E2                           201  
-000011E2                           202  MINE_ROOM_4:
-000011E2  6100 06A2                203      BSR     ENDL
-000011E6                           204      
-000011E6  13FC 0003 00002E1D       205      MOVE.B  #3,E_HP
-000011EE                           206      
-000011EE  43F9 0000210D            207      LEA     MINES_MSG3, A1
-000011F4  103C 000E                208      MOVE.B  #14, D0
-000011F8  4E4F                     209      TRAP    #15              ; Print MINES message
-000011FA                           210  
-000011FA  6100 079C                211      BSR     RNG
-000011FE  B47C 0001                212      CMP     #1,D2
-00001202  6700 0778                213      BEQ     HEAL_M
-00001206                           214      
-00001206  43F9 00001A04            215      LEA     USER_INPUT, A1   ; Load input buffer address
-0000120C  103C 0002                216      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-00001210  4E4F                     217      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-00001212                           218      
-00001212  1239 00001A04            219      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-00001218                           220  
-00001218  B23C 0031                221      CMP.B   #'1', D1         ; Compare input to '1'
-0000121C  6700 0036                222      BEQ     MINE_ROOM_5      ; If '1', branch to FIGHT
-00001220                           223      
-00001220  B23C 0032                224      CMP.B   #'2', D1         ; Compare input to '2'
-00001224  6700 0074                225      BEQ     MINE_FIGHT_5     ; If '2', branch to
-00001228                           226      
-00001228                           227      
-00001228  6100 065C                228      BSR     ENDL
-0000122C  6100 0646                229      BSR     INVALID_CHOICE   ; If input is invalid, show error
-00001230  6100 0022                230      BSR     MINE_ROOM_5           ; Repeat input prompt
-00001234                           231      
-00001234                           232      
-00001234                           233  MINE_FIGHT_4:
-00001234  6100 0650                234      BSR     ENDL
-00001238  43F9 0000223E            235      LEA     FIGHT_T_MSG, A1
-0000123E  103C 000E                236      MOVE.B  #14, D0
-00001242  4E4F                     237      TRAP    #15              ; Print MINES message
-00001244                           238      
-00001244  13FC 0003 00002E1D       239      MOVE.B  #3,E_HP
-0000124C                           240  *    BSR FIGHT
-0000124C  6100 0646                241      BSR HP_CHECK
-00001250  6100 0068                242      BSR MINE_ROOM_6
-00001254                           243  
-00001254                           244  MINE_ROOM_5:
-00001254  6100 0630                245      BSR     ENDL
-00001258                           246      
-00001258  13FC 0003 00002E1D       247      MOVE.B  #3,E_HP
-00001260                           248      
-00001260  43F9 00001F08            249      LEA     MINES_MSG1, A1
-00001266  103C 000E                250      MOVE.B  #14, D0
-0000126A  4E4F                     251      TRAP    #15              ; Print MINES message
-0000126C                           252      
-0000126C  43F9 00001A04            253      LEA     USER_INPUT, A1   ; Load input buffer address
-00001272  103C 0002                254      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-00001276  4E4F                     255      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-00001278                           256      
-00001278  1239 00001A04            257      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-0000127E                           258  
-0000127E  B23C 0031                259      CMP.B   #'1', D1         ; Compare input to '1'
-00001282  6700 0036                260      BEQ     MINE_ROOM_6      ; If '1', branch to FIGHT
-00001286                           261      
-00001286  B23C 0032                262      CMP.B   #'2', D1         ; Compare input to '2'
-0000128A  6700 007E                263      BEQ     MINE_FIGHT_6     ; If '2', branch to
-0000128E                           264      
-0000128E                           265      
-0000128E  6100 05F6                266      BSR     ENDL
-00001292  6100 05E0                267      BSR     INVALID_CHOICE   ; If input is invalid, show error
-00001296  6100 0022                268      BSR     MINE_ROOM_6           ; Repeat input prompt
-0000129A                           269      
-0000129A                           270      
-0000129A                           271  MINE_FIGHT_5:
-0000129A  6100 05EA                272      BSR     ENDL
-0000129E  43F9 0000223E            273      LEA     FIGHT_T_MSG, A1
-000012A4  103C 000E                274      MOVE.B  #14, D0
-000012A8  4E4F                     275      TRAP    #15              ; Print MINES message
-000012AA                           276      
-000012AA  13FC 0003 00002E1D       277      MOVE.B  #3,E_HP
-000012B2                           278  *    BSR FIGHT
-000012B2  6100 05E0                279      BSR HP_CHECK
-000012B6  6100 0072                280      BSR MINE_ROOM_7
-000012BA                           281  
-000012BA                           282  MINE_ROOM_6:
-000012BA  6100 05CA                283      BSR     ENDL
-000012BE                           284      
-000012BE  13FC 0003 00002E1D       285      MOVE.B  #3,E_HP
-000012C6                           286      
-000012C6  43F9 0000210D            287      LEA     MINES_MSG3, A1
-000012CC  103C 000E                288      MOVE.B  #14, D0
-000012D0  4E4F                     289      TRAP    #15              ; Print MINES message
-000012D2                           290  
-000012D2  6100 06C4                291      BSR     RNG
-000012D6  B47C 0001                292      CMP     #1,D2
-000012DA  6700 06A0                293      BEQ     HEAL_M
-000012DE                           294      
-000012DE  43F9 00001A04            295      LEA     USER_INPUT, A1   ; Load input buffer address
-000012E4  103C 0002                296      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-000012E8  4E4F                     297      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-000012EA                           298      
-000012EA  1239 00001A04            299      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-000012F0                           300  
-000012F0  B23C 0031                301      CMP.B   #'1', D1         ; Compare input to '1'
-000012F4  6700 0034                302      BEQ     MINE_ROOM_7      ; If '1', branch to FIGHT
-000012F8                           303      
-000012F8  B23C 0032                304      CMP.B   #'2', D1         ; Compare input to '2'
-000012FC  6700 0070                305      BEQ     MINE_FIGHT_7     ; If '2', branch to
-00001300                           306      
-00001300                           307      
-00001300  6100 0584                308      BSR     ENDL
-00001304  6100 056E                309      BSR     INVALID_CHOICE   ; If input is invalid, show error
-00001308  61B0                     310      BSR     MINE_ROOM_6           ; Repeat input prompt
-0000130A                           311      
-0000130A                           312      
-0000130A                           313  MINE_FIGHT_6:
-0000130A  6100 057A                314      BSR     ENDL
-0000130E  43F9 0000223E            315      LEA     FIGHT_T_MSG, A1
-00001314  103C 000E                316      MOVE.B  #14, D0
-00001318  4E4F                     317      TRAP    #15              ; Print MINES message
-0000131A                           318      
-0000131A  13FC 0003 00002E1D       319      MOVE.B  #3,E_HP
-00001322                           320  *    BSR FIGHT
-00001322  6100 0570                321      BSR HP_CHECK
-00001326  6100 0066                322      BSR MINE_ROOM_8
-0000132A                           323      
-0000132A                           324  MINE_ROOM_7:
-0000132A  6100 055A                325      BSR     ENDL
-0000132E                           326      
-0000132E  13FC 0003 00002E1D       327      MOVE.B  #3,E_HP
-00001336                           328      
-00001336  43F9 00001FE7            329      LEA     MINES_MSG2, A1
-0000133C  103C 000E                330      MOVE.B  #14, D0
-00001340  4E4F                     331      TRAP    #15              ; Print MINES message
-00001342                           332      
-00001342  43F9 00001A04            333      LEA     USER_INPUT, A1   ; Load input buffer address
-00001348  103C 0002                334      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-0000134C  4E4F                     335      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-0000134E                           336      
-0000134E  1239 00001A04            337      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-00001354                           338  
-00001354  B23C 0031                339      CMP.B   #'1', D1         ; Compare input to '1'
-00001358  6700 0034                340      BEQ     MINE_ROOM_8      ; If '1', branch to FIGHT
-0000135C                           341      
-0000135C  B23C 0032                342      CMP.B   #'2', D1         ; Compare input to '2'
-00001360  6700 007C                343      BEQ     MINE_FIGHT_8     ; If '2', branch to
-00001364                           344      
-00001364                           345      
-00001364  6100 0520                346      BSR     ENDL
-00001368  6100 050A                347      BSR     INVALID_CHOICE   ; If input is invalid, show error
-0000136C  61BC                     348      BSR     MINE_ROOM_7           ; Repeat input prompt
-0000136E                           349      
-0000136E                           350      
-0000136E                           351  MINE_FIGHT_7:
-0000136E  6100 0516                352      BSR     ENDL
-00001372  43F9 0000223E            353      LEA     FIGHT_T_MSG, A1
-00001378  103C 000E                354      MOVE.B  #14, D0
-0000137C  4E4F                     355      TRAP    #15              ; Print MINES message
-0000137E                           356      
-0000137E  13FC 0003 00002E1D       357      MOVE.B  #3,E_HP
-00001386                           358  *    BSR FIGHT
-00001386  6100 050C                359      BSR HP_CHECK
-0000138A  6100 0072                360      BSR MINE_ROOM_9
-0000138E                           361  
-0000138E                           362  MINE_ROOM_8:
-0000138E  6100 04F6                363      BSR     ENDL
-00001392                           364      
-00001392  13FC 0003 00002E1D       365      MOVE.B  #3,E_HP
-0000139A                           366      
-0000139A  43F9 0000210D            367      LEA     MINES_MSG3, A1
-000013A0  103C 000E                368      MOVE.B  #14, D0
-000013A4  4E4F                     369      TRAP    #15              ; Print MINES message
-000013A6                           370  
-000013A6  6100 05F0                371      BSR     RNG
-000013AA  B47C 0001                372      CMP     #1,D2
-000013AE  6700 05CC                373      BEQ     HEAL_M
-000013B2                           374      
-000013B2  43F9 00001A04            375      LEA     USER_INPUT, A1   ; Load input buffer address
-000013B8  103C 0002                376      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-000013BC  4E4F                     377      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-000013BE                           378      
-000013BE  1239 00001A04            379      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-000013C4                           380  
-000013C4  B23C 0031                381      CMP.B   #'1', D1         ; Compare input to '1'
-000013C8  6700 0034                382      BEQ     MINE_ROOM_9      ; If '1', branch to FIGHT
-000013CC                           383      
-000013CC  B23C 0032                384      CMP.B   #'2', D1         ; Compare input to '2'
-000013D0  6700 0070                385      BEQ     MINE_FIGHT_9    ; If '2', branch to
-000013D4                           386      
-000013D4                           387      
-000013D4  6100 04B0                388      BSR     ENDL
-000013D8  6100 049A                389      BSR     INVALID_CHOICE   ; If input is invalid, show error
-000013DC  61B0                     390      BSR     MINE_ROOM_8           ; Repeat input prompt
-000013DE                           391      
-000013DE                           392      
-000013DE                           393  MINE_FIGHT_8:
-000013DE  6100 04A6                394      BSR     ENDL
-000013E2  43F9 0000223E            395      LEA     FIGHT_T_MSG, A1
-000013E8  103C 000E                396      MOVE.B  #14, D0
-000013EC  4E4F                     397      TRAP    #15              ; Print MINES message
-000013EE                           398      
-000013EE  13FC 0003 00002E1D       399      MOVE.B  #3,E_HP
-000013F6                           400  *    BSR FIGHT
-000013F6  6100 049C                401      BSR HP_CHECK
-000013FA  6100 0066                402      BSR MINE_ROOM_10
-000013FE                           403      
-000013FE                           404  MINE_ROOM_9:
-000013FE  6100 0486                405      BSR     ENDL
-00001402                           406      
-00001402  13FC 0003 00002E1D       407      MOVE.B  #3,E_HP
-0000140A                           408      
-0000140A  43F9 00001F08            409      LEA     MINES_MSG1, A1
-00001410  103C 000E                410      MOVE.B  #14, D0
-00001414  4E4F                     411      TRAP    #15              ; Print MINES message
-00001416                           412      
-00001416  43F9 00001A04            413      LEA     USER_INPUT, A1   ; Load input buffer address
-0000141C  103C 0002                414      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-00001420  4E4F                     415      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-00001422                           416      
-00001422  1239 00001A04            417      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-00001428                           418  
-00001428  B23C 0031                419      CMP.B   #'1', D1         ; Compare input to '1'
-0000142C  6700 0034                420      BEQ     MINE_ROOM_10      ; If '1', branch to FIGHT
-00001430                           421      
-00001430  B23C 0032                422      CMP.B   #'2', D1         ; Compare input to '2'
-00001434  6700 002C                423      BEQ     MINE_ROOM_10     ; If '2', branch to
-00001438                           424      
-00001438                           425      
-00001438  6100 044C                426      BSR     ENDL
-0000143C  6100 0436                427      BSR     INVALID_CHOICE   ; If input is invalid, show error
-00001440  61BC                     428      BSR     MINE_ROOM_9           ; Repeat input prompt
-00001442                           429      
-00001442                           430      
-00001442                           431  MINE_FIGHT_9:
-00001442  6100 0442                432      BSR     ENDL
-00001446  43F9 0000223E            433      LEA     FIGHT_T_MSG, A1
-0000144C  103C 000E                434      MOVE.B  #14, D0
-00001450  4E4F                     435      TRAP    #15              ; Print MINES message
-00001452                           436      
-00001452  13FC 0003 00002E1D       437      MOVE.B  #3,E_HP
-0000145A                           438  *    BSR FIGHT
-0000145A  6100 0438                439      BSR HP_CHECK
-0000145E  6100 0002                440      BSR MINE_ROOM_10
-00001462                           441  
-00001462                           442  MINE_ROOM_10:
-00001462  6100 0422                443      BSR     ENDL
-00001466  43F9 00002268            444      LEA     CUT_MINE, A1
-0000146C  103C 000E                445      MOVE.B  #14, D0
-00001470  4E4F                     446      TRAP    #15              ; Print MINES message
-00001472  6100 0412                447      BSR     ENDL
-00001476  5204                     448      ADD.B   #1,D4
-00001478                           449      
-00001478  B83C 0002                450      CMP.B   #2,D4
-0000147C  6700 03E2                451      BEQ     MOUNT
-00001480                           452      
-00001480  6100 0002                453      BSR     TOWER
-00001484                           454     
-00001484                           455      
-00001484                           456      
-00001484                           457  
-00001484                           458  
-00001484                           459  *-------------------------------------------------------
-00001484                           460  *                  TOWER SEQUENCE
-00001484                           461  *-------------------------------------------------------
-00001484                           462  TOWER:
-00001484  6100 0400                463      BSR     ENDL
-00001488  43F9 00002794            464      LEA     TOWER_MSG, A1
-0000148E  103C 000E                465      MOVE.B  #14, D0
-00001492  4E4F                     466      TRAP    #15              ; Print run message
-00001494  6100 0002                467      BSR TOWER_ROOM_1
-00001498                           468  
-00001498                           469  TOWER_ROOM_1:
-00001498  6100 03EC                470      BSR     ENDL
-0000149C                           471      
-0000149C  13FC 0003 00002E1D       472      MOVE.B  #3,E_HP
-000014A4                           473      
-000014A4  43F9 00002858            474      LEA     TOWER_MSG1, A1
-000014AA  103C 000E                475      MOVE.B  #14, D0
-000014AE  4E4F                     476      TRAP    #15              ; Print MINES message
-000014B0                           477      
-000014B0  43F9 00001A04            478      LEA     USER_INPUT, A1   ; Load input buffer address
-000014B6  103C 0002                479      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-000014BA  4E4F                     480      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-000014BC                           481      
-000014BC  1239 00001A04            482      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-000014C2                           483  
-000014C2  B23C 0031                484      CMP.B   #'1', D1         ; Compare input to '1'
-000014C6  6700 003A                485      BEQ     TOWER_ROOM_2      ; If '1', branch to FIGHT
-000014CA                           486      
-000014CA  B23C 0032                487      CMP.B   #'2', D1         ; Compare input to '2'
-000014CE  6700 0078                488      BEQ     TOWER_FIGHT_2    ; If '2', branch to
-000014D2                           489      
-000014D2                           490      
-000014D2  6100 03B2                491      BSR     ENDL
-000014D6  6100 039C                492      BSR     INVALID_CHOICE   ; If input is invalid, show error
-000014DA  61BC                     493      BSR     TOWER_ROOM_1           ; Repeat input prompt
-000014DC                           494      
-000014DC                           495      
-000014DC                           496  TOWER_FIGHT_1:
-000014DC  6100 03A8                497      BSR     ENDL
-000014E0  43F9 0000223E            498      LEA     FIGHT_T_MSG, A1
-000014E6  103C 000E                499      MOVE.B  #14, D0
-000014EA  4E4F                     500      TRAP    #15              ; Print MINES message
-000014EC                           501      
-000014EC  13FC 0003 00002E1D       502      MOVE.B  #3,E_HP
-000014F4  5339 00002E1C            503      SUB.B   #1,P_HP
-000014FA                           504  *    BSR FIGHT
-000014FA  6100 0398                505      BSR HP_CHECK
-000014FE  6100 0068                506      BSR TOWER_ROOM_3
-00001502                           507  
-00001502                           508  TOWER_ROOM_2:
-00001502  6100 0382                509      BSR     ENDL
-00001506                           510      
-00001506  13FC 0003 00002E1D       511      MOVE.B  #3,E_HP
-0000150E                           512      
-0000150E  43F9 0000290A            513      LEA     TOWER_MSG2, A1
-00001514  103C 000E                514      MOVE.B  #14, D0
-00001518  4E4F                     515      TRAP    #15              ; Print MINES message
-0000151A                           516      
-0000151A  43F9 00001A04            517      LEA     USER_INPUT, A1   ; Load input buffer address
-00001520  103C 0002                518      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-00001524  4E4F                     519      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-00001526                           520      
-00001526  1239 00001A04            521      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-0000152C                           522  
-0000152C  B23C 0031                523      CMP.B   #'1', D1         ; Compare input to '1'
-00001530  6700 0036                524      BEQ     TOWER_ROOM_3      ; If '1', branch to FIGHT
-00001534                           525      
-00001534  B23C 0032                526      CMP.B   #'2', D1         ; Compare input to '2'
-00001538  6700 007E                527      BEQ     TOWER_FIGHT_3    ; If '2', branch to
-0000153C                           528      
-0000153C                           529      
-0000153C  6100 0348                530      BSR     ENDL
-00001540  6100 0332                531      BSR     INVALID_CHOICE   ; If input is invalid, show error
-00001544  6100 0022                532      BSR     TOWER_ROOM_3           ; Repeat input prompt
-00001548                           533      
-00001548                           534      
-00001548                           535  TOWER_FIGHT_2:
-00001548  6100 033C                536      BSR     ENDL
-0000154C  43F9 0000223E            537      LEA     FIGHT_T_MSG, A1
-00001552  103C 000E                538      MOVE.B  #14, D0
-00001556  4E4F                     539      TRAP    #15              ; Print MINES message
-00001558                           540      
-00001558  13FC 0003 00002E1D       541      MOVE.B  #3,E_HP
-00001560                           542  *    BSR FIGHT
-00001560  6100 0332                543      BSR HP_CHECK
-00001564  6100 0072                544      BSR TOWER_ROOM_4
-00001568                           545  
-00001568                           546  TOWER_ROOM_3:
-00001568  6100 031C                547      BSR     ENDL
-0000156C                           548      
-0000156C  13FC 0003 00002E1D       549      MOVE.B  #3,E_HP
-00001574                           550      
-00001574  43F9 00002A3B            551      LEA     TOWER_MSG3, A1
-0000157A  103C 000E                552      MOVE.B  #14, D0
-0000157E  4E4F                     553      TRAP    #15              ; Print MINES message
-00001580                           554  
-00001580  6100 0416                555      BSR     RNG
-00001584  B47C 0001                556      CMP     #1,D2
-00001588  6700 03D6                557      BEQ     HEAL_T
-0000158C                           558      
-0000158C  43F9 00001A04            559      LEA     USER_INPUT, A1   ; Load input buffer address
-00001592  103C 0002                560      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-00001596  4E4F                     561      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-00001598                           562      
-00001598  1239 00001A04            563      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-0000159E                           564  
-0000159E  B23C 0031                565      CMP.B   #'1', D1         ; Compare input to '1'
-000015A2  6700 0034                566      BEQ     TOWER_ROOM_4      ; If '1', branch to FIGHT
-000015A6                           567      
-000015A6  B23C 0032                568      CMP.B   #'2', D1         ; Compare input to '2'
-000015AA  6700 0070                569      BEQ     TOWER_FIGHT_4    ; If '2', branch to
-000015AE                           570      
-000015AE                           571      
-000015AE  6100 02D6                572      BSR     ENDL
-000015B2  6100 02C0                573      BSR     INVALID_CHOICE   ; If input is invalid, show error
-000015B6  61B0                     574      BSR     TOWER_ROOM_3           ; Repeat input prompt
-000015B8                           575      
-000015B8                           576      
-000015B8                           577  TOWER_FIGHT_3:
-000015B8  6100 02CC                578      BSR     ENDL
-000015BC  43F9 0000223E            579      LEA     FIGHT_T_MSG, A1
-000015C2  103C 000E                580      MOVE.B  #14, D0
-000015C6  4E4F                     581      TRAP    #15              ; Print MINES message
-000015C8                           582      
-000015C8  13FC 0003 00002E1D       583      MOVE.B  #3,E_HP
-000015D0                           584  *    BSR FIGHT
-000015D0  6100 02C2                585      BSR HP_CHECK
-000015D4  6100 0066                586      BSR TOWER_ROOM_5
-000015D8                           587      
-000015D8                           588  
-000015D8                           589  TOWER_ROOM_4:
-000015D8  6100 02AC                590      BSR     ENDL
-000015DC                           591      
-000015DC  13FC 0003 00002E1D       592      MOVE.B  #3,E_HP
-000015E4                           593      
-000015E4  43F9 00002858            594      LEA     TOWER_MSG1, A1
-000015EA  103C 000E                595      MOVE.B  #14, D0
-000015EE  4E4F                     596      TRAP    #15              ; Print MINES message
-000015F0                           597      
-000015F0  43F9 00001A04            598      LEA     USER_INPUT, A1   ; Load input buffer address
-000015F6  103C 0002                599      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-000015FA  4E4F                     600      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-000015FC                           601      
-000015FC  1239 00001A04            602      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-00001602                           603  
-00001602  B23C 0031                604      CMP.B   #'1', D1         ; Compare input to '1'
-00001606  6700 0034                605      BEQ     TOWER_ROOM_5      ; If '1', branch to FIGHT
-0000160A                           606      
-0000160A  B23C 0032                607      CMP.B   #'2', D1         ; Compare input to '2'
-0000160E  6700 0070                608      BEQ     TOWER_FIGHT_5    ; If '2', branch to
-00001612                           609      
-00001612                           610      
-00001612  6100 0272                611      BSR     ENDL
-00001616  6100 025C                612      BSR     INVALID_CHOICE   ; If input is invalid, show error
-0000161A  61BC                     613      BSR     TOWER_ROOM_4           ; Repeat input prompt
-0000161C                           614      
-0000161C                           615      
-0000161C                           616  TOWER_FIGHT_4:
-0000161C  6100 0268                617      BSR     ENDL
-00001620  43F9 0000223E            618      LEA     FIGHT_T_MSG, A1
-00001626  103C 000E                619      MOVE.B  #14, D0
-0000162A  4E4F                     620      TRAP    #15              ; Print MINES message
-0000162C                           621      
-0000162C  13FC 0003 00002E1D       622      MOVE.B  #3,E_HP
-00001634                           623  *    BSR FIGHT
-00001634  6100 025E                624      BSR HP_CHECK
-00001638  6100 0066                625      BSR TOWER_ROOM_6
-0000163C                           626  TOWER_ROOM_5:
-0000163C  6100 0248                627      BSR     ENDL
-00001640                           628      
-00001640  13FC 0003 00002E1D       629      MOVE.B  #3,E_HP
-00001648                           630      
-00001648  43F9 0000290A            631      LEA     TOWER_MSG2, A1
-0000164E  103C 000E                632      MOVE.B  #14, D0
-00001652  4E4F                     633      TRAP    #15              ; Print MINES message
-00001654                           634      
-00001654  43F9 00001A04            635      LEA     USER_INPUT, A1   ; Load input buffer address
-0000165A  103C 0002                636      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-0000165E  4E4F                     637      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-00001660                           638      
-00001660  1239 00001A04            639      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-00001666                           640  
-00001666  B23C 0031                641      CMP.B   #'1', D1         ; Compare input to '1'
-0000166A  6700 0034                642      BEQ     TOWER_ROOM_6      ; If '1', branch to FIGHT
-0000166E                           643      
-0000166E  B23C 0032                644      CMP.B   #'2', D1         ; Compare input to '2'
-00001672  6700 007E                645      BEQ     TOWER_FIGHT_6    ; If '2', branch to
-00001676                           646      
-00001676                           647      
-00001676  6100 020E                648      BSR     ENDL
-0000167A  6100 01F8                649      BSR     INVALID_CHOICE   ; If input is invalid, show error
-0000167E  61BC                     650      BSR     TOWER_ROOM_5           ; Repeat input prompt
-00001680                           651      
-00001680                           652      
-00001680                           653  TOWER_FIGHT_5:
-00001680  6100 0204                654      BSR     ENDL
-00001684  43F9 0000223E            655      LEA     FIGHT_T_MSG, A1
-0000168A  103C 000E                656      MOVE.B  #14, D0
-0000168E  4E4F                     657      TRAP    #15              ; Print MINES message
-00001690                           658      
-00001690  13FC 0003 00002E1D       659      MOVE.B  #3,E_HP
-00001698                           660  *    BSR FIGHT
-00001698  6100 01FA                661      BSR HP_CHECK
-0000169C  6100 0074                662      BSR TOWER_ROOM_7
-000016A0                           663  
-000016A0                           664      
-000016A0                           665  TOWER_ROOM_6:
-000016A0  6100 01E4                666      BSR     ENDL
-000016A4                           667      
-000016A4  13FC 0003 00002E1D       668      MOVE.B  #3,E_HP
-000016AC                           669      
-000016AC  43F9 00002A3B            670      LEA     TOWER_MSG3, A1
-000016B2  103C 000E                671      MOVE.B  #14, D0
-000016B6  4E4F                     672      TRAP    #15              ; Print MINES message
-000016B8                           673  
-000016B8  6100 02DE                674      BSR     RNG
-000016BC  B47C 0001                675      CMP     #1,D2
-000016C0  6700 029E                676      BEQ     HEAL_T
-000016C4                           677      
-000016C4  43F9 00001A04            678      LEA     USER_INPUT, A1   ; Load input buffer address
-000016CA  103C 0002                679      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-000016CE  4E4F                     680      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-000016D0                           681      
-000016D0  1239 00001A04            682      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-000016D6                           683  
-000016D6  B23C 0031                684      CMP.B   #'1', D1         ; Compare input to '1'
-000016DA  6700 0036                685      BEQ     TOWER_ROOM_7      ; If '1', branch to FIGHT
-000016DE                           686      
-000016DE  B23C 0032                687      CMP.B   #'2', D1         ; Compare input to '2'
-000016E2  6700 0072                688      BEQ     TOWER_FIGHT_7    ; If '2', branch to
-000016E6                           689      
-000016E6                           690      
-000016E6  6100 019E                691      BSR     ENDL
-000016EA  6100 0188                692      BSR     INVALID_CHOICE   ; If input is invalid, show error
-000016EE  6100 0022                693      BSR     TOWER_ROOM_7           ; Repeat input prompt
-000016F2                           694      
-000016F2                           695      
-000016F2                           696  TOWER_FIGHT_6:
-000016F2  6100 0192                697      BSR     ENDL
-000016F6  43F9 0000223E            698      LEA     FIGHT_T_MSG, A1
-000016FC  103C 000E                699      MOVE.B  #14, D0
-00001700  4E4F                     700      TRAP    #15              ; Print MINES message
-00001702  13FC 0003 00002E1D       701      MOVE.B  #3,E_HP
-0000170A                           702  *    BSR FIGHT
-0000170A  6100 0188                703      BSR HP_CHECK
-0000170E  6100 0066                704      BSR TOWER_ROOM_8
-00001712                           705  
-00001712                           706  TOWER_ROOM_7:
-00001712  6100 0172                707      BSR     ENDL
-00001716                           708      
-00001716  13FC 0003 00002E1D       709      MOVE.B  #3,E_HP
-0000171E                           710      
-0000171E  43F9 00002858            711      LEA     TOWER_MSG1, A1
-00001724  103C 000E                712      MOVE.B  #14, D0
-00001728  4E4F                     713      TRAP    #15              ; Print MINES message
-0000172A                           714      
-0000172A  43F9 00001A04            715      LEA     USER_INPUT, A1   ; Load input buffer address
-00001730  103C 0002                716      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-00001734  4E4F                     717      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-00001736                           718      
-00001736  1239 00001A04            719      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-0000173C                           720  
-0000173C  B23C 0031                721      CMP.B   #'1', D1         ; Compare input to '1'
-00001740  6700 0034                722      BEQ     TOWER_ROOM_8      ; If '1', branch to FIGHT
-00001744                           723      
-00001744  B23C 0032                724      CMP.B   #'2', D1         ; Compare input to '2'
-00001748  6700 0070                725      BEQ     TOWER_FIGHT_8    ; If '2', branch to
-0000174C                           726      
-0000174C                           727      
-0000174C  6100 0138                728      BSR     ENDL
-00001750  6100 0122                729      BSR     INVALID_CHOICE   ; If input is invalid, show error
-00001754  61BC                     730      BSR     TOWER_ROOM_7           ; Repeat input prompt
-00001756                           731      
-00001756                           732      
-00001756                           733  TOWER_FIGHT_7:
-00001756  6100 012E                734      BSR     ENDL
-0000175A  43F9 0000223E            735      LEA     FIGHT_T_MSG, A1
-00001760  103C 000E                736      MOVE.B  #14, D0
-00001764  4E4F                     737      TRAP    #15              ; Print MINES message
-00001766  13FC 0003 00002E1D       738      MOVE.B  #3,E_HP
-0000176E                           739  *    BSR FIGHT
-0000176E  6100 0124                740      BSR HP_CHECK
-00001772  6100 0066                741      BSR TOWER_ROOM_9
-00001776                           742  
-00001776                           743  
-00001776                           744  TOWER_ROOM_8:
-00001776  6100 010E                745      BSR     ENDL
-0000177A  13FC 0003 00002E1D       746      MOVE.B  #3,E_HP
-00001782                           747      
-00001782  43F9 0000290A            748      LEA     TOWER_MSG2, A1
-00001788  103C 000E                749      MOVE.B  #14, D0
-0000178C  4E4F                     750      TRAP    #15              ; Print MINES message
-0000178E                           751      
-0000178E  43F9 00001A04            752      LEA     USER_INPUT, A1   ; Load input buffer address
-00001794  103C 0002                753      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-00001798  4E4F                     754      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-0000179A                           755      
-0000179A  1239 00001A04            756      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-000017A0                           757  
-000017A0  B23C 0031                758      CMP.B   #'1', D1         ; Compare input to '1'
-000017A4  6700 0034                759      BEQ     TOWER_ROOM_9      ; If '1', branch to FIGHT
-000017A8                           760      
-000017A8  B23C 0032                761      CMP.B   #'2', D1         ; Compare input to '2'
-000017AC  6700 0070                762      BEQ     TOWER_FIGHT_9    ; If '2', branch to
-000017B0                           763      
-000017B0                           764      
-000017B0  6100 00D4                765      BSR     ENDL
-000017B4  6100 00BE                766      BSR     INVALID_CHOICE   ; If input is invalid, show error
-000017B8  61BC                     767      BSR     TOWER_ROOM_8           ; Repeat input prompt
-000017BA                           768      
-000017BA                           769      
-000017BA                           770  TOWER_FIGHT_8:
-000017BA  6100 00CA                771      BSR     ENDL
-000017BE  43F9 0000223E            772      LEA     FIGHT_T_MSG, A1
-000017C4  103C 000E                773      MOVE.B  #14, D0
-000017C8  4E4F                     774      TRAP    #15  ; Print MINES message
-000017CA                           775      
-000017CA                           776      
-000017CA  13FC 0003 00002E1D       777      MOVE.B  #3,E_HP
-000017D2                           778  *    BSR FIGHT
-000017D2  6100 00C0                779      BSR HP_CHECK
-000017D6  6100 0066                780      BSR TOWER_ROOM_10
-000017DA                           781  
-000017DA                           782      
-000017DA                           783  TOWER_ROOM_9:
-000017DA  6100 00AA                784      BSR     ENDL
-000017DE                           785      
-000017DE  13FC 0003 00002E1D       786      MOVE.B  #3,E_HP
-000017E6                           787      
-000017E6  43F9 00002858            788      LEA     TOWER_MSG1, A1
-000017EC  103C 000E                789      MOVE.B  #14, D0
-000017F0  4E4F                     790      TRAP    #15              ; Print MINES message
-000017F2                           791  
-000017F2                           792      
-000017F2  43F9 00001A04            793      LEA     USER_INPUT, A1   ; Load input buffer address
-000017F8  103C 0002                794      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-000017FC  4E4F                     795      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-000017FE                           796      
-000017FE  1239 00001A04            797      MOVE.B  USER_INPUT, D1   ; Load user input into D1
-00001804                           798  
-00001804  B23C 0031                799      CMP.B   #'1', D1         ; Compare input to '1'
-00001808  6700 0034                800      BEQ     TOWER_ROOM_10      ; If '1', branch to FIGHT
-0000180C                           801      
-0000180C  B23C 0032                802      CMP.B   #'2', D1         ; Compare input to '2'
-00001810  6700 002C                803      BEQ     TOWER_ROOM_10     ; If '2', branch to
-00001814                           804      
-00001814                           805      
-00001814  6100 0070                806      BSR     ENDL
-00001818  6100 005A                807      BSR     INVALID_CHOICE   ; If input is invalid, show error
-0000181C  61BC                     808      BSR     TOWER_ROOM_9           ; Repeat input prompt
-0000181E                           809      
-0000181E                           810      
-0000181E                           811  TOWER_FIGHT_9:
-0000181E  6100 0066                812      BSR     ENDL
-00001822  43F9 0000223E            813      LEA     FIGHT_T_MSG, A1
-00001828  103C 000E                814      MOVE.B  #14, D0
-0000182C  4E4F                     815      TRAP    #15              ; Print MINES message
-0000182E                           816      
-0000182E  13FC 0003 00002E1D       817      MOVE.B  #3,E_HP
-00001836                           818  *    BSR FIGHT
-00001836  6100 005C                819      BSR HP_CHECK
-0000183A  6100 0002                820      BSR TOWER_ROOM_10
-0000183E                           821  
-0000183E                           822  TOWER_ROOM_10:
-0000183E  6100 0046                823      BSR     ENDL
-00001842  43F9 000023C8            824      LEA     CUT_TOWER, A1
-00001848  103C 000E                825      MOVE.B  #14, D0
-0000184C  4E4F                     826      TRAP    #15              ; Print MINES message
-0000184E  6100 0036                827      BSR     ENDL
-00001852  5204                     828      ADD.B   #1,D4
-00001854                           829      
-00001854  B83C 0002                830      CMP.B   #2,D4
-00001858  6700 0006                831      BEQ     MOUNT
-0000185C                           832      
-0000185C  6100 F812                833      BSR     MINE
-00001860                           834  
-00001860                           835  *-------------------------------------------------------
-00001860                           836  *                  FINAL SEQUENCE
-00001860                           837  *-------------------------------------------------------
-00001860                           838  MOUNT:
-00001860  6100 0024                839      BSR     ENDL
-00001864  43F9 00002526            840      LEA     FINAL_CUT , A1
-0000186A  103C 000E                841      MOVE.B  #14, D0
-0000186E  4E4F                     842      TRAP    #15  ; Print MINES message
-00001870  6100 15AC                843      BSR     GAME_OVER
-00001874                           844  *-------------------------------------------------------
-00001874                           845  *                INVALID INPUT HANDLING
-00001874                           846  *-------------------------------------------------------
-00001874                           847  INVALID_CHOICE:
-00001874  6100 0010                848      BSR     ENDL
-00001878  43F9 00002CB5            849      LEA     INVALID_MSG, A1
-0000187E  103C 000E                850      MOVE.B  #14, D0
-00001882  4E4F                     851      TRAP    #15              ; Print invalid input message
-00001884  4E75                     852      RTS
-00001886                           853  
-00001886                           854  *-------------------------------------------------------
-00001886                           855  *                ENDL SUBROUTINE (NEW LINE)
-00001886                           856  *-------------------------------------------------------
-00001886                           857  ENDL:
-00001886  43F9 00001A07            858      LEA     CRLF, A1    ; Load newline characters
-0000188C  103C 000E                859      MOVE.B  #14, D0
-00001890  4E4F                     860      TRAP    #15         ; Print new line
-00001892  4E75                     861      RTS                 ; Return
-00001894                           862      
-00001894                           863  *---------------------------------------------------------
-00001894                           864  *                       Fight Suff
-00001894                           865  *---------------------------------------------------------
-00001894                           866  *FIGHT:
-00001894                           867  *    
-00001894                           868  *    BSR     ENDL
-00001894                           869  *    BSR     RNG
-00001894                           870  *    LEA     USER_INPUT, A1   ; Load input buffer address
-00001894                           871  *    MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-00001894                           872  *    TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-00001894                           873  *    MOVE.B  USER_INPUT, D1   ; Load user input into D1
-00001894                           874  *    BSR CONVR
-00001894                           875  *    
-00001894                           876  *    CMP     D3,D2
-00001894                           877  *    BEQ     DRAW
-00001894                           878  *  
-00001894                           879  *    ADD.B   D2,D3
-00001894                           880  *    
-00001894                           881  *    CMP     #3,D3
-00001894                           882  *    BEQ     PAPER
-00001894                           883  *    
-00001894                           884  *    CMP     #4,D3
-00001894                           885  *    BEQ     ROCK
-00001894                           886  *    
-00001894                           887  *    CMP     #5,D3
-00001894                           888  *    BEQ     SIS
-00001894                           889  *    
-00001894                           890  *    MOVE.B  D2,D7
-00001894                           891  *    
-00001894                           892  *    
-00001894                           893  *    CMP.B   #0,P_HP       
-00001894                           894  *    BEQ     GAME_OVER
-00001894                           895  *    
-00001894                           896  *    CMP.B   #0,E_HP
-00001894                           897  *    IF <NE> THEN
-00001894                           898  *        MOVE.B #0,D1
-00001894                           899  *        JSR FIGHT
-00001894                           900  *    ENDI
-00001894                           901  *    RTS
-00001894                           902  * 
-00001894                           903  HP_CHECK:
-00001894  0C39 0000 00002E1C       904      CMP.B #0,P_HP
-0000189C  6700 1580                905      BEQ GAME_OVER
-000018A0                           906  
-000018A0  4E75                     907      RTS   
-000018A2                           908  DMG:
-000018A2  43F9 00002DA7            909      LEA     DMG_MSG,  A1   ; loads first draw msg
-000018A8  103C 000E                910      MOVE.B  #14, D0
-000018AC  4E4F                     911      TRAP    #15              ; Prints message
-000018AE  4E75                     912      RTS
-000018B0                           913  
-000018B0                           914  DRAW:
-000018B0  BC3C 0000                915      CMP.B   #0, D6
-000018B4  6700 0012                916      BEQ     FDRAW
-000018B8                           917      
-000018B8  43F9 00002CD2            918      LEA     DRAW_MSG, A1
-000018BE  103C 000E                919      MOVE.B  #14, D0
-000018C2  4E4F                     920      TRAP    #15              ; Prints message
-000018C4  5206                     921      ADD.B   #1, D6         ; Adds to the draw count
-000018C6  4E75                     922      RTS
-000018C8                           923      
-000018C8                           924  FDRAW:
-000018C8  43F9 00002D1B            925      LEA     FDRAW_MSG,  A1   ; loads first draw msg
-000018CE  103C 000E                926      MOVE.B  #14, D0
-000018D2  4E4F                     927      TRAP    #15              ; Prints message
-000018D4  5206                     928      ADD.B   #1,  D6
-000018D6  4E75                     929      RTS
-000018D8                           930      
-000018D8                           931  FOVER:
-000018D8  13FC 0003 00002E1D       932      MOVE.B  #3,E_HP
-000018E0  43F9 00002D58            933      LEA     FOVER_MSG,  A1   ; loads first draw msg
-000018E6  103C 000E                934      MOVE.B  #14, D0
-000018EA  4E4F                     935      TRAP    #15              ; Prints message
-000018EC  5200                     936      ADD.B   #1,  D0
-000018EE                           937      
-000018EE                           938  PAPER:
-000018EE  43F9 00002DFA            939      LEA     R_MSG,  A1   ; loads first draw msg
-000018F4  103C 000E                940      MOVE.B  #14, D0
-000018F8  4E4F                     941      TRAP    #15              ; Prints message
-000018FA                           942      ;BSR     GAME_OVER
-000018FA                           943      
-000018FA  B43C 0002                944      CMP.B     #2,D2
-000018FE  6700 003C                945      BEQ F_WIN
-00001902                           946      
-00001902  6100 0048                947      BSR F_LOSE
-00001906                           948  
-00001906  4E75                     949      RTS
-00001908                           950      
-00001908                           951  ROCK:
-00001908  43F9 00002E03            952      LEA     P_MSG,  A1   ; loads first draw msg
-0000190E  103C 000E                953      MOVE.B  #14, D0
-00001912  4E4F                     954      TRAP    #15              ; Prints message
-00001914                           955      
-00001914  B43C 0001                956      CMP.B   #1,D2
-00001918  6700 0022                957      BEQ F_WIN
-0000191C                           958      
-0000191C  6100 002E                959      BSR F_LOSE
-00001920                           960  
-00001920  4E75                     961      RTS
-00001922                           962      
-00001922                           963  SIS:
-00001922  43F9 00002E0D            964      LEA     S_MSG,  A1   ; loads first draw msg
-00001928  103C 000E                965      MOVE.B  #14, D0
-0000192C  4E4F                     966      TRAP    #15              ; Prints message
-0000192E                           967      
-0000192E  B43C 0003                968      CMP.B   #3,D2
-00001932  6700 0008                969      BEQ F_WIN
-00001936                           970      
-00001936  6100 0014                971      BSR F_LOSE
-0000193A  4E75                     972      RTS
-0000193C                           973  
-0000193C                           974  F_WIN:
-0000193C  6100 FF64                975      BSR     DMG
-00001940  1C39 00002E1C            976      MOVE.B  P_HP, D6
-00001946  5306                     977      SUBI.B  #1,D6
-00001948  1486                     978      MOVE.B  D6,(A2)
-0000194A  4246                     979      CLR     D6
-0000194C                           980      
-0000194C                           981  F_LOSE:
-0000194C  6100 FF54                982      BSR     DMG
-00001950  1C39 00002E1D            983      MOVE.B  E_HP, D6
-00001956  5339 00002E1C            984      SUBI.B  #1, P_HP
-0000195C  1686                     985      MOVE.B  D6, (A3)
-0000195E  4246                     986      CLR     D6
-00001960                           987  
-00001960                           988  HEAL_T:
-00001960  6100 FF24                989      BSR ENDL 
-00001964  43F9 00002B92            990      LEA     HEAL_MSG,  A1   ; loads first draw msg
-0000196A  103C 000E                991      MOVE.B  #14, D0
-0000196E  4E4F                     992      TRAP    #15              ; Prints message
-00001970  13FC 0001 00002E1C       993      MOVE.B #1,P_HP
-00001978  6100 FE60                994      BSR TOWER_ROOM_9
-0000197C                           995  HEAL_M:
-0000197C  6100 FF08                996      BSR ENDL 
-00001980  43F9 00002B92            997      LEA     HEAL_MSG,  A1   ; loads first draw msg
-00001986  103C 000E                998      MOVE.B  #14, D0
-0000198A  4E4F                     999      TRAP    #15              ; Prints message
-0000198C  13FC 0001 00002E1C      1000      MOVE.B #1,P_HP
-00001994  6100 FA68               1001      BSR MINE_ROOM_9
-00001998                          1002  *---------------------------------------------------------
-00001998                          1003  *               RNG for fights
-00001998                          1004  *---------------------------------------------------------
-00001998                          1005  RNG:              
-00001998  3A3C 0001               1006      MOVE    #1, D5
-0000199C  3C3C 0003               1007      MOVE    #3, D6
-000019A0  9C45                    1008      SUB     D5,D6             ;You should give Min in D5 and Max in D6
-000019A2  3E06                    1009      MOVE    D6,D7
-000019A4  5246                    1010      ADDI    #1,D6
-000019A6  CEFC FFFF               1011      MULU    #$FFFF,D7
-000019AA  43F9 00002E1A           1012      LEA     SEED,A1
-000019B0  103C 0008               1013      MOVE.B  #8,d0
-000019B4  4E4F                    1014      TRAP    #15
-000019B6  D251                    1015      ADD     (A1),D1
-000019B8  C2FC FFFF               1016      MULU    #$FFFF,D1
-000019BC  0A81 F321F23A           1017      EOR.L   #$F321F23A,D1
-000019C2  3281                    1018      MOVE    D1,(A1)
-000019C4  C287                    1019      AND.L   D7,D1    ;PREVENT OVERFLOW FOR (Max-Min)
-000019C6  82C6                    1020      DIVU    D6,D1         ;time count / (Max-Min)
-000019C8  4841                    1021      SWAP    D1              ;swap upper and lower words of D1 to put remainder in low word
-000019CA  D245                    1022      ADD     D5,d1           ;D1.W contains number in the range of (Min,Max)
-000019CC  4240                    1023      CLR     D0
-000019CE  4247                    1024      CLR     D7
-000019D0  4242                    1025      CLR     D2
-000019D2  1401                    1026      MOVE.B  D1,D2
-000019D4  4245                    1027      CLR     D5
-000019D6  4246                    1028      CLR     D6
-000019D8                          1029      
-000019D8  4E75                    1030      RTS                    ; Return from subroutine, control passes back to the calling code
-000019DA                          1031  
-000019DA                          1032  
-000019DA                          1033  CONVR:
-000019DA  B27C 0031               1034      CMP #'1', D1
-000019DE  6700 0012               1035      BEQ ONE
-000019E2                          1036      
-000019E2  B27C 0032               1037      CMP #'2', D1
-000019E6  6700 0010               1038      BEQ TWO
-000019EA                          1039      
-000019EA  B27C 0033               1040      CMP #'3', D1
-000019EE  6700 000E               1041      BEQ THREE
-000019F2                          1042  
-000019F2                          1043  ONE:
-000019F2  363C 0001               1044      MOVE.W #1, D3
-000019F6  4E75                    1045      RTS
-000019F8                          1046      
-000019F8                          1047  TWO:
-000019F8  363C 0002               1048      MOVE.W #2, D3
-000019FC  4E75                    1049      RTS
-000019FE                          1050      
-000019FE                          1051  THREE:
-000019FE  363C 0003               1052      MOVE.W #3, D3
-00001A02  4E75                    1053      RTS
-00001A04                          1054    
-00001A04                          1055  *-------------------------------------------------------
-00001A04                          1056  *                  DATA SECTION
-00001A04                          1057  *-------------------------------------------------------
-00001A04                          1058  USER_INPUT:   DS.B  2   ; Reserve 2 bytes for input (1 char + NULL)
-00001A06= 00                      1059  CHOICE_VAR:   DC.B  0
-00001A07                          1060  
-00001A07= 0D 0A 00                1061  CRLF:   DC.B  $0D, $0A, 0   ; Carriage Return + Line Feed (New Line)
-00001A0A                          1062  
-00001A0A= 57 65 6C 63 6F 6D ...   1063  WELCOME_MSG:  DC.B 'Welcome to the Adventures of dingle dorf!', $0D, $0A
-00001A35= 44 69 6E 67 6C 65 ...   1064                DC.B 'Dingle dorf has set out on an epic adventure to fix the relic of equinox', $0D, $0A
-00001A7F= 74 68 65 20 72 65 ...   1065                DC.B 'the relic has been broken in half and the peices stolen', $0D, $0A
-00001AB8= 74 68 65 20 66 69 ...   1066                DC.B 'the first peice has been taken by the wizards and is held at their tower', $0D, $0A
-00001B02= 74 68 65 20 73 65 ...   1067                DC.B 'the second peice is being held by the cobalts at the bottom of the mine', $0D, $0A
-00001B4B= 6E 6F 77 20 79 6F ...   1068                DC.B 'now you must guide dingle dorf on his journy and beat monsters and mages', $0D, $0A
-00001B95= 49 4E 20 54 48 45 ...   1069                DC.B 'IN THE LEGENDARY AINCHENT RIGHT OF!!', $0D, $0A
-00001BBB= 52 4F 43 4B 21 21 ...   1070                DC.B 'ROCK!! PAPER!! SISSORS!!!!', $0D, $0A, 0
-00001BD8                          1071                
-00001BD8                          1072  OPEN_MSG:
-00001BD8= 59 6F 75 20 61 77 ...   1073                DC.B 'You awaken in a forrest the smell of due filling your lungs', $0D, $0A
-00001C15= 61 73 20 79 6F 75 ...   1074                DC.B 'as you come to your feet you obesrver your suroundings', $0D, $0A
-00001C4D= 79 6F 75 20 61 72 ...   1075                DC.B 'you are at the base of the mountian containing the grear forge', $0D, $0A
-00001C8D= 79 6F 75 72 20 63 ...   1076                DC.B 'your camp the same as whenst you lay your head to rest', $0D, $0A
-00001CC5= 61 73 20 79 6F 75 ...   1077                DC.B 'as you look to the top of the mountian', $0D, $0A
-00001CED= 79 6F 75 20 73 65 ...   1078                DC.B 'you see a dwarf atop the mountian looking down at you' $0D, $0A
-00001D22= 75 6E 61 62 6C 65 ...   1079                DC.B 'unable to see his face as the sun blinds you, there is an unease wash over you as you look', $0D, $0A
-00001D7E= 74 68 65 20 64 77 ...   1080                DC.B 'the dwarf decend foward dissapering from your sight', $0D, $0A
-00001DB3= 79 6F 75 20 6D 65 ...   1081                DC.B 'you meet a diverging path', $0D, $0A
-00001DCE= 70 61 74 68 20 31 ...   1082                DC.B 'path 1. enter the mines', $0D, $0A
-00001DE7= 70 61 74 68 20 32 ...   1083                DC.B 'path 2. go to tower', $0D, $0A, 0
-00001DFD                          1084  
-00001DFD= 57 68 65 72 65 20 ...   1085  CHOICE_MSG:   DC.B 'Where will you go? (1 or 2): ', 0
-00001E1B= 59 6F 75 20 65 6E ...   1086  MINES_MSG:    DC.B 'You enter the mines', $0D, $0A
-00001E30= 41 73 20 79 6F 75 ...   1087                DC.B 'As you enter a cavity in the mines you see two dirverging paths', $0D, $0A
-00001E71= 54 68 65 20 66 69 ...   1088                DC.B 'The first a gradual slope down with mushrooms lining the floor', $0D, $0A
-00001EB1= 54 68 65 20 73 65 ...   1089                DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
-00001EF1= 57 68 69 63 68 20 ...   1090                DC.B 'Which will you enter', $0D, $0A, 0
-00001F08                          1091               
-00001F08= 41 73 20 79 6F 75 ...   1092  MINES_MSG1:   DC.B 'As you enter the next cavity in the mines you see two dirverging paths', $0D, $0A
-00001F50= 54 68 65 20 66 69 ...   1093                DC.B 'The first a gradual slope down with mushrooms lining the floor', $0D, $0A
-00001F90= 54 68 65 20 73 65 ...   1094                DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
-00001FD0= 57 68 69 63 68 20 ...   1095                DC.B 'Which will you enter', $0D, $0A, 0
-00001FE7                          1096                
-00001FE7= 59 6F 75 20 65 6E ...   1097  MINES_MSG2:   DC.B 'You enter the next room it again has only two paths', $0D, $0A
-0000201C= 74 68 65 20 6D 69 ...   1098                DC.B 'the mine all blending together only being seperated', $0D, $0A
-00002051= 62 79 20 74 68 65 ...   1099                DC.B 'by the occaisonal campfire or fight', $0D, $0A
-00002076= 54 68 65 20 66 69 ...   1100                DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
-000020B5= 54 68 65 20 73 65 ...   1101                DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
-000020F6= 57 68 69 63 68 20 ...   1102                DC.B 'Which will you enter', $0D, $0A, 0
-0000210D                          1103           
-0000210D= 0D 0A                   1104  MINES_MSG3:   DC.B '', $0D, $0A
-0000210F= 41 73 20 79 6F 75 ...   1105                DC.B 'As you move twords the next cavity you see a faint glow', $0D, $0A
-00002148= 54 68 65 72 65 20 ...   1106                DC.B 'There is a campfire unattended in the room (33% chance to heal)', $0D, $0A
-00002189= 54 68 65 72 65 20 ...   1107                DC.B 'There are also two paths ahead' $0D, $0A
-000021A7= 54 68 65 20 66 69 ...   1108                DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
-000021E6= 54 68 65 20 73 65 ...   1109                DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
-00002227= 57 68 69 63 68 20 ...   1110                DC.B 'Which will you enter', $0D, $0A, 0
-0000223E                          1111  
-0000223E= 41 20 66 69 67 68 ...   1112  FIGHT_T_MSG:  DC.B 'A fight will be here you take 1 dammage', $0D, $0A, 0
-00002268                          1113  
-00002268= 41 73 20 79 6F 75 ...   1114  CUT_MINE:     DC.B 'As you aproch the botom of the mine you see before you', $0D, $0A
-000022A0= 54 68 65 20 63 6F ...   1115                DC.B 'The cobalt king sitting upon his throne made of crude iron', $0D, $0A
-000022DC= 41 73 20 79 6F 75 ...   1116                DC.B 'As you inch closer you begin to knowtace the blade in his back', $0D, $0A
-0000231C= 74 68 65 20 6B 6F ...   1117                DC.B 'the kobalt king is dead as you look around the room you see', $0D, $0A
-00002359= 49 6E 20 61 20 70 ...   1118                DC.B 'In a pile of iron ore a glint you rumage through to find half the relic', $0D, $0A
-000023A2= 4E 6F 77 20 79 6F ...   1119                DC.B 'Now you must continue your journy .', $0D, $0A, 0
-000023C8= 41 73 20 79 6F 75 ...   1120  CUT_TOWER:    DC.B 'As you reach the top of the tower having gone through many battles to get here', $0D, $0A
-00002418= 62 65 66 6F 72 65 ...   1121                DC.B 'before you lies an empty room of the archmage filled with pods full of liques ', $0D, $0A
-00002468= 57 69 74 68 69 6E ...   1122                DC.B 'Within the liquid there is small childern each labled  attempt along with a number', $0D, $0A
-000024BC= 41 73 20 79 6F 75 ...   1123                DC.B 'As you walk past this you see on a pedistal a half of the relic', $0D, $0A
-000024FD= 59 6F 75 20 74 61 ...   1124                DC.B 'You take it and contine on your journy', $0D, $0A, 0 
-00002526                          1125  
-00002526= 59 6F 75 20 68 61 ...   1126  FINAL_CUT     DC.B 'You have reached the top of the mountian both parts of the relic in hand', $0D, $0A
-00002570= 59 6F 75 20 73 74 ...   1127                DC.B 'You stop for a moment looking down to see how far you have come', $0D, $0A
-000025B1= 41 73 20 79 6F 75 ...   1128                DC.B 'As you look down you spot someone standing up', $0D, $0A
-000025E0= 59 6F 75 20 72 65 ...   1129                DC.B 'You realise that they are in the same place you started your journy', $0D, $0A
-00002625= 59 6F 75 20 74 61 ...   1130                DC.B 'You take a step closer to have a coser look at their face', $0D, $0A
-00002660= 59 6F 75 20 73 65 ...   1131                DC.B 'You see you and you recall the figure on top of the mountian you saw', $0D, $0A
-000026A6= 54 68 65 6E 20 79 ...   1132                DC.B 'Then you feel a percing pain from behind you turn to see yourself', $0D, $0A
-000026E9= 49 74 20 69 73 20 ...   1133                DC.B 'It is you wearing the robes of a wizzard he mutters a few words to you', $0D, $0A
-00002731= 49 20 61 6D 20 73 ...   1134                DC.B 'I am sorry clone but their can only be one of me', $0D, $0A
-00002763= 59 6F 75 20 66 61 ...   1135                DC.B 'You fall forwards and everything fades to black', $0D, $0A
-00002794                          1136                
-00002794= 59 6F 75 20 67 6F ...   1137  TOWER_MSG:    DC.B 'You go to tower', $0D, $0A
-000027A5= 61 73 20 79 6F 75 ...   1138                DC.B 'as you enter the first room of the tower you see two stair cases', $0D, $0A
-000027E7= 74 68 65 20 66 69 ...   1139                DC.B 'the first a stairs lined with blue crysrals', $0D, $0A
-00002814= 74 68 65 20 73 65 ...   1140                DC.B 'the second a stairs lined with red crystals', $0D, $0A
-00002841= 57 68 69 63 68 20 ...   1141                DC.B 'Which will you enter', $0D, $0A, 0
-00002858                          1142                
-00002858= 61 73 20 79 6F 75 ...   1143  TOWER_MSG1:   DC.B 'as you enter the next room of the tower you see two stair cases', $0D, $0A
-00002899= 74 68 65 20 66 69 ...   1144                DC.B 'the first a stairs lined with blue crysrals', $0D, $0A
-000028C6= 74 68 65 20 73 65 ...   1145                DC.B 'the second a stairs lined with red crystals', $0D, $0A
-000028F3= 57 68 69 63 68 20 ...   1146                DC.B 'Which will you enter', $0D, $0A, 0
-0000290A                          1147  
-0000290A= 61 73 20 79 6F 75 ...   1148  TOWER_MSG2:   DC.B 'as you enter the next room of the tower you see two stair cases', $0D, $0A
-0000294B= 54 68 65 20 62 75 ...   1149                DC.B 'The buliding like a maze designed to confuse and blend together', $0D, $0A
-0000298C= 74 68 65 20 66 69 ...   1150                DC.B 'the first a stairs lined with red crysrals', $0D, $0A
-000029B8= 74 68 65 20 73 65 ...   1151                DC.B 'the second a stairs lined with blue crystals', $0D, $0A
-000029E6= 68 6F 77 20 6D 61 ...   1152                DC.B 'how many more rooms could there be you wonder as you procede', $0D, $0A
-00002A24= 57 68 69 63 68 20 ...   1153                DC.B 'Which will you enter', $0D, $0A, 0
-00002A3B                          1154     
-00002A3B= 61 73 20 79 6F 75 ...   1155  TOWER_MSG3:   DC.B 'as you enter the room see a faint red glow', $0D, $0A
-00002A67= 69 6E 66 72 6F 6E ...   1156                DC.B 'infront of you lays a stand of potions each with a diffrent ', $0D, $0A
-00002AA5= 6C 61 62 65 6C 20 ...   1157                DC.B 'label it says formula number but the numbers are gone(33% heal', $0D, $0A
-00002AE5= 61 6E 64 20 74 77 ...   1158                DC.B 'and two stair cases as always are behind the stand', $0D, $0A
-00002B19= 63 68 61 6E 63 65 ...   1159                DC.B 'chance )the first a stairs lined with red crysrals', $0D, $0A
-00002B4D= 74 68 65 20 73 65 ...   1160                DC.B 'the second a stairs lined with blue crystals', $0D, $0A
-00002B7B= 57 68 69 63 68 20 ...   1161                DC.B 'Which will you enter', $0D, $0A, 0
-00002B92                          1162  
-00002B92= 41 73 20 79 6F 75 ...   1163  HEAL_MSG:     DC.B 'As you rest alowing your body to heal you knowtace something', $0D, $0A
-00002BD0= 41 20 62 75 74 74 ...   1164                DC.B 'A button in the wall you press it an a passage opens', $0D, $0A
-00002C06= 41 73 20 79 6F 75 ...   1165                DC.B 'As you follow it you realies it takes you before the final room', $0D, $0A
-00002C47= 59 6F 75 20 68 65 ...   1166                DC.B 'You heal 1 hp', $0D, $0A,0
-00002C57                          1167  
-00002C57= 59 6F 75 72 20 6F ...   1168  FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering', $0D, $0A
-00002C83= 74 68 65 20 6F 6E ...   1169                DC.B 'the only way out is trough you must defeat them', $0D, $0A ,0
-00002CB5= 49 6E 76 61 6C 69 ...   1170  INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
-00002CD2= 59 65 74 20 61 6E ...   1171  DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be victorious', $0D, $0A ,0
-00002D1B= 41 20 64 72 61 77 ...   1172  FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
-00002D58= 54 68 65 20 66 69 ...   1173  FOVER_MSG:    DC.B 'The fight comes to its end you have survived yet again but can you keep this up' $0D, $0A ,0
-00002DA7= 41 20 62 6C 6F 77 ...   1174  DMG_MSG:      DC.B 'A blow has been dealt the fight draws closer to its end', $0D, $0A ,0
-00002DE1= 47 41 4D 45 20 4F ...   1175  GO_MSG:       DC.B 'GAME OVER YOU ARE DEAD', $0D, $0A ,0
-00002DFA= 52 4F 43 4B 20 57 ...   1176  R_MSG:        DC.B 'ROCK WIN', 0
-00002E03= 50 41 50 45 52 20 ...   1177  P_MSG:        DC.B 'PAPER WIN', 0
-00002E0D= 53 49 53 53 4F 52 ...   1178  S_MSG:        DC.B 'SISSORS WIN', 0
-00002E1A= 0001                    1179  SEED          DC.W    1
-00002E1C                          1180  P_HP          DS.B    1
-00002E1D                          1181  E_HP          DS.B    1
-00002E1E                          1182  
-00002E1E                          1183  GAME_OVER:
-00002E1E  43F8 2DE1               1184         LEA     GO_MSG,  A1   ; loads first draw msg
-00002E22  103C 000E               1185         MOVE.B  #14, D0
-00002E26  4E4F                    1186         TRAP    #15              ; Prints messag
-00002E28                          1187      END    START
+00001108  13FC 0003 00002EC1       121      MOVE.B  #3,E_HP
+00001110  6100 0792                122      BSR FIGHT
+00001114  6100 07D4                123      BSR HP_CHECK
+00001118  6100 0066                124      BSR MINE_ROOM_3
+0000111C                           125      
+0000111C                           126  MINE_ROOM_2:
+0000111C  6100 0778                127      BSR     ENDL
+00001120                           128      
+00001120  13FC 0003 00002EC1       129      MOVE.B  #3,E_HP
+00001128                           130      
+00001128  43F9 00001F8C            131      LEA     MINES_MSG1, A1
+0000112E  103C 000E                132      MOVE.B  #14, D0
+00001132  4E4F                     133      TRAP    #15              ; Print MINES message
+00001134                           134      
+00001134  43F9 00001A88            135      LEA     USER_INPUT, A1   ; Load input buffer address
+0000113A  103C 0002                136      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+0000113E  4E4F                     137      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+00001140                           138      
+00001140  1239 00001A88            139      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001146                           140  
+00001146  B23C 0031                141      CMP.B   #'1', D1         ; Compare input to '1'
+0000114A  6700 0034                142      BEQ     MINE_ROOM_3      ; If '1', branch to FIGHT
+0000114E                           143      
+0000114E  B23C 0032                144      CMP.B   #'2', D1         ; Compare input to '2'
+00001152  6700 0072                145      BEQ     MINE_FIGHT_3     ; If '2', branch to
+00001156                           146      
+00001156                           147      
+00001156  6100 073E                148      BSR     ENDL
+0000115A  6100 0728                149      BSR     INVALID_CHOICE   ; If input is invalid, show error
+0000115E  61BC                     150      BSR     MINE_ROOM_2           ; Repeat input prompt
+00001160                           151      
+00001160                           152      
+00001160                           153  MINE_FIGHT_2:
+00001160  6100 0734                154      BSR     ENDL
+00001164  43F9 000022C2            155      LEA     FIGHT_T_MSG, A1
+0000116A  103C 000E                156      MOVE.B  #14, D0
+0000116E  4E4F                     157      TRAP    #15              ; Print MINES message
+00001170                           158      
+00001170  13FC 0003 00002EC1       159      MOVE.B  #3,E_HP
+00001178                           160  *    BSR FIGHT
+00001178  6100 0770                161      BSR HP_CHECK
+0000117C  6100 0068                162      BSR MINE_ROOM_4
+00001180                           163  
+00001180                           164  MINE_ROOM_3:
+00001180  6100 0714                165      BSR     ENDL
+00001184                           166      
+00001184  13FC 0003 00002EC1       167      MOVE.B  #3,E_HP
+0000118C                           168      
+0000118C  43F9 0000206B            169      LEA     MINES_MSG2, A1
+00001192  103C 000E                170      MOVE.B  #14, D0
+00001196  4E4F                     171      TRAP    #15              ; Print MINES message
+00001198                           172      
+00001198  43F9 00001A88            173      LEA     USER_INPUT, A1   ; Load input buffer address
+0000119E  103C 0002                174      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+000011A2  4E4F                     175      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+000011A4                           176      
+000011A4  1239 00001A88            177      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000011AA                           178  
+000011AA  B23C 0031                179      CMP.B   #'1', D1         ; Compare input to '1'
+000011AE  6700 0036                180      BEQ     MINE_ROOM_4      ; If '1', branch to FIGHT
+000011B2                           181      
+000011B2  B23C 0032                182      CMP.B   #'2', D1         ; Compare input to '2'
+000011B6  6700 0080                183      BEQ     MINE_FIGHT_4     ; If '2', branch to
+000011BA                           184      
+000011BA                           185      
+000011BA  6100 06DA                186      BSR     ENDL
+000011BE  6100 06C4                187      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000011C2  6100 FF58                188      BSR     MINE_ROOM_2           ; Repeat input prompt
+000011C6                           189      
+000011C6                           190      
+000011C6                           191  MINE_FIGHT_3:
+000011C6  6100 06CE                192      BSR     ENDL
+000011CA  43F9 000022C2            193      LEA     FIGHT_T_MSG, A1
+000011D0  103C 000E                194      MOVE.B  #14, D0
+000011D4  4E4F                     195      TRAP    #15              ; Print MINES message
+000011D6                           196      
+000011D6  13FC 0003 00002EC1       197      MOVE.B  #3,E_HP
+000011DE                           198  *    BSR FIGHT
+000011DE  6100 070A                199      BSR HP_CHECK
+000011E2  6100 0074                200      BSR MINE_ROOM_5
+000011E6                           201  
+000011E6                           202  MINE_ROOM_4:
+000011E6  6100 06AE                203      BSR     ENDL
+000011EA                           204      
+000011EA  13FC 0003 00002EC1       205      MOVE.B  #3,E_HP
+000011F2                           206      
+000011F2  43F9 00002191            207      LEA     MINES_MSG3, A1
+000011F8  103C 000E                208      MOVE.B  #14, D0
+000011FC  4E4F                     209      TRAP    #15              ; Print MINES message
+000011FE                           210  
+000011FE  6100 081C                211      BSR     RNG
+00001202  B47C 0001                212      CMP     #1,D2
+00001206  6700 07F8                213      BEQ     HEAL_M
+0000120A                           214      
+0000120A  43F9 00001A88            215      LEA     USER_INPUT, A1   ; Load input buffer address
+00001210  103C 0002                216      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+00001214  4E4F                     217      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+00001216                           218      
+00001216  1239 00001A88            219      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+0000121C                           220  
+0000121C  B23C 0031                221      CMP.B   #'1', D1         ; Compare input to '1'
+00001220  6700 0036                222      BEQ     MINE_ROOM_5      ; If '1', branch to FIGHT
+00001224                           223      
+00001224  B23C 0032                224      CMP.B   #'2', D1         ; Compare input to '2'
+00001228  6700 0074                225      BEQ     MINE_FIGHT_5     ; If '2', branch to
+0000122C                           226      
+0000122C                           227      
+0000122C  6100 0668                228      BSR     ENDL
+00001230  6100 0652                229      BSR     INVALID_CHOICE   ; If input is invalid, show error
+00001234  6100 0022                230      BSR     MINE_ROOM_5           ; Repeat input prompt
+00001238                           231      
+00001238                           232      
+00001238                           233  MINE_FIGHT_4:
+00001238  6100 065C                234      BSR     ENDL
+0000123C  43F9 000022C2            235      LEA     FIGHT_T_MSG, A1
+00001242  103C 000E                236      MOVE.B  #14, D0
+00001246  4E4F                     237      TRAP    #15              ; Print MINES message
+00001248                           238      
+00001248  13FC 0003 00002EC1       239      MOVE.B  #3,E_HP
+00001250                           240  *    BSR FIGHT
+00001250  6100 0698                241      BSR HP_CHECK
+00001254  6100 0068                242      BSR MINE_ROOM_6
+00001258                           243  
+00001258                           244  MINE_ROOM_5:
+00001258  6100 063C                245      BSR     ENDL
+0000125C                           246      
+0000125C  13FC 0003 00002EC1       247      MOVE.B  #3,E_HP
+00001264                           248      
+00001264  43F9 00001F8C            249      LEA     MINES_MSG1, A1
+0000126A  103C 000E                250      MOVE.B  #14, D0
+0000126E  4E4F                     251      TRAP    #15              ; Print MINES message
+00001270                           252      
+00001270  43F9 00001A88            253      LEA     USER_INPUT, A1   ; Load input buffer address
+00001276  103C 0002                254      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+0000127A  4E4F                     255      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+0000127C                           256      
+0000127C  1239 00001A88            257      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001282                           258  
+00001282  B23C 0031                259      CMP.B   #'1', D1         ; Compare input to '1'
+00001286  6700 0036                260      BEQ     MINE_ROOM_6      ; If '1', branch to FIGHT
+0000128A                           261      
+0000128A  B23C 0032                262      CMP.B   #'2', D1         ; Compare input to '2'
+0000128E  6700 007E                263      BEQ     MINE_FIGHT_6     ; If '2', branch to
+00001292                           264      
+00001292                           265      
+00001292  6100 0602                266      BSR     ENDL
+00001296  6100 05EC                267      BSR     INVALID_CHOICE   ; If input is invalid, show error
+0000129A  6100 0022                268      BSR     MINE_ROOM_6           ; Repeat input prompt
+0000129E                           269      
+0000129E                           270      
+0000129E                           271  MINE_FIGHT_5:
+0000129E  6100 05F6                272      BSR     ENDL
+000012A2  43F9 000022C2            273      LEA     FIGHT_T_MSG, A1
+000012A8  103C 000E                274      MOVE.B  #14, D0
+000012AC  4E4F                     275      TRAP    #15              ; Print MINES message
+000012AE                           276      
+000012AE  13FC 0003 00002EC1       277      MOVE.B  #3,E_HP
+000012B6                           278  *    BSR FIGHT
+000012B6  6100 0632                279      BSR HP_CHECK
+000012BA  6100 0072                280      BSR MINE_ROOM_7
+000012BE                           281  
+000012BE                           282  MINE_ROOM_6:
+000012BE  6100 05D6                283      BSR     ENDL
+000012C2                           284      
+000012C2  13FC 0003 00002EC1       285      MOVE.B  #3,E_HP
+000012CA                           286      
+000012CA  43F9 00002191            287      LEA     MINES_MSG3, A1
+000012D0  103C 000E                288      MOVE.B  #14, D0
+000012D4  4E4F                     289      TRAP    #15              ; Print MINES message
+000012D6                           290  
+000012D6  6100 0744                291      BSR     RNG
+000012DA  B47C 0001                292      CMP     #1,D2
+000012DE  6700 0720                293      BEQ     HEAL_M
+000012E2                           294      
+000012E2  43F9 00001A88            295      LEA     USER_INPUT, A1   ; Load input buffer address
+000012E8  103C 0002                296      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+000012EC  4E4F                     297      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+000012EE                           298      
+000012EE  1239 00001A88            299      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000012F4                           300  
+000012F4  B23C 0031                301      CMP.B   #'1', D1         ; Compare input to '1'
+000012F8  6700 0034                302      BEQ     MINE_ROOM_7      ; If '1', branch to FIGHT
+000012FC                           303      
+000012FC  B23C 0032                304      CMP.B   #'2', D1         ; Compare input to '2'
+00001300  6700 0070                305      BEQ     MINE_FIGHT_7     ; If '2', branch to
+00001304                           306      
+00001304                           307      
+00001304  6100 0590                308      BSR     ENDL
+00001308  6100 057A                309      BSR     INVALID_CHOICE   ; If input is invalid, show error
+0000130C  61B0                     310      BSR     MINE_ROOM_6           ; Repeat input prompt
+0000130E                           311      
+0000130E                           312      
+0000130E                           313  MINE_FIGHT_6:
+0000130E  6100 0586                314      BSR     ENDL
+00001312  43F9 000022C2            315      LEA     FIGHT_T_MSG, A1
+00001318  103C 000E                316      MOVE.B  #14, D0
+0000131C  4E4F                     317      TRAP    #15              ; Print MINES message
+0000131E                           318      
+0000131E  13FC 0003 00002EC1       319      MOVE.B  #3,E_HP
+00001326                           320  *    BSR FIGHT
+00001326  6100 05C2                321      BSR HP_CHECK
+0000132A  6100 0066                322      BSR MINE_ROOM_8
+0000132E                           323      
+0000132E                           324  MINE_ROOM_7:
+0000132E  6100 0566                325      BSR     ENDL
+00001332                           326      
+00001332  13FC 0003 00002EC1       327      MOVE.B  #3,E_HP
+0000133A                           328      
+0000133A  43F9 0000206B            329      LEA     MINES_MSG2, A1
+00001340  103C 000E                330      MOVE.B  #14, D0
+00001344  4E4F                     331      TRAP    #15              ; Print MINES message
+00001346                           332      
+00001346  43F9 00001A88            333      LEA     USER_INPUT, A1   ; Load input buffer address
+0000134C  103C 0002                334      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+00001350  4E4F                     335      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+00001352                           336      
+00001352  1239 00001A88            337      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001358                           338  
+00001358  B23C 0031                339      CMP.B   #'1', D1         ; Compare input to '1'
+0000135C  6700 0034                340      BEQ     MINE_ROOM_8      ; If '1', branch to FIGHT
+00001360                           341      
+00001360  B23C 0032                342      CMP.B   #'2', D1         ; Compare input to '2'
+00001364  6700 007C                343      BEQ     MINE_FIGHT_8     ; If '2', branch to
+00001368                           344      
+00001368                           345      
+00001368  6100 052C                346      BSR     ENDL
+0000136C  6100 0516                347      BSR     INVALID_CHOICE   ; If input is invalid, show error
+00001370  61BC                     348      BSR     MINE_ROOM_7           ; Repeat input prompt
+00001372                           349      
+00001372                           350      
+00001372                           351  MINE_FIGHT_7:
+00001372  6100 0522                352      BSR     ENDL
+00001376  43F9 000022C2            353      LEA     FIGHT_T_MSG, A1
+0000137C  103C 000E                354      MOVE.B  #14, D0
+00001380  4E4F                     355      TRAP    #15              ; Print MINES message
+00001382                           356      
+00001382  13FC 0003 00002EC1       357      MOVE.B  #3,E_HP
+0000138A                           358  *    BSR FIGHT
+0000138A  6100 055E                359      BSR HP_CHECK
+0000138E  6100 0072                360      BSR MINE_ROOM_9
+00001392                           361  
+00001392                           362  MINE_ROOM_8:
+00001392  6100 0502                363      BSR     ENDL
+00001396                           364      
+00001396  13FC 0003 00002EC1       365      MOVE.B  #3,E_HP
+0000139E                           366      
+0000139E  43F9 00002191            367      LEA     MINES_MSG3, A1
+000013A4  103C 000E                368      MOVE.B  #14, D0
+000013A8  4E4F                     369      TRAP    #15              ; Print MINES message
+000013AA                           370  
+000013AA  6100 0670                371      BSR     RNG
+000013AE  B47C 0001                372      CMP     #1,D2
+000013B2  6700 064C                373      BEQ     HEAL_M
+000013B6                           374      
+000013B6  43F9 00001A88            375      LEA     USER_INPUT, A1   ; Load input buffer address
+000013BC  103C 0002                376      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+000013C0  4E4F                     377      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+000013C2                           378      
+000013C2  1239 00001A88            379      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000013C8                           380  
+000013C8  B23C 0031                381      CMP.B   #'1', D1         ; Compare input to '1'
+000013CC  6700 0034                382      BEQ     MINE_ROOM_9      ; If '1', branch to FIGHT
+000013D0                           383      
+000013D0  B23C 0032                384      CMP.B   #'2', D1         ; Compare input to '2'
+000013D4  6700 0070                385      BEQ     MINE_FIGHT_9    ; If '2', branch to
+000013D8                           386      
+000013D8                           387      
+000013D8  6100 04BC                388      BSR     ENDL
+000013DC  6100 04A6                389      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000013E0  61B0                     390      BSR     MINE_ROOM_8           ; Repeat input prompt
+000013E2                           391      
+000013E2                           392      
+000013E2                           393  MINE_FIGHT_8:
+000013E2  6100 04B2                394      BSR     ENDL
+000013E6  43F9 000022C2            395      LEA     FIGHT_T_MSG, A1
+000013EC  103C 000E                396      MOVE.B  #14, D0
+000013F0  4E4F                     397      TRAP    #15              ; Print MINES message
+000013F2                           398      
+000013F2  13FC 0003 00002EC1       399      MOVE.B  #3,E_HP
+000013FA                           400  *    BSR FIGHT
+000013FA  6100 04EE                401      BSR HP_CHECK
+000013FE  6100 0066                402      BSR MINE_ROOM_10
+00001402                           403      
+00001402                           404  MINE_ROOM_9:
+00001402  6100 0492                405      BSR     ENDL
+00001406                           406      
+00001406  13FC 0003 00002EC1       407      MOVE.B  #3,E_HP
+0000140E                           408      
+0000140E  43F9 00001F8C            409      LEA     MINES_MSG1, A1
+00001414  103C 000E                410      MOVE.B  #14, D0
+00001418  4E4F                     411      TRAP    #15              ; Print MINES message
+0000141A                           412      
+0000141A  43F9 00001A88            413      LEA     USER_INPUT, A1   ; Load input buffer address
+00001420  103C 0002                414      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+00001424  4E4F                     415      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+00001426                           416      
+00001426  1239 00001A88            417      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+0000142C                           418  
+0000142C  B23C 0031                419      CMP.B   #'1', D1         ; Compare input to '1'
+00001430  6700 0034                420      BEQ     MINE_ROOM_10      ; If '1', branch to FIGHT
+00001434                           421      
+00001434  B23C 0032                422      CMP.B   #'2', D1         ; Compare input to '2'
+00001438  6700 002C                423      BEQ     MINE_ROOM_10     ; If '2', branch to
+0000143C                           424      
+0000143C                           425      
+0000143C  6100 0458                426      BSR     ENDL
+00001440  6100 0442                427      BSR     INVALID_CHOICE   ; If input is invalid, show error
+00001444  61BC                     428      BSR     MINE_ROOM_9           ; Repeat input prompt
+00001446                           429      
+00001446                           430      
+00001446                           431  MINE_FIGHT_9:
+00001446  6100 044E                432      BSR     ENDL
+0000144A  43F9 000022C2            433      LEA     FIGHT_T_MSG, A1
+00001450  103C 000E                434      MOVE.B  #14, D0
+00001454  4E4F                     435      TRAP    #15              ; Print MINES message
+00001456                           436      
+00001456  13FC 0003 00002EC1       437      MOVE.B  #3,E_HP
+0000145E                           438  *    BSR FIGHT
+0000145E  6100 048A                439      BSR HP_CHECK
+00001462  6100 0002                440      BSR MINE_ROOM_10
+00001466                           441  
+00001466                           442  MINE_ROOM_10:
+00001466  6100 042E                443      BSR     ENDL
+0000146A  43F9 000022EC            444      LEA     CUT_MINE, A1
+00001470  103C 000E                445      MOVE.B  #14, D0
+00001474  4E4F                     446      TRAP    #15              ; Print MINES message
+00001476  6100 041E                447      BSR     ENDL
+0000147A  5204                     448      ADD.B   #1,D4
+0000147C                           449      
+0000147C  B83C 0002                450      CMP.B   #2,D4
+00001480  6700 03EE                451      BEQ     MOUNT
+00001484                           452      
+00001484  6100 0002                453      BSR     TOWER
+00001488                           454     
+00001488                           455      
+00001488                           456      
+00001488                           457  
+00001488                           458  
+00001488                           459  *-------------------------------------------------------
+00001488                           460  *                  TOWER SEQUENCE
+00001488                           461  *-------------------------------------------------------
+00001488                           462  TOWER:
+00001488  6100 040C                463      BSR     ENDL
+0000148C  43F9 00002818            464      LEA     TOWER_MSG, A1
+00001492  103C 000E                465      MOVE.B  #14, D0
+00001496  4E4F                     466      TRAP    #15              ; Print run message
+00001498  6100 0002                467      BSR TOWER_ROOM_1
+0000149C                           468  
+0000149C                           469  TOWER_ROOM_1:
+0000149C  6100 03F8                470      BSR     ENDL
+000014A0                           471      
+000014A0  13FC 0003 00002EC1       472      MOVE.B  #3,E_HP
+000014A8                           473      
+000014A8  43F9 000028E4            474      LEA     TOWER_MSG1, A1
+000014AE  103C 000E                475      MOVE.B  #14, D0
+000014B2  4E4F                     476      TRAP    #15              ; Print MINES message
+000014B4                           477      
+000014B4  43F9 00001A88            478      LEA     USER_INPUT, A1   ; Load input buffer address
+000014BA  103C 0002                479      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+000014BE  4E4F                     480      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+000014C0                           481      
+000014C0  1239 00001A88            482      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000014C6                           483  
+000014C6  B23C 0031                484      CMP.B   #'1', D1         ; Compare input to '1'
+000014CA  6700 003A                485      BEQ     TOWER_ROOM_2      ; If '1', branch to FIGHT
+000014CE                           486      
+000014CE  B23C 0032                487      CMP.B   #'2', D1         ; Compare input to '2'
+000014D2  6700 0078                488      BEQ     TOWER_FIGHT_2    ; If '2', branch to
+000014D6                           489      
+000014D6                           490      
+000014D6  6100 03BE                491      BSR     ENDL
+000014DA  6100 03A8                492      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000014DE  61BC                     493      BSR     TOWER_ROOM_1           ; Repeat input prompt
+000014E0                           494      
+000014E0                           495      
+000014E0                           496  TOWER_FIGHT_1:
+000014E0  6100 03B4                497      BSR     ENDL
+000014E4  43F9 000022C2            498      LEA     FIGHT_T_MSG, A1
+000014EA  103C 000E                499      MOVE.B  #14, D0
+000014EE  4E4F                     500      TRAP    #15              ; Print MINES message
+000014F0                           501      
+000014F0  13FC 0003 00002EC1       502      MOVE.B  #3,E_HP
+000014F8  5339 00002EC0            503      SUB.B   #1,P_HP
+000014FE                           504  *    BSR FIGHT
+000014FE  6100 03EA                505      BSR HP_CHECK
+00001502  6100 0068                506      BSR TOWER_ROOM_3
+00001506                           507  
+00001506                           508  TOWER_ROOM_2:
+00001506  6100 038E                509      BSR     ENDL
+0000150A                           510      
+0000150A  13FC 0003 00002EC1       511      MOVE.B  #3,E_HP
+00001512                           512      
+00001512  43F9 0000299E            513      LEA     TOWER_MSG2, A1
+00001518  103C 000E                514      MOVE.B  #14, D0
+0000151C  4E4F                     515      TRAP    #15              ; Print MINES message
+0000151E                           516      
+0000151E  43F9 00001A88            517      LEA     USER_INPUT, A1   ; Load input buffer address
+00001524  103C 0002                518      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+00001528  4E4F                     519      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+0000152A                           520      
+0000152A  1239 00001A88            521      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001530                           522  
+00001530  B23C 0031                523      CMP.B   #'1', D1         ; Compare input to '1'
+00001534  6700 0036                524      BEQ     TOWER_ROOM_3      ; If '1', branch to FIGHT
+00001538                           525      
+00001538  B23C 0032                526      CMP.B   #'2', D1         ; Compare input to '2'
+0000153C  6700 007E                527      BEQ     TOWER_FIGHT_3    ; If '2', branch to
+00001540                           528      
+00001540                           529      
+00001540  6100 0354                530      BSR     ENDL
+00001544  6100 033E                531      BSR     INVALID_CHOICE   ; If input is invalid, show error
+00001548  6100 0022                532      BSR     TOWER_ROOM_3           ; Repeat input prompt
+0000154C                           533      
+0000154C                           534      
+0000154C                           535  TOWER_FIGHT_2:
+0000154C  6100 0348                536      BSR     ENDL
+00001550  43F9 000022C2            537      LEA     FIGHT_T_MSG, A1
+00001556  103C 000E                538      MOVE.B  #14, D0
+0000155A  4E4F                     539      TRAP    #15              ; Print MINES message
+0000155C                           540      
+0000155C  13FC 0003 00002EC1       541      MOVE.B  #3,E_HP
+00001564                           542  *    BSR FIGHT
+00001564  6100 0384                543      BSR HP_CHECK
+00001568  6100 0072                544      BSR TOWER_ROOM_4
+0000156C                           545  
+0000156C                           546  TOWER_ROOM_3:
+0000156C  6100 0328                547      BSR     ENDL
+00001570                           548      
+00001570  13FC 0003 00002EC1       549      MOVE.B  #3,E_HP
+00001578                           550      
+00001578  43F9 00002AD7            551      LEA     TOWER_MSG3, A1
+0000157E  103C 000E                552      MOVE.B  #14, D0
+00001582  4E4F                     553      TRAP    #15              ; Print MINES message
+00001584                           554  
+00001584  6100 0496                555      BSR     RNG
+00001588  B47C 0001                556      CMP     #1,D2
+0000158C  6700 0456                557      BEQ     HEAL_T
+00001590                           558      
+00001590  43F9 00001A88            559      LEA     USER_INPUT, A1   ; Load input buffer address
+00001596  103C 0002                560      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+0000159A  4E4F                     561      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+0000159C                           562      
+0000159C  1239 00001A88            563      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000015A2                           564  
+000015A2  B23C 0031                565      CMP.B   #'1', D1         ; Compare input to '1'
+000015A6  6700 0034                566      BEQ     TOWER_ROOM_4      ; If '1', branch to FIGHT
+000015AA                           567      
+000015AA  B23C 0032                568      CMP.B   #'2', D1         ; Compare input to '2'
+000015AE  6700 0070                569      BEQ     TOWER_FIGHT_4    ; If '2', branch to
+000015B2                           570      
+000015B2                           571      
+000015B2  6100 02E2                572      BSR     ENDL
+000015B6  6100 02CC                573      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000015BA  61B0                     574      BSR     TOWER_ROOM_3           ; Repeat input prompt
+000015BC                           575      
+000015BC                           576      
+000015BC                           577  TOWER_FIGHT_3:
+000015BC  6100 02D8                578      BSR     ENDL
+000015C0  43F9 000022C2            579      LEA     FIGHT_T_MSG, A1
+000015C6  103C 000E                580      MOVE.B  #14, D0
+000015CA  4E4F                     581      TRAP    #15              ; Print MINES message
+000015CC                           582      
+000015CC  13FC 0003 00002EC1       583      MOVE.B  #3,E_HP
+000015D4                           584  *    BSR FIGHT
+000015D4  6100 0314                585      BSR HP_CHECK
+000015D8  6100 0066                586      BSR TOWER_ROOM_5
+000015DC                           587      
+000015DC                           588  
+000015DC                           589  TOWER_ROOM_4:
+000015DC  6100 02B8                590      BSR     ENDL
+000015E0                           591      
+000015E0  13FC 0003 00002EC1       592      MOVE.B  #3,E_HP
+000015E8                           593      
+000015E8  43F9 000028E4            594      LEA     TOWER_MSG1, A1
+000015EE  103C 000E                595      MOVE.B  #14, D0
+000015F2  4E4F                     596      TRAP    #15              ; Print MINES message
+000015F4                           597      
+000015F4  43F9 00001A88            598      LEA     USER_INPUT, A1   ; Load input buffer address
+000015FA  103C 0002                599      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+000015FE  4E4F                     600      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+00001600                           601      
+00001600  1239 00001A88            602      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001606                           603  
+00001606  B23C 0031                604      CMP.B   #'1', D1         ; Compare input to '1'
+0000160A  6700 0034                605      BEQ     TOWER_ROOM_5      ; If '1', branch to FIGHT
+0000160E                           606      
+0000160E  B23C 0032                607      CMP.B   #'2', D1         ; Compare input to '2'
+00001612  6700 0070                608      BEQ     TOWER_FIGHT_5    ; If '2', branch to
+00001616                           609      
+00001616                           610      
+00001616  6100 027E                611      BSR     ENDL
+0000161A  6100 0268                612      BSR     INVALID_CHOICE   ; If input is invalid, show error
+0000161E  61BC                     613      BSR     TOWER_ROOM_4           ; Repeat input prompt
+00001620                           614      
+00001620                           615      
+00001620                           616  TOWER_FIGHT_4:
+00001620  6100 0274                617      BSR     ENDL
+00001624  43F9 000022C2            618      LEA     FIGHT_T_MSG, A1
+0000162A  103C 000E                619      MOVE.B  #14, D0
+0000162E  4E4F                     620      TRAP    #15              ; Print MINES message
+00001630                           621      
+00001630  13FC 0003 00002EC1       622      MOVE.B  #3,E_HP
+00001638                           623  *    BSR FIGHT
+00001638  6100 02B0                624      BSR HP_CHECK
+0000163C  6100 0066                625      BSR TOWER_ROOM_6
+00001640                           626  TOWER_ROOM_5:
+00001640  6100 0254                627      BSR     ENDL
+00001644                           628      
+00001644  13FC 0003 00002EC1       629      MOVE.B  #3,E_HP
+0000164C                           630      
+0000164C  43F9 0000299E            631      LEA     TOWER_MSG2, A1
+00001652  103C 000E                632      MOVE.B  #14, D0
+00001656  4E4F                     633      TRAP    #15              ; Print MINES message
+00001658                           634      
+00001658  43F9 00001A88            635      LEA     USER_INPUT, A1   ; Load input buffer address
+0000165E  103C 0002                636      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+00001662  4E4F                     637      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+00001664                           638      
+00001664  1239 00001A88            639      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+0000166A                           640  
+0000166A  B23C 0031                641      CMP.B   #'1', D1         ; Compare input to '1'
+0000166E  6700 0034                642      BEQ     TOWER_ROOM_6      ; If '1', branch to FIGHT
+00001672                           643      
+00001672  B23C 0032                644      CMP.B   #'2', D1         ; Compare input to '2'
+00001676  6700 007E                645      BEQ     TOWER_FIGHT_6    ; If '2', branch to
+0000167A                           646      
+0000167A                           647      
+0000167A  6100 021A                648      BSR     ENDL
+0000167E  6100 0204                649      BSR     INVALID_CHOICE   ; If input is invalid, show error
+00001682  61BC                     650      BSR     TOWER_ROOM_5           ; Repeat input prompt
+00001684                           651      
+00001684                           652      
+00001684                           653  TOWER_FIGHT_5:
+00001684  6100 0210                654      BSR     ENDL
+00001688  43F9 000022C2            655      LEA     FIGHT_T_MSG, A1
+0000168E  103C 000E                656      MOVE.B  #14, D0
+00001692  4E4F                     657      TRAP    #15              ; Print MINES message
+00001694                           658      
+00001694  13FC 0003 00002EC1       659      MOVE.B  #3,E_HP
+0000169C                           660  *    BSR FIGHT
+0000169C  6100 024C                661      BSR HP_CHECK
+000016A0  6100 0074                662      BSR TOWER_ROOM_7
+000016A4                           663  
+000016A4                           664      
+000016A4                           665  TOWER_ROOM_6:
+000016A4  6100 01F0                666      BSR     ENDL
+000016A8                           667      
+000016A8  13FC 0003 00002EC1       668      MOVE.B  #3,E_HP
+000016B0                           669      
+000016B0  43F9 00002AD7            670      LEA     TOWER_MSG3, A1
+000016B6  103C 000E                671      MOVE.B  #14, D0
+000016BA  4E4F                     672      TRAP    #15              ; Print MINES message
+000016BC                           673  
+000016BC  6100 035E                674      BSR     RNG
+000016C0  B47C 0001                675      CMP     #1,D2
+000016C4  6700 031E                676      BEQ     HEAL_T
+000016C8                           677      
+000016C8  43F9 00001A88            678      LEA     USER_INPUT, A1   ; Load input buffer address
+000016CE  103C 0002                679      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+000016D2  4E4F                     680      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+000016D4                           681      
+000016D4  1239 00001A88            682      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000016DA                           683  
+000016DA  B23C 0031                684      CMP.B   #'1', D1         ; Compare input to '1'
+000016DE  6700 0036                685      BEQ     TOWER_ROOM_7      ; If '1', branch to FIGHT
+000016E2                           686      
+000016E2  B23C 0032                687      CMP.B   #'2', D1         ; Compare input to '2'
+000016E6  6700 0072                688      BEQ     TOWER_FIGHT_7    ; If '2', branch to
+000016EA                           689      
+000016EA                           690      
+000016EA  6100 01AA                691      BSR     ENDL
+000016EE  6100 0194                692      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000016F2  6100 0022                693      BSR     TOWER_ROOM_7           ; Repeat input prompt
+000016F6                           694      
+000016F6                           695      
+000016F6                           696  TOWER_FIGHT_6:
+000016F6  6100 019E                697      BSR     ENDL
+000016FA  43F9 000022C2            698      LEA     FIGHT_T_MSG, A1
+00001700  103C 000E                699      MOVE.B  #14, D0
+00001704  4E4F                     700      TRAP    #15              ; Print MINES message
+00001706  13FC 0003 00002EC1       701      MOVE.B  #3,E_HP
+0000170E                           702  *    BSR FIGHT
+0000170E  6100 01DA                703      BSR HP_CHECK
+00001712  6100 0066                704      BSR TOWER_ROOM_8
+00001716                           705  
+00001716                           706  TOWER_ROOM_7:
+00001716  6100 017E                707      BSR     ENDL
+0000171A                           708      
+0000171A  13FC 0003 00002EC1       709      MOVE.B  #3,E_HP
+00001722                           710      
+00001722  43F9 000028E4            711      LEA     TOWER_MSG1, A1
+00001728  103C 000E                712      MOVE.B  #14, D0
+0000172C  4E4F                     713      TRAP    #15              ; Print MINES message
+0000172E                           714      
+0000172E  43F9 00001A88            715      LEA     USER_INPUT, A1   ; Load input buffer address
+00001734  103C 0002                716      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+00001738  4E4F                     717      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+0000173A                           718      
+0000173A  1239 00001A88            719      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001740                           720  
+00001740  B23C 0031                721      CMP.B   #'1', D1         ; Compare input to '1'
+00001744  6700 0034                722      BEQ     TOWER_ROOM_8      ; If '1', branch to FIGHT
+00001748                           723      
+00001748  B23C 0032                724      CMP.B   #'2', D1         ; Compare input to '2'
+0000174C  6700 0070                725      BEQ     TOWER_FIGHT_8    ; If '2', branch to
+00001750                           726      
+00001750                           727      
+00001750  6100 0144                728      BSR     ENDL
+00001754  6100 012E                729      BSR     INVALID_CHOICE   ; If input is invalid, show error
+00001758  61BC                     730      BSR     TOWER_ROOM_7           ; Repeat input prompt
+0000175A                           731      
+0000175A                           732      
+0000175A                           733  TOWER_FIGHT_7:
+0000175A  6100 013A                734      BSR     ENDL
+0000175E  43F9 000022C2            735      LEA     FIGHT_T_MSG, A1
+00001764  103C 000E                736      MOVE.B  #14, D0
+00001768  4E4F                     737      TRAP    #15              ; Print MINES message
+0000176A  13FC 0003 00002EC1       738      MOVE.B  #3,E_HP
+00001772                           739  *    BSR FIGHT
+00001772  6100 0176                740      BSR HP_CHECK
+00001776  6100 0066                741      BSR TOWER_ROOM_9
+0000177A                           742  
+0000177A                           743  
+0000177A                           744  TOWER_ROOM_8:
+0000177A  6100 011A                745      BSR     ENDL
+0000177E  13FC 0003 00002EC1       746      MOVE.B  #3,E_HP
+00001786                           747      
+00001786  43F9 0000299E            748      LEA     TOWER_MSG2, A1
+0000178C  103C 000E                749      MOVE.B  #14, D0
+00001790  4E4F                     750      TRAP    #15              ; Print MINES message
+00001792                           751      
+00001792  43F9 00001A88            752      LEA     USER_INPUT, A1   ; Load input buffer address
+00001798  103C 0002                753      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+0000179C  4E4F                     754      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+0000179E                           755      
+0000179E  1239 00001A88            756      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000017A4                           757  
+000017A4  B23C 0031                758      CMP.B   #'1', D1         ; Compare input to '1'
+000017A8  6700 0034                759      BEQ     TOWER_ROOM_9      ; If '1', branch to FIGHT
+000017AC                           760      
+000017AC  B23C 0032                761      CMP.B   #'2', D1         ; Compare input to '2'
+000017B0  6700 007C                762      BEQ     TOWER_FIGHT_9    ; If '2', branch to
+000017B4                           763      
+000017B4                           764      
+000017B4  6100 00E0                765      BSR     ENDL
+000017B8  6100 00CA                766      BSR     INVALID_CHOICE   ; If input is invalid, show error
+000017BC  61BC                     767      BSR     TOWER_ROOM_8           ; Repeat input prompt
+000017BE                           768      
+000017BE                           769      
+000017BE                           770  TOWER_FIGHT_8:
+000017BE  6100 00D6                771      BSR     ENDL
+000017C2  43F9 000022C2            772      LEA     FIGHT_T_MSG, A1
+000017C8  103C 000E                773      MOVE.B  #14, D0
+000017CC  4E4F                     774      TRAP    #15  ; Print MINES message
+000017CE                           775      
+000017CE                           776      
+000017CE  13FC 0003 00002EC1       777      MOVE.B  #3,E_HP
+000017D6                           778  *    BSR FIGHT
+000017D6  6100 0112                779      BSR HP_CHECK
+000017DA  6100 0072                780      BSR TOWER_ROOM_10
+000017DE                           781  
+000017DE                           782      
+000017DE                           783  TOWER_ROOM_9:
+000017DE  6100 00B6                784      BSR     ENDL
+000017E2                           785      
+000017E2  13FC 0003 00002EC1       786      MOVE.B  #3,E_HP
+000017EA                           787      
+000017EA  43F9 00002AD7            788      LEA     TOWER_MSG3, A1
+000017F0  103C 000E                789      MOVE.B  #14, D0
+000017F4  4E4F                     790      TRAP    #15              ; Print MINES message
+000017F6                           791      
+000017F6  6100 0224                792      BSR     RNG
+000017FA  B47C 0001                793      CMP     #1,D2
+000017FE  6700 01E4                794      BEQ     HEAL_T
+00001802                           795  
+00001802                           796      
+00001802  43F9 00001A88            797      LEA     USER_INPUT, A1   ; Load input buffer address
+00001808  103C 0002                798      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+0000180C  4E4F                     799      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+0000180E                           800      
+0000180E  1239 00001A88            801      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+00001814                           802  
+00001814  B23C 0031                803      CMP.B   #'1', D1         ; Compare input to '1'
+00001818  6700 0034                804      BEQ     TOWER_ROOM_10      ; If '1', branch to FIGHT
+0000181C                           805      
+0000181C  B23C 0032                806      CMP.B   #'2', D1         ; Compare input to '2'
+00001820  6700 002C                807      BEQ     TOWER_ROOM_10     ; If '2', branch to
+00001824                           808      
+00001824                           809      
+00001824  6100 0070                810      BSR     ENDL
+00001828  6100 005A                811      BSR     INVALID_CHOICE   ; If input is invalid, show error
+0000182C  61B0                     812      BSR     TOWER_ROOM_9           ; Repeat input prompt
+0000182E                           813      
+0000182E                           814      
+0000182E                           815  TOWER_FIGHT_9:
+0000182E  6100 0066                816      BSR     ENDL
+00001832  43F9 000022C2            817      LEA     FIGHT_T_MSG, A1
+00001838  103C 000E                818      MOVE.B  #14, D0
+0000183C  4E4F                     819      TRAP    #15              ; Print MINES message
+0000183E                           820      
+0000183E  13FC 0003 00002EC1       821      MOVE.B  #3,E_HP
+00001846                           822  *    BSR FIGHT
+00001846  6100 00A2                823      BSR HP_CHECK
+0000184A  6100 0002                824      BSR TOWER_ROOM_10
+0000184E                           825  
+0000184E                           826  TOWER_ROOM_10:
+0000184E  6100 0046                827      BSR     ENDL
+00001852  43F9 0000244C            828      LEA     CUT_TOWER, A1
+00001858  103C 000E                829      MOVE.B  #14, D0
+0000185C  4E4F                     830      TRAP    #15              ; Print MINES message
+0000185E  6100 0036                831      BSR     ENDL
+00001862  5204                     832      ADD.B   #1,D4
+00001864                           833      
+00001864  B83C 0002                834      CMP.B   #2,D4
+00001868  6700 0006                835      BEQ     MOUNT
+0000186C                           836      
+0000186C  6100 F802                837      BSR     MINE
+00001870                           838  
+00001870                           839  *-------------------------------------------------------
+00001870                           840  *                  FINAL SEQUENCE
+00001870                           841  *-------------------------------------------------------
+00001870                           842  MOUNT:
+00001870  6100 0024                843      BSR     ENDL
+00001874  43F9 000025AA            844      LEA     FINAL_CUT , A1
+0000187A  103C 000E                845      MOVE.B  #14, D0
+0000187E  4E4F                     846      TRAP    #15  ; Print MINES message
+00001880  6100 1640                847      BSR     GAME_OVER
+00001884                           848  *-------------------------------------------------------
+00001884                           849  *                INVALID INPUT HANDLING
+00001884                           850  *-------------------------------------------------------
+00001884                           851  INVALID_CHOICE:
+00001884  6100 0010                852      BSR     ENDL
+00001888  43F9 00002D59            853      LEA     INVALID_MSG, A1
+0000188E  103C 000E                854      MOVE.B  #14, D0
+00001892  4E4F                     855      TRAP    #15              ; Print invalid input message
+00001894  4E75                     856      RTS
+00001896                           857  
+00001896                           858  *-------------------------------------------------------
+00001896                           859  *                ENDL SUBROUTINE (NEW LINE)
+00001896                           860  *-------------------------------------------------------
+00001896                           861  ENDL:
+00001896  43F9 00001A8B            862      LEA     CRLF, A1    ; Load newline characters
+0000189C  103C 000E                863      MOVE.B  #14, D0
+000018A0  4E4F                     864      TRAP    #15         ; Print new line
+000018A2  4E75                     865      RTS                 ; Return
+000018A4                           866      
+000018A4                           867  *---------------------------------------------------------
+000018A4                           868  *                       Fight Suff
+000018A4                           869  *---------------------------------------------------------
+000018A4                           870  FIGHT:
+000018A4                           871      
+000018A4  61F0                     872      BSR     ENDL
+000018A6  6100 0174                873      BSR     RNG
+000018AA  43F9 00001A88            874      LEA     USER_INPUT, A1   ; Load input buffer address
+000018B0  103C 0002                875      MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+000018B4  4E4F                     876      TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+000018B6  1239 00001A88            877      MOVE.B  USER_INPUT, D1   ; Load user input into D1
+000018BC  6100 01A0                878      BSR CONVR
+000018C0                           879      
+000018C0  B443                     880      CMP     D3,D2
+000018C2  6700 0076                881      BEQ     DRAW
+000018C6                           882    
+000018C6  D602                     883      ADD.B   D2,D3
+000018C8                           884      
+000018C8  B67C 0003                885      CMP     #3,D3
+000018CC  6700 009C                886      BEQ     PAPER
+000018D0                           887      
+000018D0  B67C 0004                888      CMP     #4,D3
+000018D4  6700 00BA                889      BEQ     ROCK
+000018D8                           890      
+000018D8  B67C 0005                891      CMP     #5,D3
+000018DC  6700 00DC                892      BEQ     SIS
+000018E0                           893      
+000018E0  6000 0008                894      BRA    HP_CHECK
+000018E4  6000 0012                895      BRA    E_CHECK
+000018E8                           896      
+000018E8                           897      
+000018E8                           898       
+000018E8                           899      
+000018E8  4E75                     900      RTS
+000018EA                           901      
+000018EA                           902      
+000018EA                           903  HP_CHECK:
+000018EA  0C39 0000 00002EC0       904      CMP.B #0,P_HP
+000018F2  6700 15CE                905      BEQ GAME_OVER
+000018F6                           906  
+000018F6  4E75                     907      RTS 
+000018F8                           908  
+000018F8                           909  E_CHECK:
+000018F8  0C39 0000 00002EC1       910      CMP.B #0,E_HP
+00001900  6700 004C                911      BEQ FOVER
+00001904                           912      
+00001904  4E75                     913      RTS  
+00001906                           914  DMG_P:
+00001906  618E                     915      BSR ENDL
+00001908  43F9 00002E4B            916      LEA     DMG_MSG,  A1   ; loads first draw msg
+0000190E  103C 000E                917      MOVE.B  #14, D0
+00001912  4E4F                     918      TRAP    #15              ; Prints message
+00001914  5339 00002EC0            919      SUB.B   #1,P_HP
+0000191A  60CE                     920      BRA HP_CHECK
+0000191C  6086                     921      BRA FIGHT
+0000191E                           922  
+0000191E                           923  DMG_E:
+0000191E  6100 FF76                924      BSR ENDL
+00001922  43F9 00002E4B            925      LEA     DMG_MSG,  A1   ; loads first draw msg
+00001928  103C 000E                926      MOVE.B  #14, D0
+0000192C  4E4F                     927      TRAP    #15              ; Prints message
+0000192E  5339 00002EC1            928      SUB.B   #1,E_HP
+00001934  60C2                     929      BRA E_CHECK
+00001936  6000 FF6C                930      BRA FIGHT 
+0000193A                           931  
+0000193A                           932  DRAW:
+0000193A  6100 FF5A                933      BSR ENDL
+0000193E  43F9 00002D76            934      LEA     DRAW_MSG, A1
+00001944  103C 000E                935      MOVE.B  #14, D0
+00001948  4E4F                     936      TRAP    #15              ; Prints message
+0000194A  5206                     937      ADD.B   #1, D6         ; Adds to the draw count
+0000194C  4E75                     938      RTS
+0000194E                           939      
+0000194E                           940  FOVER:
+0000194E  6100 FF46                941      BSR ENDL
+00001952  13FC 0003 00002EC1       942      MOVE.B  #3,E_HP
+0000195A                           943      
+0000195A  43F9 00002DFC            944      LEA     FOVER_MSG,  A1   ; loads first draw msg
+00001960  103C 000E                945      MOVE.B  #14, D0
+00001964  4E4F                     946      TRAP    #15              ; Prints message
+00001966  5200                     947      ADD.B   #1,  D0
+00001968                           948      
+00001968  4E75                     949      RTS
+0000196A                           950      
+0000196A                           951  PAPER:
+0000196A  6100 FF2A                952      BSR ENDL
+0000196E  43F9 00002E9E            953      LEA     R_MSG,  A1   ; loads first draw msg
+00001974  103C 000E                954      MOVE.B  #14, D0
+00001978  4E4F                     955      TRAP    #15              ; Prints message
+0000197A                           956      ;BSR     GAME_OVER
+0000197A                           957      
+0000197A  B43C 0002                958      CMP.B     #2,D2
+0000197E  679E                     959      BEQ       DMG_E
+00001980                           960      
+00001980  B43C 0002                961      CMP.B     #2,D2
+00001984  6E80                     962      BGT       DMG_P
+00001986                           963      
+00001986  B43C 0002                964      CMP.B     #2,D2
+0000198A  6D00 FF7A                965      BLT       DMG_P
+0000198E                           966        
+0000198E  4E75                     967      RTS
+00001990                           968      
+00001990                           969  ROCK:
+00001990  6100 FF04                970      BSR ENDL
+00001994  43F9 00002EA7            971      LEA     P_MSG,  A1   ; loads first draw msg
+0000199A  103C 000E                972      MOVE.B  #14, D0
+0000199E  4E4F                     973      TRAP    #15              ; Prints message
+000019A0                           974      
+000019A0                           975      
+000019A0  B43C 0001                976      CMP.B     #1,D2
+000019A4  6700 FF78                977      BEQ       DMG_E
+000019A8                           978      
+000019A8  B43C 0001                979      CMP.B     #1,D2
+000019AC  6E00 FF58                980      BGT       DMG_P
+000019B0                           981      
+000019B0  B43C 0001                982      CMP.B     #1,D2
+000019B4  6D00 FF50                983      BLT       DMG_P
+000019B8                           984        
+000019B8                           985  
+000019B8  4E75                     986      RTS
+000019BA                           987      
+000019BA                           988  SIS:
+000019BA  6100 FEDA                989      BSR ENDL
+000019BE  43F9 00002EB1            990      LEA     S_MSG,  A1   ; loads first draw msg
+000019C4  103C 000E                991      MOVE.B  #14, D0
+000019C8  4E4F                     992      TRAP    #15              ; Prints message
+000019CA                           993      
+000019CA                           994      
+000019CA  B43C 0003                995      CMP.B     #3,D2
+000019CE  6700 FF4E                996      BEQ       DMG_E
+000019D2                           997      
+000019D2  B43C 0003                998      CMP.B     #3,D2
+000019D6  6E00 FF2E                999      BGT       DMG_P
+000019DA                          1000      
+000019DA  B43C 0003               1001      CMP.B     #3,D2
+000019DE  6D00 FF26               1002      BLT       DMG_P
+000019E2                          1003        
+000019E2                          1004     
+000019E2  4E75                    1005      RTS
+000019E4                          1006  
+000019E4                          1007  
+000019E4                          1008  
+000019E4                          1009  HEAL_T:
+000019E4  6100 FEB0               1010      BSR ENDL 
+000019E8  43F9 00002C36           1011      LEA     HEAL_MSG,  A1   ; loads first draw msg
+000019EE  103C 000E               1012      MOVE.B  #14, D0
+000019F2  4E4F                    1013      TRAP    #15              ; Prints message
+000019F4  13FC 0001 00002EC0      1014      MOVE.B #1,P_HP
+000019FC  6100 FDE0               1015      BSR TOWER_ROOM_9
+00001A00                          1016  HEAL_M:
+00001A00  6100 FE94               1017      BSR ENDL 
+00001A04  43F9 00002C36           1018      LEA     HEAL_MSG,  A1   ; loads first draw msg
+00001A0A  103C 000E               1019      MOVE.B  #14, D0
+00001A0E  4E4F                    1020      TRAP    #15              ; Prints message
+00001A10  13FC 0001 00002EC0      1021      MOVE.B #1,P_HP
+00001A18  6100 F9E8               1022      BSR MINE_ROOM_9
+00001A1C                          1023  *---------------------------------------------------------
+00001A1C                          1024  *               RNG for fights
+00001A1C                          1025  *---------------------------------------------------------
+00001A1C                          1026  RNG:              
+00001A1C  3A3C 0001               1027      MOVE    #1, D5
+00001A20  3C3C 0003               1028      MOVE    #3, D6
+00001A24  9C45                    1029      SUB     D5,D6             ;You should give Min in D5 and Max in D6
+00001A26  3E06                    1030      MOVE    D6,D7
+00001A28  5246                    1031      ADDI    #1,D6
+00001A2A  CEFC FFFF               1032      MULU    #$FFFF,D7
+00001A2E  43F9 00002EBE           1033      LEA     SEED,A1
+00001A34  103C 0008               1034      MOVE.B  #8,d0
+00001A38  4E4F                    1035      TRAP    #15
+00001A3A  D251                    1036      ADD     (A1),D1
+00001A3C  C2FC FFFF               1037      MULU    #$FFFF,D1
+00001A40  0A81 F321F23A           1038      EOR.L   #$F321F23A,D1
+00001A46  3281                    1039      MOVE    D1,(A1)
+00001A48  C287                    1040      AND.L   D7,D1    ;PREVENT OVERFLOW FOR (Max-Min)
+00001A4A  82C6                    1041      DIVU    D6,D1         ;time count / (Max-Min)
+00001A4C  4841                    1042      SWAP    D1              ;swap upper and lower words of D1 to put remainder in low word
+00001A4E  D245                    1043      ADD     D5,d1           ;D1.W contains number in the range of (Min,Max)
+00001A50  4240                    1044      CLR     D0
+00001A52  4247                    1045      CLR     D7
+00001A54  4242                    1046      CLR     D2
+00001A56  1401                    1047      MOVE.B  D1,D2
+00001A58  4245                    1048      CLR     D5
+00001A5A  4246                    1049      CLR     D6
+00001A5C                          1050      
+00001A5C  4E75                    1051      RTS                    ; Return from subroutine, control passes back to the calling code
+00001A5E                          1052  
+00001A5E                          1053  
+00001A5E                          1054  CONVR:
+00001A5E  B27C 0031               1055      CMP #'1', D1
+00001A62  6700 0012               1056      BEQ ONE
+00001A66                          1057      
+00001A66  B27C 0032               1058      CMP #'2', D1
+00001A6A  6700 0010               1059      BEQ TWO
+00001A6E                          1060      
+00001A6E  B27C 0033               1061      CMP #'3', D1
+00001A72  6700 000E               1062      BEQ THREE
+00001A76                          1063  
+00001A76                          1064  ONE:
+00001A76  363C 0001               1065      MOVE.W #1, D3
+00001A7A  4E75                    1066      RTS
+00001A7C                          1067      
+00001A7C                          1068  TWO:
+00001A7C  363C 0002               1069      MOVE.W #2, D3
+00001A80  4E75                    1070      RTS
+00001A82                          1071      
+00001A82                          1072  THREE:
+00001A82  363C 0003               1073      MOVE.W #3, D3
+00001A86  4E75                    1074      RTS
+00001A88                          1075    
+00001A88                          1076  *-------------------------------------------------------
+00001A88                          1077  *                  DATA SECTION
+00001A88                          1078  *-------------------------------------------------------
+00001A88                          1079  USER_INPUT:   DS.B  2   ; Reserve 2 bytes for input (1 char + NULL)
+00001A8A= 00                      1080  CHOICE_VAR:   DC.B  0
+00001A8B                          1081  
+00001A8B= 0D 0A 00                1082  CRLF:   DC.B  $0D, $0A, 0   ; Carriage Return + Line Feed (New Line)
+00001A8E                          1083  
+00001A8E= 57 65 6C 63 6F 6D ...   1084  WELCOME_MSG:  DC.B 'Welcome to the Adventures of dingle dorf!', $0D, $0A
+00001AB9= 44 69 6E 67 6C 65 ...   1085                DC.B 'Dingle dorf has set out on an epic adventure to fix the relic of equinox', $0D, $0A
+00001B03= 74 68 65 20 72 65 ...   1086                DC.B 'the relic has been broken in half and the peices stolen', $0D, $0A
+00001B3C= 74 68 65 20 66 69 ...   1087                DC.B 'the first peice has been taken by the wizards and is held at their tower', $0D, $0A
+00001B86= 74 68 65 20 73 65 ...   1088                DC.B 'the second peice is being held by the cobalts at the bottom of the mine', $0D, $0A
+00001BCF= 6E 6F 77 20 79 6F ...   1089                DC.B 'now you must guide dingle dorf on his journy and beat monsters and mages', $0D, $0A
+00001C19= 49 4E 20 54 48 45 ...   1090                DC.B 'IN THE LEGENDARY AINCHENT RIGHT OF!!', $0D, $0A
+00001C3F= 52 4F 43 4B 21 21 ...   1091                DC.B 'ROCK!! PAPER!! SISSORS!!!!', $0D, $0A, 0
+00001C5C                          1092                
+00001C5C                          1093  OPEN_MSG:
+00001C5C= 59 6F 75 20 61 77 ...   1094                DC.B 'You awaken in a forrest the smell of due filling your lungs', $0D, $0A
+00001C99= 61 73 20 79 6F 75 ...   1095                DC.B 'as you come to your feet you obesrver your suroundings', $0D, $0A
+00001CD1= 79 6F 75 20 61 72 ...   1096                DC.B 'you are at the base of the mountian containing the grear forge', $0D, $0A
+00001D11= 79 6F 75 72 20 63 ...   1097                DC.B 'your camp the same as whenst you lay your head to rest', $0D, $0A
+00001D49= 61 73 20 79 6F 75 ...   1098                DC.B 'as you look to the top of the mountian', $0D, $0A
+00001D71= 79 6F 75 20 73 65 ...   1099                DC.B 'you see a dwarf atop the mountian looking down at you' $0D, $0A
+00001DA6= 75 6E 61 62 6C 65 ...   1100                DC.B 'unable to see his face as the sun blinds you, there is an unease wash over you as you look', $0D, $0A
+00001E02= 74 68 65 20 64 77 ...   1101                DC.B 'the dwarf decend foward dissapering from your sight', $0D, $0A
+00001E37= 79 6F 75 20 6D 65 ...   1102                DC.B 'you meet a diverging path', $0D, $0A
+00001E52= 70 61 74 68 20 31 ...   1103                DC.B 'path 1. enter the mines', $0D, $0A
+00001E6B= 70 61 74 68 20 32 ...   1104                DC.B 'path 2. go to tower', $0D, $0A, 0
+00001E81                          1105  
+00001E81= 57 68 65 72 65 20 ...   1106  CHOICE_MSG:   DC.B 'Where will you go? (1 or 2): ', 0
+00001E9F= 59 6F 75 20 65 6E ...   1107  MINES_MSG:    DC.B 'You enter the mines', $0D, $0A
+00001EB4= 41 73 20 79 6F 75 ...   1108                DC.B 'As you enter a cavity in the mines you see two dirverging paths', $0D, $0A
+00001EF5= 54 68 65 20 66 69 ...   1109                DC.B 'The first a gradual slope down with mushrooms lining the floor', $0D, $0A
+00001F35= 54 68 65 20 73 65 ...   1110                DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
+00001F75= 57 68 69 63 68 20 ...   1111                DC.B 'Which will you enter', $0D, $0A, 0
+00001F8C                          1112               
+00001F8C= 41 73 20 79 6F 75 ...   1113  MINES_MSG1:   DC.B 'As you enter the next cavity in the mines you see two dirverging paths', $0D, $0A
+00001FD4= 54 68 65 20 66 69 ...   1114                DC.B 'The first a gradual slope down with mushrooms lining the floor', $0D, $0A
+00002014= 54 68 65 20 73 65 ...   1115                DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
+00002054= 57 68 69 63 68 20 ...   1116                DC.B 'Which will you enter', $0D, $0A, 0
+0000206B                          1117                
+0000206B= 59 6F 75 20 65 6E ...   1118  MINES_MSG2:   DC.B 'You enter the next room it again has only two paths', $0D, $0A
+000020A0= 74 68 65 20 6D 69 ...   1119                DC.B 'the mine all blending together only being seperated', $0D, $0A
+000020D5= 62 79 20 74 68 65 ...   1120                DC.B 'by the occaisonal campfire or fight', $0D, $0A
+000020FA= 54 68 65 20 66 69 ...   1121                DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
+00002139= 54 68 65 20 73 65 ...   1122                DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
+0000217A= 57 68 69 63 68 20 ...   1123                DC.B 'Which will you enter', $0D, $0A, 0
+00002191                          1124           
+00002191= 0D 0A                   1125  MINES_MSG3:   DC.B '', $0D, $0A
+00002193= 41 73 20 79 6F 75 ...   1126                DC.B 'As you move twords the next cavity you see a faint glow', $0D, $0A
+000021CC= 54 68 65 72 65 20 ...   1127                DC.B 'There is a campfire unattended in the room (33% chance to heal)', $0D, $0A
+0000220D= 54 68 65 72 65 20 ...   1128                DC.B 'There are also two paths ahead' $0D, $0A
+0000222B= 54 68 65 20 66 69 ...   1129                DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
+0000226A= 54 68 65 20 73 65 ...   1130                DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
+000022AB= 57 68 69 63 68 20 ...   1131                DC.B 'Which will you enter', $0D, $0A, 0
+000022C2                          1132  
+000022C2= 41 20 66 69 67 68 ...   1133  FIGHT_T_MSG:  DC.B 'A fight will be here you take 1 dammage', $0D, $0A, 0
+000022EC                          1134  
+000022EC= 41 73 20 79 6F 75 ...   1135  CUT_MINE:     DC.B 'As you aproch the botom of the mine you see before you', $0D, $0A
+00002324= 54 68 65 20 63 6F ...   1136                DC.B 'The cobalt king sitting upon his throne made of crude iron', $0D, $0A
+00002360= 41 73 20 79 6F 75 ...   1137                DC.B 'As you inch closer you begin to knowtace the blade in his back', $0D, $0A
+000023A0= 74 68 65 20 6B 6F ...   1138                DC.B 'the kobalt king is dead as you look around the room you see', $0D, $0A
+000023DD= 49 6E 20 61 20 70 ...   1139                DC.B 'In a pile of iron ore a glint you rumage through to find half the relic', $0D, $0A
+00002426= 4E 6F 77 20 79 6F ...   1140                DC.B 'Now you must continue your journy .', $0D, $0A, 0
+0000244C= 41 73 20 79 6F 75 ...   1141  CUT_TOWER:    DC.B 'As you reach the top of the tower having gone through many battles to get here', $0D, $0A
+0000249C= 62 65 66 6F 72 65 ...   1142                DC.B 'before you lies an empty room of the archmage filled with pods full of liques ', $0D, $0A
+000024EC= 57 69 74 68 69 6E ...   1143                DC.B 'Within the liquid there is small childern each labled  attempt along with a number', $0D, $0A
+00002540= 41 73 20 79 6F 75 ...   1144                DC.B 'As you walk past this you see on a pedistal a half of the relic', $0D, $0A
+00002581= 59 6F 75 20 74 61 ...   1145                DC.B 'You take it and contine on your journy', $0D, $0A, 0 
+000025AA                          1146  
+000025AA= 59 6F 75 20 68 61 ...   1147  FINAL_CUT     DC.B 'You have reached the top of the mountian both parts of the relic in hand', $0D, $0A
+000025F4= 59 6F 75 20 73 74 ...   1148                DC.B 'You stop for a moment looking down to see how far you have come', $0D, $0A
+00002635= 41 73 20 79 6F 75 ...   1149                DC.B 'As you look down you spot someone standing up', $0D, $0A
+00002664= 59 6F 75 20 72 65 ...   1150                DC.B 'You realise that they are in the same place you started your journy', $0D, $0A
+000026A9= 59 6F 75 20 74 61 ...   1151                DC.B 'You take a step closer to have a coser look at their face', $0D, $0A
+000026E4= 59 6F 75 20 73 65 ...   1152                DC.B 'You see you and you recall the figure on top of the mountian you saw', $0D, $0A
+0000272A= 54 68 65 6E 20 79 ...   1153                DC.B 'Then you feel a percing pain from behind you turn to see yourself', $0D, $0A
+0000276D= 49 74 20 69 73 20 ...   1154                DC.B 'It is you wearing the robes of a wizzard he mutters a few words to you', $0D, $0A
+000027B5= 49 20 61 6D 20 73 ...   1155                DC.B 'I am sorry clone but their can only be one of me', $0D, $0A
+000027E7= 59 6F 75 20 66 61 ...   1156                DC.B 'You fall forwards and everything fades to black', $0D, $0A
+00002818                          1157                
+00002818= 59 6F 75 20 67 6F ...   1158  TOWER_MSG:    DC.B 'You go to tower', $0D, $0A
+00002829= 61 73 20 79 6F 75 ...   1159                DC.B 'as you enter the first room of the tower you see two stair cases', $0D, $0A
+0000286B= 74 68 65 20 66 69 ...   1160                DC.B 'the first a stairs lined with blue crysrals', $0D, $0A
+00002898= 74 68 65 20 73 65 ...   1161                DC.B 'the second a stairs lined with red crystals', $0D, $0A
+000028C5= 57 68 69 63 68 20 ...   1162                DC.B 'Which will you enter(1 OR 2)', $0D, $0A, 0
+000028E4                          1163                
+000028E4= 61 73 20 79 6F 75 ...   1164  TOWER_MSG1:   DC.B 'as you enter the next room of the tower you see two stair cases', $0D, $0A
+00002925= 74 68 65 20 66 69 ...   1165                DC.B 'the first a stairs lined with blue crysrals', $0D, $0A
+00002952= 74 68 65 20 73 65 ...   1166                DC.B 'the second a stairs lined with red crystals', $0D, $0A
+0000297F= 57 68 69 63 68 20 ...   1167                DC.B 'Which will you enter(1 OR 2)', $0D, $0A, 0
+0000299E                          1168  
+0000299E= 61 73 20 79 6F 75 ...   1169  TOWER_MSG2:   DC.B 'as you enter the next room of the tower you see two stair cases', $0D, $0A
+000029DF= 54 68 65 20 62 75 ...   1170                DC.B 'The buliding like a maze designed to confuse and blend together', $0D, $0A
+00002A20= 74 68 65 20 66 69 ...   1171                DC.B 'the first a stairs lined with red crysrals', $0D, $0A
+00002A4C= 74 68 65 20 73 65 ...   1172                DC.B 'the second a stairs lined with blue crystals', $0D, $0A
+00002A7A= 68 6F 77 20 6D 61 ...   1173                DC.B 'how many more rooms could there be you wonder as you procede', $0D, $0A
+00002AB8= 57 68 69 63 68 20 ...   1174                DC.B 'Which will you enter(1 OR 2)', $0D, $0A, 0
+00002AD7                          1175     
+00002AD7= 61 73 20 79 6F 75 ...   1176  TOWER_MSG3:   DC.B 'as you enter the room see a faint red glow', $0D, $0A
+00002B03= 69 6E 66 72 6F 6E ...   1177                DC.B 'infront of you lays a stand of potions each with a diffrent ', $0D, $0A
+00002B41= 6C 61 62 65 6C 20 ...   1178                DC.B 'label it says formula number but the numbers are gone(33% heal', $0D, $0A
+00002B81= 61 6E 64 20 74 77 ...   1179                DC.B 'and two stair cases as always are behind the stand', $0D, $0A
+00002BB5= 63 68 61 6E 63 65 ...   1180                DC.B 'chance )the first a stairs lined with red crysrals', $0D, $0A
+00002BE9= 74 68 65 20 73 65 ...   1181                DC.B 'the second a stairs lined with blue crystals', $0D, $0A
+00002C17= 57 68 69 63 68 20 ...   1182                DC.B 'Which will you enter(1 OR 2)', $0D, $0A, 0
+00002C36                          1183  
+00002C36= 41 73 20 79 6F 75 ...   1184  HEAL_MSG:     DC.B 'As you rest alowing your body to heal you knowtace something', $0D, $0A
+00002C74= 41 20 62 75 74 74 ...   1185                DC.B 'A button in the wall you press it an a passage opens', $0D, $0A
+00002CAA= 41 73 20 79 6F 75 ...   1186                DC.B 'As you follow it you realies it takes you before the final room', $0D, $0A
+00002CEB= 59 6F 75 20 68 65 ...   1187                DC.B 'You heal 1 hp', $0D, $0A,0
+00002CFB                          1188  
+00002CFB= 59 6F 75 72 20 6F ...   1189  FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering', $0D, $0A
+00002D27= 74 68 65 20 6F 6E ...   1190                DC.B 'the only way out is trough you must defeat them', $0D, $0A ,0
+00002D59= 49 6E 76 61 6C 69 ...   1191  INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
+00002D76= 59 65 74 20 61 6E ...   1192  DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be victorious', $0D, $0A ,0
+00002DBF= 41 20 64 72 61 77 ...   1193  FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
+00002DFC= 54 68 65 20 66 69 ...   1194  FOVER_MSG:    DC.B 'The fight comes to its end you have survived yet again but can you keep this up' $0D, $0A ,0
+00002E4B= 41 20 62 6C 6F 77 ...   1195  DMG_MSG:      DC.B 'A blow has been dealt the fight draws closer to its end', $0D, $0A ,0
+00002E85= 47 41 4D 45 20 4F ...   1196  GO_MSG:       DC.B 'GAME OVER YOU ARE DEAD', $0D, $0A ,0
+00002E9E= 52 4F 43 4B 20 57 ...   1197  R_MSG:        DC.B 'ROCK WIN', 0
+00002EA7= 50 41 50 45 52 20 ...   1198  P_MSG:        DC.B 'PAPER WIN', 0
+00002EB1= 53 49 53 53 4F 52 ...   1199  S_MSG:        DC.B 'SISSORS WIN', 0
+00002EBE= 0001                    1200  SEED          DC.W    1
+00002EC0                          1201  P_HP          DS.B    1
+00002EC1                          1202  E_HP          DS.B    1
+00002EC2                          1203  
+00002EC2                          1204  GAME_OVER:
+00002EC2  6100 E9D2               1205         BSR     ENDL
+00002EC6  43F8 2E85               1206         LEA     GO_MSG,  A1   ; loads first draw msg
+00002ECA  103C 000E               1207         MOVE.B  #14, D0
+00002ECE  4E4F                    1208         TRAP    #15              ; Prints messag
+00002ED0                          1209      END    START
 
 No errors detected
 No warnings generated
@@ -1197,101 +1219,101 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
-CHOICE_MSG          1DFD
-CHOICE_VAR          1A06
-CONVR               19DA
-CRLF                1A07
-CUT_MINE            2268
-CUT_TOWER           23C8
-DMG                 18A2
-DMG_MSG             2DA7
-DRAW                18B0
-DRAW_MSG            2CD2
-ENDL                1886
+CHOICE_MSG          1E81
+CHOICE_VAR          1A8A
+CONVR               1A5E
+CRLF                1A8B
+CUT_MINE            22EC
+CUT_TOWER           244C
+DMG_E               191E
+DMG_MSG             2E4B
+DMG_P               1906
+DRAW                193A
+DRAW_MSG            2D76
+ENDL                1896
 EXIT                0
-E_HP                2E1D
-FDRAW               18C8
-FDRAW_MSG           2D1B
-FIGHT_MSG           2C57
-FIGHT_T_MSG         223E
-FINAL_CUT           2526
-FOVER               18D8
-FOVER_MSG           2D58
-F_LOSE              194C
-F_WIN               193C
-GAME_OVER           2E1E
-GO_MSG              2DE1
-HEAL_M              197C
-HEAL_MSG            2B92
-HEAL_T              1960
-HP_CHECK            1894
-INVALID_CHOICE      1874
-INVALID_MSG         2CB5
+E_CHECK             18F8
+E_HP                2EC1
+FDRAW_MSG           2DBF
+FIGHT               18A4
+FIGHT_MSG           2CFB
+FIGHT_T_MSG         22C2
+FINAL_CUT           25AA
+FOVER               194E
+FOVER_MSG           2DFC
+GAME_OVER           2EC2
+GO_MSG              2E85
+HEAL_M              1A00
+HEAL_MSG            2C36
+HEAL_T              19E4
+HP_CHECK            18EA
+INVALID_CHOICE      1884
+INVALID_MSG         2D59
 MINE                1070
-MINES_MSG           1E1B
-MINES_MSG1          1F08
-MINES_MSG2          1FE7
-MINES_MSG3          210D
+MINES_MSG           1E9F
+MINES_MSG1          1F8C
+MINES_MSG2          206B
+MINES_MSG3          2191
 MINE_FIGHT_1        10F8
-MINE_FIGHT_2        115C
-MINE_FIGHT_3        11C2
-MINE_FIGHT_4        1234
-MINE_FIGHT_5        129A
-MINE_FIGHT_6        130A
-MINE_FIGHT_7        136E
-MINE_FIGHT_8        13DE
-MINE_FIGHT_9        1442
+MINE_FIGHT_2        1160
+MINE_FIGHT_3        11C6
+MINE_FIGHT_4        1238
+MINE_FIGHT_5        129E
+MINE_FIGHT_6        130E
+MINE_FIGHT_7        1372
+MINE_FIGHT_8        13E2
+MINE_FIGHT_9        1446
 MINE_ROOM_1         10B4
-MINE_ROOM_10        1462
-MINE_ROOM_2         1118
-MINE_ROOM_3         117C
-MINE_ROOM_4         11E2
-MINE_ROOM_5         1254
-MINE_ROOM_6         12BA
-MINE_ROOM_7         132A
-MINE_ROOM_8         138E
-MINE_ROOM_9         13FE
-MOUNT               1860
-ONE                 19F2
-OPEN_MSG            1BD8
+MINE_ROOM_10        1466
+MINE_ROOM_2         111C
+MINE_ROOM_3         1180
+MINE_ROOM_4         11E6
+MINE_ROOM_5         1258
+MINE_ROOM_6         12BE
+MINE_ROOM_7         132E
+MINE_ROOM_8         1392
+MINE_ROOM_9         1402
+MOUNT               1870
+ONE                 1A76
+OPEN_MSG            1C5C
 OPEN_PATH           103C
 OPEN_SCENE          1026
-PAPER               18EE
-P_HP                2E1C
-P_MSG               2E03
-RNG                 1998
-ROCK                1908
-R_MSG               2DFA
-SEED                2E1A
-SIS                 1922
+PAPER               196A
+P_HP                2EC0
+P_MSG               2EA7
+RNG                 1A1C
+ROCK                1990
+R_MSG               2E9E
+SEED                2EBE
+SIS                 19BA
 START               1000
-S_MSG               2E0D
-THREE               19FE
-TOWER               1484
-TOWER_FIGHT_1       14DC
-TOWER_FIGHT_2       1548
-TOWER_FIGHT_3       15B8
-TOWER_FIGHT_4       161C
-TOWER_FIGHT_5       1680
-TOWER_FIGHT_6       16F2
-TOWER_FIGHT_7       1756
-TOWER_FIGHT_8       17BA
-TOWER_FIGHT_9       181E
-TOWER_MSG           2794
-TOWER_MSG1          2858
-TOWER_MSG2          290A
-TOWER_MSG3          2A3B
-TOWER_ROOM_1        1498
-TOWER_ROOM_10       183E
-TOWER_ROOM_2        1502
-TOWER_ROOM_3        1568
-TOWER_ROOM_4        15D8
-TOWER_ROOM_5        163C
-TOWER_ROOM_6        16A0
-TOWER_ROOM_7        1712
-TOWER_ROOM_8        1776
-TOWER_ROOM_9        17DA
-TWO                 19F8
-USER_INPUT          1A04
+S_MSG               2EB1
+THREE               1A82
+TOWER               1488
+TOWER_FIGHT_1       14E0
+TOWER_FIGHT_2       154C
+TOWER_FIGHT_3       15BC
+TOWER_FIGHT_4       1620
+TOWER_FIGHT_5       1684
+TOWER_FIGHT_6       16F6
+TOWER_FIGHT_7       175A
+TOWER_FIGHT_8       17BE
+TOWER_FIGHT_9       182E
+TOWER_MSG           2818
+TOWER_MSG1          28E4
+TOWER_MSG2          299E
+TOWER_MSG3          2AD7
+TOWER_ROOM_1        149C
+TOWER_ROOM_10       184E
+TOWER_ROOM_2        1506
+TOWER_ROOM_3        156C
+TOWER_ROOM_4        15DC
+TOWER_ROOM_5        1640
+TOWER_ROOM_6        16A4
+TOWER_ROOM_7        1716
+TOWER_ROOM_8        177A
+TOWER_ROOM_9        17DE
+TWO                 1A7C
+USER_INPUT          1A88
 WELCOME             1010
-WELCOME_MSG         1A0A
+WELCOME_MSG         1A8E

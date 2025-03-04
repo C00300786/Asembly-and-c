@@ -119,7 +119,7 @@ MINE_FIGHT_1:
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_3
     
@@ -785,9 +785,13 @@ TOWER_ROOM_9:
     
     MOVE.B  #3,E_HP
     
-    LEA     TOWER_MSG1, A1
+    LEA     TOWER_MSG3, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
+    
+    BSR     RNG
+    CMP     #1,D2
+    BEQ     HEAL_T
 
     
     LEA     USER_INPUT, A1   ; Load input buffer address
@@ -863,127 +867,144 @@ ENDL:
 *---------------------------------------------------------
 *                       Fight Suff
 *---------------------------------------------------------
-*FIGHT:
-*    
-*    BSR     ENDL
-*    BSR     RNG
-*    LEA     USER_INPUT, A1   ; Load input buffer address
-*    MOVE.B  #2, D0           ; Max input length (1 char + NULL)
-*    TRAP    #15              ; Read input (D0=2 -> Read 1 char)
-*    MOVE.B  USER_INPUT, D1   ; Load user input into D1
-*    BSR CONVR
-*    
-*    CMP     D3,D2
-*    BEQ     DRAW
-*  
-*    ADD.B   D2,D3
-*    
-*    CMP     #3,D3
-*    BEQ     PAPER
-*    
-*    CMP     #4,D3
-*    BEQ     ROCK
-*    
-*    CMP     #5,D3
-*    BEQ     SIS
-*    
-*    MOVE.B  D2,D7
-*    
-*    
-*    CMP.B   #0,P_HP       
-*    BEQ     GAME_OVER
-*    
-*    CMP.B   #0,E_HP
-*    IF <NE> THEN
-*        MOVE.B #0,D1
-*        JSR FIGHT
-*    ENDI
-*    RTS
-* 
+FIGHT:
+    
+    BSR     ENDL
+    BSR     RNG
+    LEA     USER_INPUT, A1   ; Load input buffer address
+    MOVE.B  #2, D0           ; Max input length (1 char + NULL)
+    TRAP    #15              ; Read input (D0=2 -> Read 1 char)
+    MOVE.B  USER_INPUT, D1   ; Load user input into D1
+    BSR CONVR
+    
+    CMP     D3,D2
+    BEQ     DRAW
+  
+    ADD.B   D2,D3
+    
+    CMP     #3,D3
+    BEQ     PAPER
+    
+    CMP     #4,D3
+    BEQ     ROCK
+    
+    CMP     #5,D3
+    BEQ     SIS
+    
+    BRA    HP_CHECK
+    BRA    E_CHECK
+    
+    
+     
+    
+    RTS
+    
+    
 HP_CHECK:
     CMP.B #0,P_HP
     BEQ GAME_OVER
 
-    RTS   
-DMG:
+    RTS 
+
+E_CHECK:
+    CMP.B #0,E_HP
+    BEQ FOVER
+    
+    RTS  
+DMG_P:
+    BSR ENDL
     LEA     DMG_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
-    RTS
+    SUB.B   #1,P_HP
+    BRA HP_CHECK
+    BRA FIGHT
+
+DMG_E:
+    BSR ENDL
+    LEA     DMG_MSG,  A1   ; loads first draw msg
+    MOVE.B  #14, D0
+    TRAP    #15              ; Prints message
+    SUB.B   #1,E_HP
+    BRA E_CHECK
+    BRA FIGHT 
 
 DRAW:
-    CMP.B   #0, D6
-    BEQ     FDRAW
-    
+    BSR ENDL
     LEA     DRAW_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     ADD.B   #1, D6         ; Adds to the draw count
     RTS
     
-FDRAW:
-    LEA     FDRAW_MSG,  A1   ; loads first draw msg
-    MOVE.B  #14, D0
-    TRAP    #15              ; Prints message
-    ADD.B   #1,  D6
-    RTS
-    
 FOVER:
+    BSR ENDL
     MOVE.B  #3,E_HP
+    
     LEA     FOVER_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     ADD.B   #1,  D0
     
+    RTS
+    
 PAPER:
+    BSR ENDL
     LEA     R_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     ;BSR     GAME_OVER
     
     CMP.B     #2,D2
-    BEQ F_WIN
+    BEQ       DMG_E
     
-    BSR F_LOSE
-
+    CMP.B     #2,D2
+    BGT       DMG_P
+    
+    CMP.B     #2,D2
+    BLT       DMG_P
+      
     RTS
     
 ROCK:
+    BSR ENDL
     LEA     P_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     
-    CMP.B   #1,D2
-    BEQ F_WIN
     
-    BSR F_LOSE
+    CMP.B     #1,D2
+    BEQ       DMG_E
+    
+    CMP.B     #1,D2
+    BGT       DMG_P
+    
+    CMP.B     #1,D2
+    BLT       DMG_P
+      
 
     RTS
     
 SIS:
+    BSR ENDL
     LEA     S_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     
-    CMP.B   #3,D2
-    BEQ F_WIN
     
-    BSR F_LOSE
+    CMP.B     #3,D2
+    BEQ       DMG_E
+    
+    CMP.B     #3,D2
+    BGT       DMG_P
+    
+    CMP.B     #3,D2
+    BLT       DMG_P
+      
+   
     RTS
 
-F_WIN:
-    BSR     DMG
-    MOVE.B  P_HP, D6
-    SUBI.B  #1,D6
-    MOVE.B  D6,(A2)
-    CLR     D6
-    
-F_LOSE:
-    BSR     DMG
-    MOVE.B  E_HP, D6
-    SUBI.B  #1, P_HP
-    MOVE.B  D6, (A3)
-    CLR     D6
+
 
 HEAL_T:
     BSR ENDL 
@@ -1138,19 +1159,19 @@ TOWER_MSG:    DC.B 'You go to tower', $0D, $0A
               DC.B 'as you enter the first room of the tower you see two stair cases', $0D, $0A
               DC.B 'the first a stairs lined with blue crysrals', $0D, $0A
               DC.B 'the second a stairs lined with red crystals', $0D, $0A
-              DC.B 'Which will you enter', $0D, $0A, 0
+              DC.B 'Which will you enter(1 OR 2)', $0D, $0A, 0
               
 TOWER_MSG1:   DC.B 'as you enter the next room of the tower you see two stair cases', $0D, $0A
               DC.B 'the first a stairs lined with blue crysrals', $0D, $0A
               DC.B 'the second a stairs lined with red crystals', $0D, $0A
-              DC.B 'Which will you enter', $0D, $0A, 0
+              DC.B 'Which will you enter(1 OR 2)', $0D, $0A, 0
 
 TOWER_MSG2:   DC.B 'as you enter the next room of the tower you see two stair cases', $0D, $0A
               DC.B 'The buliding like a maze designed to confuse and blend together', $0D, $0A
               DC.B 'the first a stairs lined with red crysrals', $0D, $0A
               DC.B 'the second a stairs lined with blue crystals', $0D, $0A
               DC.B 'how many more rooms could there be you wonder as you procede', $0D, $0A
-              DC.B 'Which will you enter', $0D, $0A, 0
+              DC.B 'Which will you enter(1 OR 2)', $0D, $0A, 0
    
 TOWER_MSG3:   DC.B 'as you enter the room see a faint red glow', $0D, $0A
               DC.B 'infront of you lays a stand of potions each with a diffrent ', $0D, $0A
@@ -1158,7 +1179,7 @@ TOWER_MSG3:   DC.B 'as you enter the room see a faint red glow', $0D, $0A
               DC.B 'and two stair cases as always are behind the stand', $0D, $0A
               DC.B 'chance )the first a stairs lined with red crysrals', $0D, $0A
               DC.B 'the second a stairs lined with blue crystals', $0D, $0A
-              DC.B 'Which will you enter', $0D, $0A, 0
+              DC.B 'Which will you enter(1 OR 2)', $0D, $0A, 0
 
 HEAL_MSG:     DC.B 'As you rest alowing your body to heal you knowtace something', $0D, $0A
               DC.B 'A button in the wall you press it an a passage opens', $0D, $0A
@@ -1181,6 +1202,7 @@ P_HP          DS.B    1
 E_HP          DS.B    1
 
 GAME_OVER:
+       BSR     ENDL
        LEA     GO_MSG,  A1   ; loads first draw msg
        MOVE.B  #14, D0
        TRAP    #15              ; Prints messag
@@ -1193,6 +1215,7 @@ GAME_OVER:
 *~Font size~10~
 *~Tab type~1~
 *~Tab size~4~
+
 
 
 
