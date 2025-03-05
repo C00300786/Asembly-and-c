@@ -114,7 +114,7 @@ MINE_ROOM_1:
     
 MINE_FIGHT_1:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
@@ -152,12 +152,12 @@ MINE_ROOM_2:
     
 MINE_FIGHT_2:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_4
 
@@ -190,12 +190,12 @@ MINE_ROOM_3:
     
 MINE_FIGHT_3:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_5
 
@@ -232,12 +232,12 @@ MINE_ROOM_4:
     
 MINE_FIGHT_4:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_6
 
@@ -270,12 +270,12 @@ MINE_ROOM_5:
     
 MINE_FIGHT_5:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_7
 
@@ -312,12 +312,12 @@ MINE_ROOM_6:
     
 MINE_FIGHT_6:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_8
     
@@ -350,12 +350,12 @@ MINE_ROOM_7:
     
 MINE_FIGHT_7:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_9
 
@@ -392,12 +392,12 @@ MINE_ROOM_8:
     
 MINE_FIGHT_8:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_10
     
@@ -430,12 +430,12 @@ MINE_ROOM_9:
     
 MINE_FIGHT_9:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR MINE_ROOM_10
 
@@ -495,13 +495,13 @@ TOWER_ROOM_1:
     
 TOWER_FIGHT_1:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
     SUB.B   #1,P_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_3
 
@@ -534,12 +534,12 @@ TOWER_ROOM_2:
     
 TOWER_FIGHT_2:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_4
 
@@ -576,12 +576,12 @@ TOWER_ROOM_3:
     
 TOWER_FIGHT_3:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_5
     
@@ -615,12 +615,12 @@ TOWER_ROOM_4:
     
 TOWER_FIGHT_4:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_6
 TOWER_ROOM_5:
@@ -652,12 +652,12 @@ TOWER_ROOM_5:
     
 TOWER_FIGHT_5:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_7
 
@@ -695,11 +695,11 @@ TOWER_ROOM_6:
     
 TOWER_FIGHT_6:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_8
 
@@ -732,11 +732,11 @@ TOWER_ROOM_7:
     
 TOWER_FIGHT_7:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_9
 
@@ -769,13 +769,13 @@ TOWER_ROOM_8:
     
 TOWER_FIGHT_8:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15  ; Print MINES message
     
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_10
 
@@ -814,12 +814,12 @@ TOWER_ROOM_9:
     
 TOWER_FIGHT_9:
     BSR     ENDL
-    LEA     FIGHT_T_MSG, A1
+    LEA     FIGHT_MSG, A1
     MOVE.B  #14, D0
     TRAP    #15              ; Print MINES message
     
     MOVE.B  #3,E_HP
-*    BSR FIGHT
+    BSR FIGHT
     BSR HP_CHECK
     BSR TOWER_ROOM_10
 
@@ -877,6 +877,9 @@ FIGHT:
     MOVE.B  USER_INPUT, D1   ; Load user input into D1
     BSR CONVR
     
+    BSR    HP_CHECK
+    BSR    E_CHECK
+    
     CMP     D3,D2
     BEQ     DRAW
   
@@ -890,12 +893,6 @@ FIGHT:
     
     CMP     #5,D3
     BEQ     SIS
-    
-    BRA    HP_CHECK
-    BRA    E_CHECK
-    
-    
-     
     
     RTS
     
@@ -912,13 +909,9 @@ E_CHECK:
     
     RTS  
 DMG_P:
-    BSR ENDL
-    LEA     DMG_MSG,  A1   ; loads first draw msg
-    MOVE.B  #14, D0
-    TRAP    #15              ; Prints message
     SUB.B   #1,P_HP
     BRA HP_CHECK
-    BRA FIGHT
+    BRA FOVER
 
 DMG_E:
     BSR ENDL
@@ -927,7 +920,7 @@ DMG_E:
     TRAP    #15              ; Prints message
     SUB.B   #1,E_HP
     BRA E_CHECK
-    BRA FIGHT 
+    BRA FOVER 
 
 DRAW:
     BSR ENDL
@@ -935,7 +928,7 @@ DRAW:
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     ADD.B   #1, D6         ; Adds to the draw count
-    RTS
+    BRA FIGHT
     
 FOVER:
     BSR ENDL
@@ -950,7 +943,7 @@ FOVER:
     
 PAPER:
     BSR ENDL
-    LEA     R_MSG,  A1   ; loads first draw msg
+    LEA     P_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     ;BSR     GAME_OVER
@@ -963,12 +956,11 @@ PAPER:
     
     CMP.B     #2,D2
     BLT       DMG_P
-      
-    RTS
     
+    BRA     FIGHT    
 ROCK:
     BSR ENDL
-    LEA     P_MSG,  A1   ; loads first draw msg
+    LEA     R_MSG,  A1   ; loads first draw msg
     MOVE.B  #14, D0
     TRAP    #15              ; Prints message
     
@@ -982,8 +974,7 @@ ROCK:
     CMP.B     #1,D2
     BLT       DMG_P
       
-
-    RTS
+    BRA     FIGHT
     
 SIS:
     BSR ENDL
@@ -1002,7 +993,7 @@ SIS:
     BLT       DMG_P
       
    
-    RTS
+     BRA     FIGHT
 
 
 
@@ -1108,19 +1099,21 @@ MINES_MSG:    DC.B 'You enter the mines', $0D, $0A
               DC.B 'As you enter a cavity in the mines you see two dirverging paths', $0D, $0A
               DC.B 'The first a gradual slope down with mushrooms lining the floor', $0D, $0A
               DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
-              DC.B 'Which will you enter', $0D, $0A, 0
+              DC.B 'Which will you enter', $0D, $0A
+              DC.B 'path 1 safe room', $0D, $0A
+              DC.B 'path 2 fight room', $0D, $0A,0
              
 MINES_MSG1:   DC.B 'As you enter the next cavity in the mines you see two dirverging paths', $0D, $0A
               DC.B 'The first a gradual slope down with mushrooms lining the floor', $0D, $0A
               DC.B 'The second a steep slope down a smell of blood wafting from it', $0D, $0A
-              DC.B 'Which will you enter', $0D, $0A, 0
+              DC.B 'Which will you enter 1 OR 2', $0D, $0A, 0
               
 MINES_MSG2:   DC.B 'You enter the next room it again has only two paths', $0D, $0A
               DC.B 'the mine all blending together only being seperated', $0D, $0A
               DC.B 'by the occaisonal campfire or fight', $0D, $0A
               DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
               DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
-              DC.B 'Which will you enter', $0D, $0A, 0
+              DC.B 'Which will you enter 1 0R 2', $0D, $0A, 0
          
 MINES_MSG3:   DC.B '', $0D, $0A
               DC.B 'As you move twords the next cavity you see a faint glow', $0D, $0A
@@ -1128,7 +1121,7 @@ MINES_MSG3:   DC.B '', $0D, $0A
               DC.B 'There are also two paths ahead' $0D, $0A
               DC.B 'The first a steep slope down a smell of blood wafting from it', $0D, $0A
               DC.B 'The second a gradual slope down with mushrooms lining the floor', $0D, $0A
-              DC.B 'Which will you enter', $0D, $0A, 0
+              DC.B 'Which will you enter 1 OR 2', $0D, $0A, 0
 
 FIGHT_T_MSG:  DC.B 'A fight will be here you take 1 dammage', $0D, $0A, 0
 
@@ -1187,12 +1180,13 @@ HEAL_MSG:     DC.B 'As you rest alowing your body to heal you knowtace something
               DC.B 'You heal 1 hp', $0D, $0A,0
 
 FIGHT_MSG:    DC.B 'Your opponent stands before you unwavering', $0D, $0A
-              DC.B 'the only way out is trough you must defeat them', $0D, $0A ,0
-INVALID_MSG:  DC.B 'Invalid choice. Try again.', $0D, $0A, 0
+              DC.B 'the only way out is trough you must defeat them', $0D, $0A
+              DC.B 'Your opponent stands before you unwavering', $0D, $0A
+INVALID_MSG:  DC.B '1 FOR ROCK 2 FOR PAPER 3 FOR SISORS.', $0D, $0A, 0
 DRAW_MSG:     DC.B 'Yet another draw occurs the tensions rise as to who will be victorious', $0D, $0A ,0
 FDRAW_MSG:    DC.B 'A draw occurs first time this fight who will be the victor', $0D, $0A ,0
 FOVER_MSG:    DC.B 'The fight comes to its end you have survived yet again but can you keep this up' $0D, $0A ,0
-DMG_MSG:      DC.B 'A blow has been dealt the fight draws closer to its end', $0D, $0A ,0
+DMG_MSG:      DC.B 'You take a blow your hp lessons', $0D, $0A ,0
 GO_MSG:       DC.B 'GAME OVER YOU ARE DEAD', $0D, $0A ,0
 R_MSG:        DC.B 'ROCK WIN', 0
 P_MSG:        DC.B 'PAPER WIN', 0
@@ -1215,6 +1209,7 @@ GAME_OVER:
 *~Font size~10~
 *~Tab type~1~
 *~Tab size~4~
+
 
 
 
