@@ -1,0 +1,13 @@
+# Ignore Object and Bin files
+*
+!*/
+!*.*
+
+*.o
+*.lst
+
+*.log
+
+*.gdb_*
+
+!Makefile
